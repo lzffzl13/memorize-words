@@ -82,3 +82,7 @@ main { max-width: 700px; margin: 20px auto; padding: 0 16px; }
 .form-input { width: 100%; padding: 10px 12px; font-size: 15px; border: 2px solid #e0e0e0; border-radius: 8px; outline: none; }
 .form-input:focus { border-color: #4a90d9; }
 select.form-input { background: #fff; }
+
+/* 图标按钮 */
+.icon-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 6px; border-radius: 4px; opacity: 0.6; }
+.icon-btn:hover { opacity: 1; background: #f0f0f0; }

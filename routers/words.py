@@ -77,3 +77,59 @@ def create_word(word: WordCreate, db: Session = Depends(get_db)):
         difficulty=new_word.difficulty,
         category_name=category.name,
     )
+
+
+@router.put("/{word_id}", response_model=WordOut)
+def update_word(word_id: int, word: WordCreate, db: Session = Depends(get_db)):
+    existing = db.query(Word).get(word_id)
+    if not existing:
+        return {"error": "Word not found"}
+
+    # 查找或创建分类
+    category = db.query(Category).filter(Category.name == word.category_name).first()
+    if not category:
+        category = Category(name=word.category_name, name_en=word.category_name, icon="")
+        db.add(category)
+        db.flush()
+
+    # 更新单词
+    existing.english = word.english
+    existing.chinese = word.chinese
+    existing.pronunciation = word.pronunciation
+    existing.part_of_speech = word.part_of_speech
+    existing.example_sentence = word.example_sentence
+    existing.example_sentence_cn = word.example_sentence_cn
+    existing.code_snippet = word.code_snippet
+    existing.code_answer = word.code_answer
+    existing.difficulty = word.difficulty
+    existing.category_id = category.id
+    db.commit()
+    db.refresh(existing)
+
+    return WordOut(
+        id=existing.id,
+        english=existing.english,
+        chinese=existing.chinese,
+        pronunciation=existing.pronunciation,
+        part_of_speech=existing.part_of_speech,
+        example_sentence=existing.example_sentence,
+        example_sentence_cn=existing.example_sentence_cn,
+        code_snippet=existing.code_snippet,
+        difficulty=existing.difficulty,
+        category_name=category.name,
+    )
+
+
+@router.delete("/{word_id}")
+def delete_word(word_id: int, db: Session = Depends(get_db)):
+    word = db.query(Word).get(word_id)
+    if not word:
+        return {"error": "Word not found"}
+
+    # 删除相关学习进度
+    db.query(UserProgress).filter(UserProgress.word_id == word_id).delete()
+    # 删除单词
+    db.delete(word)
+    db.commit()
+
+    return {"message": "Word deleted", "id": word_id}
