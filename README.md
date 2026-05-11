@@ -8,8 +8,11 @@
 - **4 种练习模式**：英译中、中译英、拼写、代码填空
 - **SM-2 间隔重复算法**，科学安排复习计划
 - **分类筛选**，按类别浏览和练习
+- **学习统计**：每日趋势、连续打卡、练习历史详情
 - **薄弱词汇统计**，自动识别需要加强的单词
+- **概览卡片可点击**，快速查看已掌握/学习中/待复习词汇
 - **键盘快捷键**，1-4 选择答案，Enter 提交
+- **TTS 发音**，点击播放单词发音
 - **答题动画**，正确/错误即时反馈
 
 ## 词汇分类
@@ -86,10 +89,18 @@ memorize_words/
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | GET | `/api/words/` | 获取所有词汇 |
+| GET | `/api/words/categories` | 获取分类列表 |
+| POST | `/api/words/` | 添加单词 |
+| PUT | `/api/words/{id}` | 编辑单词 |
+| DELETE | `/api/words/{id}` | 删除单词 |
 | POST | `/api/practice/start` | 开始练习 |
 | POST | `/api/practice/answer` | 提交答案 |
 | GET | `/api/stats/overview` | 学习概览 |
 | GET | `/api/stats/weak-words` | 薄弱词汇 |
+| GET | `/api/stats/sessions` | 练习历史 |
+| GET | `/api/stats/sessions/{id}` | 单次练习详情 |
+| GET | `/api/stats/daily` | 每日趋势 + 连续打卡 |
+| GET | `/api/stats/words-by-status` | 按状态查单词 |
 
 ## License
 
