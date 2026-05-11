@@ -1,5 +1,13 @@
 let wordsData = [];
 
+// TTS 发音
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    utterance.rate = 0.9;
+    speechSynthesis.speak(utterance);
+}
+
 async function renderWords() {
     wordsData = await api("/api/words/");
     const categories = [...new Set(wordsData.map(w => w.category_name))];
@@ -62,7 +70,7 @@ function renderWordList(words, title) {
         html += `<div class="card" style="text-align:left;margin-bottom:10px;padding:14px">
             <div style="display:flex;justify-content:space-between;align-items:flex-start">
                 <div>
-                    <b>${w.english}</b> <span style="color:#999">${w.pronunciation}</span>
+                    <b>${w.english}</b> <button class="icon-btn speak-btn" onclick="speak('${w.english}')" title="发音">🔊</button> <span style="color:#999">${w.pronunciation}</span>
                     <span style="float:right;color:#999;font-size:13px">${w.category_name}</span>
                     <div style="margin-top:4px">${w.chinese} (${w.part_of_speech})</div>
                     <div style="margin-top:6px;color:#666;font-size:14px">${w.example_sentence}</div>
