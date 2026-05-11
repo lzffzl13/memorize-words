@@ -134,12 +134,14 @@ function showQuestion() {
         html += `<div id="feedback"></div>`;
     }
 
-    // 导航提示
-    const navHints = [];
-    if (practiceState.current > 0) navHints.push("← 上一题");
-    if (answered && practiceState.current < total - 1) navHints.push("→ 下一题");
-    if (!answered) navHints.push(practiceState.mode === "en_to_cn" ? "按 1-4 选择答案" : "按 Enter 提交");
-    html += `<p style="margin-top:16px;color:#bbb;font-size:12px;text-align:center">${navHints.join(" | ")}</p></div>`;
+    // 导航按钮
+    const canPrev = practiceState.current > 0;
+    const canNext = answered && practiceState.current < total - 1;
+    html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px">
+        ${canPrev ? `<button class="nav-btn" onclick="navigateQuestion(-1)">⬅ 上一题</button>` : `<span></span>`}
+        <span style="color:#bbb;font-size:12px">${!answered ? (practiceState.mode === "en_to_cn" ? "按 1-4 选择 | ↑ 上一题" : "按 Enter 提交 | ↑ 上一题") : "↑↓ 切换题目"}</span>
+        ${canNext ? `<button class="nav-btn" onclick="navigateQuestion(1)">下一题 ➡</button>` : `<span></span>`}
+    </div></div>`;
 
     app.innerHTML = html;
 
@@ -159,8 +161,10 @@ function showQuestion() {
                 if (e.key >= "1" && e.key <= "4") {
                     const idx = parseInt(e.key) - 1;
                     if (btns[idx] && !btns[idx].disabled) btns[idx].click();
-                } else if (e.key === "ArrowLeft") {
+                } else if (e.key === "ArrowUp") {
                     navigateQuestion(-1);
+                } else if (e.key === "ArrowDown") {
+                    navigateQuestion(1);
                 }
             };
         } else {
@@ -168,14 +172,15 @@ function showQuestion() {
             document.getElementById("submit-answer").onclick = () => submitAnswer(input.value);
             input.onkeydown = (e) => {
                 if (e.key === "Enter") submitAnswer(input.value);
-                else if (e.key === "ArrowLeft") navigateQuestion(-1);
+                else if (e.key === "ArrowUp") { e.preventDefault(); navigateQuestion(-1); }
+                else if (e.key === "ArrowDown") { e.preventDefault(); navigateQuestion(1); }
             };
             input.focus();
         }
     } else {
         document.onkeydown = (e) => {
-            if (e.key === "ArrowLeft") navigateQuestion(-1);
-            else if (e.key === "ArrowRight") navigateQuestion(1);
+            if (e.key === "ArrowUp") { e.preventDefault(); navigateQuestion(-1); }
+            else if (e.key === "ArrowDown") { e.preventDefault(); navigateQuestion(1); }
         };
     }
 }
