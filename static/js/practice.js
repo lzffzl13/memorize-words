@@ -139,7 +139,6 @@ function showQuestion() {
     const canNext = answered && practiceState.current < total - 1;
     html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px">
         ${canPrev ? `<button class="nav-btn" onclick="navigateQuestion(-1)">⬅ 上一题</button>` : `<span></span>`}
-        <span style="color:#bbb;font-size:12px">${!answered ? (practiceState.mode === "en_to_cn" ? "按 1-4 选择 | ↑ 上一题" : "按 Enter 提交 | ↑ 上一题") : "↑↓ 切换题目"}</span>
         ${canNext ? `<button class="nav-btn" onclick="navigateQuestion(1)">下一题 ➡</button>` : `<span></span>`}
     </div></div>`;
 
@@ -241,8 +240,18 @@ async function submitAnswer(answer) {
     const submitBtn = document.getElementById("submit-answer");
     if (submitBtn) submitBtn.disabled = true;
 
-    // 更新导航提示
-    setTimeout(() => showQuestion(), 1200);
+    // 答对自动下一题，答错手动切换
+    if (res.is_correct) {
+        setTimeout(() => {
+            if (practiceState.current < practiceState.questions.length - 1) {
+                navigateQuestion(1);
+            } else {
+                showResult();
+            }
+        }, 1200);
+    } else {
+        showQuestion();
+    }
 }
 
 function showResult() {
