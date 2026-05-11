@@ -9,14 +9,14 @@ function speak(text) {
 }
 
 async function renderPractice() {
-    practiceState = { mode: null, category: "", sessionId: null, questions: [], current: 0, correct: 0, answered: [] };
+    practiceState = { mode: "en_to_cn", category: "", sessionId: null, questions: [], current: 0, correct: 0, answered: [] };
     const words = await api("/api/words/");
     const categories = [...new Set(words.map(w => w.category_name))];
 
     let html = `<div class="page">
         <h2>选择练习模式</h2>
         <div class="mode-select">
-            <div class="mode-btn" data-mode="en_to_cn"><b>英译中</b><br>看英文选中文</div>
+            <div class="mode-btn selected" data-mode="en_to_cn"><b>英译中</b><br>看英文选中文</div>
             <div class="mode-btn" data-mode="cn_to_en"><b>中译英</b><br>看中文拼英文</div>
             <div class="mode-btn" data-mode="spelling"><b>拼写练习</b><br>给释义拼单词</div>
             <div class="mode-btn" data-mode="code_fill"><b>代码填空</b><br>在代码中填词</div>
@@ -29,7 +29,7 @@ async function renderPractice() {
         html += `<button class="cat-btn" data-cat="${cat}">${cat} (${count})</button>`;
     });
     html += `</div>
-        <button class="btn-primary" id="start-btn" disabled>开始练习</button>
+        <button class="btn-primary" id="start-btn">开始练习</button>
     </div>`;
     app.innerHTML = html;
 
