@@ -79,14 +79,20 @@ def get_sessions(limit: int = 20, db: Session = Depends(get_db)):
 
     result = []
     for s in sessions:
-        accuracy = round(s.correct_answers / s.total_questions * 100, 1) if s.total_questions > 0 else 0
+        correct = s.correct_answers
+        if correct == 0:
+            correct = db.query(PracticeRecord).filter(
+                PracticeRecord.session_id == s.id,
+                PracticeRecord.is_correct == True,
+            ).count()
+        accuracy = round(correct / s.total_questions * 100, 1) if s.total_questions > 0 else 0
         result.append({
             "id": s.id,
             "mode": s.mode,
             "mode_name": mode_names.get(s.mode, s.mode),
             "started_at": s.started_at.strftime("%m-%d %H:%M") if s.started_at else "",
             "total_questions": s.total_questions,
-            "correct_answers": s.correct_answers,
+            "correct_answers": correct,
             "accuracy": accuracy,
         })
 

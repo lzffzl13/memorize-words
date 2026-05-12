@@ -136,10 +136,11 @@ function showQuestion() {
 
     // 导航按钮
     const canPrev = practiceState.current > 0;
-    const canNext = answered && practiceState.current < total - 1;
+    const isLast = practiceState.current >= total - 1;
+    const canNext = answered && !isLast;
     html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px">
         ${canPrev ? `<button class="nav-btn" onclick="navigateQuestion(-1)">⬅ 上一题</button>` : `<span></span>`}
-        ${canNext ? `<button class="nav-btn" onclick="navigateQuestion(1)">下一题 ➡</button>` : `<span></span>`}
+        ${canNext ? `<button class="nav-btn" onclick="navigateQuestion(1)">下一题 ➡</button>` : isLast && answered ? `<button class="nav-btn" style="background:#4a90d9;color:#fff;border-color:#4a90d9" onclick="renderPractice()">再来一轮</button>` : `<span></span>`}
     </div></div>`;
 
     app.innerHTML = html;

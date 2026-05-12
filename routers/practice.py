@@ -107,6 +107,11 @@ def submit_answer(req: AnswerRequest, db: Session = Depends(get_db)):
         elif progress.total_attempts >= 1:
             progress.status = "learning"
 
+    # 更新练习会话正确数
+    session = db.query(PracticeSession).get(req.session_id)
+    if session and is_correct:
+        session.correct_answers += 1
+
     # 记录答题
     record = PracticeRecord(
         session_id=req.session_id,
