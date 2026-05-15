@@ -1,4 +1,15 @@
 let wordsData = [];
+let currentWordList = [];
+let currentWordTitle = "";
+let currentStatusFilter = "all";
+
+const statusLabels = {
+    all: "全部",
+    new: "新词",
+    learning: "学习中",
+    review: "待复习",
+    mastered: "已掌握",
+};
 
 // TTS 发音
 function speak(text) {
@@ -8,78 +19,157 @@ function speak(text) {
     speechSynthesis.speak(utterance);
 }
 
-async function renderWords() {
-    wordsData = await api("/api/words/");
-    const categories = [...new Set(wordsData.map(w => w.category_name))];
+app.addEventListener("click", (event) => {
+    if (!isWordsPage()) return;
 
-    let html = `<div class="page">
+    const actionEl = event.target.closest("[data-action]");
+    if (!actionEl) return;
+
+    switch (actionEl.dataset.action) {
+        case "show-add-word":
+            showAddWordForm();
+            break;
+        case "show-category":
+            showCategory(actionEl.dataset.category);
+            break;
+        case "back-to-words":
+            renderWords();
+            break;
+        case "filter-status":
+            currentStatusFilter = actionEl.dataset.status || "all";
+            renderWords();
+            break;
+        case "speak-word": {
+            const word = wordsData.find(item => item.id === Number(actionEl.dataset.wordId));
+            if (word) speak(word.english);
+            break;
+        }
+        case "edit-word":
+            showEditWordForm(Number(actionEl.dataset.wordId));
+            break;
+        case "delete-word":
+            deleteWord(Number(actionEl.dataset.wordId), actionEl.dataset.wordEnglish);
+            break;
+    }
+});
+
+app.addEventListener("change", (event) => {
+    if (!isWordsPage()) return;
+    if (event.target.id === "word-category-select") {
+        toggleCustomCategory();
+    }
+});
+
+function isWordsPage() {
+    return !!app.querySelector('[data-page="words"]');
+}
+
+function getFilteredWords() {
+    if (currentStatusFilter === "all") return wordsData;
+    return wordsData.filter(w => (w.status || "new") === currentStatusFilter);
+}
+
+function renderStatusFilters() {
+    const statuses = ["all", "new", "learning", "review", "mastered"];
+    return `<div id="status-filter" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">${statuses.map(status => {
+        const count = status === "all"
+            ? wordsData.length
+            : wordsData.filter(w => (w.status || "new") === status).length;
+        return `<button class="cat-btn ${currentStatusFilter === status ? "active" : ""}" data-action="filter-status" data-status="${status}">${statusLabels[status]} (${count})</button>`;
+    }).join("")}</div>`;
+}
+
+async function renderWords(options = {}) {
+    wordsData = await api("/api/words/");
+    const { preserveDetail = false, title = "", wordIds = [] } = options;
+    const filteredWords = getFilteredWords();
+    currentWordList = preserveDetail ? filteredWords.filter(w => wordIds.includes(w.id)) : [];
+    currentWordTitle = preserveDetail ? title : "";
+    const categories = [...new Set(filteredWords.map(w => w.category_name))];
+
+    let html = `<div class="page" data-page="words">
         <div style="display:flex;justify-content:space-between;align-items:center">
             <h2>词库浏览</h2>
-            <button class="btn-primary" style="margin:0;width:auto;padding:10px 20px" onclick="showAddWordForm()">+ 添加单词</button>
+            <button class="btn-primary" style="margin:0;width:auto;padding:10px 20px" data-action="show-add-word">+ 添加单词</button>
         </div>
         <input class="answer-input" id="search-input" placeholder="搜索单词..." style="margin-bottom:16px">
+        ${renderStatusFilters()}
         <div id="cat-list">`;
     categories.forEach(cat => {
-        const count = wordsData.filter(w => w.category_name === cat).length;
-        html += `<div class="card cat-card" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:14px 18px" data-cat="${cat}">
+        const count = filteredWords.filter(w => w.category_name === cat).length;
+        html += `<div class="card cat-card" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:14px 18px" data-action="show-category" data-category="${cat}">
             <span style="font-weight:600;font-size:15px">${cat}</span>
             <span style="color:#999">${count} 词</span>
         </div>`;
     });
+    if (categories.length === 0) {
+        html += `<div class="card" style="color:#999">当前筛选下暂无单词</div>`;
+    }
     html += `</div><div id="word-detail" style="display:none"></div>
         <div id="word-modal" style="display:none"></div>
     </div>`;
     app.innerHTML = html;
 
-    // 点击分类
-    document.querySelectorAll(".cat-card").forEach(card => {
-        card.onclick = () => showCategory(card.dataset.cat);
-    });
-
-    // 搜索
     document.getElementById("search-input").oninput = (e) => {
         const q = e.target.value.toLowerCase();
         if (!q) {
             document.getElementById("cat-list").style.display = "";
             document.getElementById("word-detail").style.display = "none";
+            currentWordList = [];
+            currentWordTitle = "";
             return;
         }
         document.getElementById("cat-list").style.display = "none";
         document.getElementById("word-detail").style.display = "";
-        const matched = wordsData.filter(w =>
+        const matched = getFilteredWords().filter(w =>
             w.english.toLowerCase().includes(q) || w.chinese.includes(q)
         );
-        renderWordList(matched, "搜索结果");
+        renderWordList(matched, `${statusLabels[currentStatusFilter]} · 搜索结果`);
     };
+
+    if (preserveDetail && currentWordTitle) {
+        document.getElementById("cat-list").style.display = "none";
+        document.getElementById("search-input").style.display = "none";
+        document.getElementById("word-detail").style.display = "";
+        renderWordList(currentWordList, currentWordTitle);
+    }
 }
 
 function showCategory(cat) {
-    const words = wordsData.filter(w => w.category_name === cat);
+    const words = getFilteredWords().filter(w => w.category_name === cat);
     document.getElementById("cat-list").style.display = "none";
     document.getElementById("search-input").style.display = "none";
     document.getElementById("word-detail").style.display = "";
-    renderWordList(words, cat);
+    renderWordList(words, `${cat} · ${statusLabels[currentStatusFilter]}`);
 }
 
 function renderWordList(words, title) {
+    currentWordList = words;
+    currentWordTitle = title;
+
     let html = `<div style="display:flex;align-items:center;margin-bottom:16px">
-        <button class="submit-btn" onclick="renderWords()" style="margin:0;padding:8px 16px">返回</button>
+        <button class="submit-btn" data-action="back-to-words" style="margin:0;padding:8px 16px">返回</button>
         <h3 style="margin-left:12px">${title} (${words.length})</h3>
     </div>`;
+    if (words.length === 0) {
+        html += `<div class="card" style="color:#999">当前筛选下暂无单词</div>`;
+    }
     words.forEach(w => {
+        const statusText = statusLabels[w.status || "new"] || "新词";
         html += `<div class="card" style="text-align:left;margin-bottom:10px;padding:14px">
             <div style="display:flex;justify-content:space-between;align-items:flex-start">
                 <div>
-                    <b>${w.english}</b> <button class="icon-btn speak-btn" onclick="speak('${w.english}')" title="发音">🔊</button> <span style="color:#999">${w.pronunciation}</span>
+                    <b>${w.english}</b> <button class="icon-btn speak-btn" data-action="speak-word" data-word-id="${w.id}" title="发音">🔊</button> <span style="color:#999">${w.pronunciation}</span>
                     <span style="float:right;color:#999;font-size:13px">${w.category_name}</span>
                     <div style="margin-top:4px">${w.chinese} (${w.part_of_speech})</div>
                     <div style="margin-top:6px;color:#666;font-size:14px">${w.example_sentence}</div>
                     ${w.example_sentence_cn ? `<div style="margin-top:2px;color:#999;font-size:13px">${w.example_sentence_cn}</div>` : ""}
                     ${w.code_snippet ? `<div class="code-block" style="font-size:13px;margin-top:8px">${w.code_snippet}</div>` : ""}
+                    <div style="margin-top:8px"><span class="cat-btn" style="cursor:default">${statusText}</span></div>
                 </div>
                 <div style="display:flex;gap:6px;margin-left:12px;flex-shrink:0">
-                    <button class="icon-btn" onclick="showEditWordForm(${w.id})" title="编辑">✏️</button>
-                    <button class="icon-btn" onclick="deleteWord(${w.id}, '${w.english}')" title="删除">🗑️</button>
+                    <button class="icon-btn" data-action="edit-word" data-word-id="${w.id}" title="编辑">✏️</button>
+                    <button class="icon-btn" data-action="delete-word" data-word-id="${w.id}" data-word-english="${w.english}" title="删除">🗑️</button>
                 </div>
             </div>
         </div>`;
@@ -113,8 +203,8 @@ function showWordForm(title, word, categories) {
     const isEdit = !!word;
 
     modal.innerHTML = `
-        <div class="modal-overlay" onclick="closeWordForm()">
-            <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-overlay" data-action="close-word-form">
+            <div class="modal-content" data-role="word-modal-content">
                 <h3 style="margin-bottom:16px">${title}</h3>
                 <div class="form-group">
                     <label>英文单词 *</label>
@@ -127,7 +217,7 @@ function showWordForm(title, word, categories) {
                 <div class="form-group">
                     <label>分类 *</label>
                     <div style="display:flex;gap:8px">
-                        <select class="form-input" id="word-category-select" style="flex:1" onchange="toggleCustomCategory()">
+                        <select class="form-input" id="word-category-select" style="flex:1">
                             ${catOptions}
                             <option value="__custom__">自定义分类...</option>
                         </select>
@@ -159,8 +249,8 @@ function showWordForm(title, word, categories) {
                 </div>
                 <div id="word-form-error" style="color:#f44336;font-size:14px;margin-top:8px"></div>
                 <div style="display:flex;gap:12px;margin-top:20px">
-                    <button class="submit-btn" onclick="submitWord(${word ? word.id : "null"})" style="flex:1">${isEdit ? "保存" : "添加"}</button>
-                    <button class="submit-btn" onclick="closeWordForm()" style="flex:1;background:#999">取消</button>
+                    <button class="submit-btn" data-action="submit-word" data-word-id="${word ? word.id : ""}" style="flex:1">${isEdit ? "保存" : "添加"}</button>
+                    <button class="submit-btn" data-action="close-word-form" style="flex:1;background:#999">取消</button>
                 </div>
             </div>
         </div>
@@ -170,11 +260,13 @@ function showWordForm(title, word, categories) {
 function toggleCustomCategory() {
     const select = document.getElementById("word-category-select");
     const custom = document.getElementById("word-category-custom");
+    if (!select || !custom) return;
     custom.style.display = select.value === "__custom__" ? "block" : "none";
 }
 
 function closeWordForm() {
     const modal = document.getElementById("word-modal");
+    if (!modal) return;
     modal.style.display = "none";
     modal.innerHTML = "";
 }
@@ -214,8 +306,11 @@ async function submitWord(wordId) {
     });
 
     if (res.id) {
+        const previousTitle = currentWordTitle;
+        const previousWordIds = currentWordList.map(w => w.id);
         closeWordForm();
-        renderWords();
+        await renderWords({ preserveDetail: !!previousTitle, title: previousTitle, wordIds: previousWordIds });
+        if (previousTitle) renderWordList(currentWordList, currentWordTitle);
     } else {
         document.getElementById("word-form-error").textContent = res.detail || res.error || "操作失败";
     }
@@ -232,3 +327,25 @@ async function deleteWord(wordId, english) {
         alert(res.error || "删除失败");
     }
 }
+
+document.addEventListener("click", (event) => {
+    const modal = document.getElementById("word-modal");
+    if (!modal || modal.style.display !== "block") return;
+
+    const actionEl = event.target.closest("[data-action]");
+    if (actionEl) {
+        if (actionEl.dataset.action === "close-word-form") {
+            if (event.target.dataset.role === "word-modal-content") return;
+            closeWordForm();
+            return;
+        }
+        if (actionEl.dataset.action === "submit-word") {
+            submitWord(actionEl.dataset.wordId ? Number(actionEl.dataset.wordId) : null);
+            return;
+        }
+    }
+
+    if (event.target.dataset.role === "word-modal-content") {
+        event.stopPropagation();
+    }
+});

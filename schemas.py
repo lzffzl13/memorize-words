@@ -24,6 +24,7 @@ class WordOut(BaseModel):
     code_snippet: Optional[str] = None
     difficulty: int
     category_name: str
+    status: str = "new"
 
     class Config:
         from_attributes = True

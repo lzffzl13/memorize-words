@@ -24,6 +24,7 @@ def list_words(db: Session = Depends(get_db)):
             code_snippet=w.code_snippet,
             difficulty=w.difficulty,
             category_name=w.category.name,
+            status=w.progress.status if w.progress else "new",
         ))
     return result
 
@@ -76,12 +77,13 @@ def create_word(word: WordCreate, db: Session = Depends(get_db)):
         code_snippet=new_word.code_snippet,
         difficulty=new_word.difficulty,
         category_name=category.name,
+        status=progress.status,
     )
 
 
 @router.put("/{word_id}", response_model=WordOut)
 def update_word(word_id: int, word: WordCreate, db: Session = Depends(get_db)):
-    existing = db.query(Word).get(word_id)
+    existing = db.get(Word, word_id)
     if not existing:
         return {"error": "Word not found"}
 
@@ -117,12 +119,13 @@ def update_word(word_id: int, word: WordCreate, db: Session = Depends(get_db)):
         code_snippet=existing.code_snippet,
         difficulty=existing.difficulty,
         category_name=category.name,
+        status=existing.progress.status if existing.progress else "new",
     )
 
 
 @router.delete("/{word_id}")
 def delete_word(word_id: int, db: Session = Depends(get_db)):
-    word = db.query(Word).get(word_id)
+    word = db.get(Word, word_id)
     if not word:
         return {"error": "Word not found"}
 

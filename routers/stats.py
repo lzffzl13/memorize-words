@@ -102,7 +102,7 @@ def get_sessions(limit: int = 20, db: Session = Depends(get_db)):
 @router.get("/sessions/{session_id}")
 def get_session_detail(session_id: int, db: Session = Depends(get_db)):
     """获取单次练习的详情"""
-    session = db.query(PracticeSession).get(session_id)
+    session = db.get(PracticeSession, session_id)
     if not session:
         return {"error": "Session not found"}
 

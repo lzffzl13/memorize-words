@@ -1,3 +1,31 @@
+function isStatsPage() {
+    return !!app.querySelector('[data-page="stats"]');
+}
+
+app.addEventListener("click", (event) => {
+    if (isStatsPage()) {
+        const actionEl = event.target.closest("[data-action]");
+        if (actionEl) {
+            switch (actionEl.dataset.action) {
+                case "goto-words":
+                    location.hash = "#/words";
+                    return;
+                case "show-status-words":
+                    showStatusWords(actionEl.dataset.status);
+                    return;
+                case "show-session-detail":
+                    showSessionDetail(Number(actionEl.dataset.sessionId));
+                    return;
+            }
+        }
+    }
+
+    const overlay = event.target.closest(".modal-overlay");
+    if (overlay && event.target === overlay) {
+        overlay.remove();
+    }
+});
+
 async function renderStats() {
     const [overview, weakWords, sessions, dailyData] = await Promise.all([
         api("/api/stats/overview"),
@@ -6,18 +34,17 @@ async function renderStats() {
         api("/api/stats/daily"),
     ]);
 
-    let html = `<div class="page">
+    let html = `<div class="page" data-page="stats">
         <h2>学习统计</h2>
 
         <div class="stats-cards" style="margin-top:20px">
-            <div class="card stat-clickable" onclick="location.hash='#/words'"><div class="num">${overview.total_words}</div><div class="label">总词数</div></div>
-            <div class="card stat-clickable" onclick="showStatusWords('mastered')"><div class="num" style="color:#4caf50">${overview.mastered}</div><div class="label">已掌握</div></div>
-            <div class="card stat-clickable" onclick="showStatusWords('learning')"><div class="num" style="color:#ff9800">${overview.learning}</div><div class="label">学习中</div></div>
-            <div class="card stat-clickable" onclick="showStatusWords('review')"><div class="num" style="color:#2196f3">${overview.review}</div><div class="label">待复习</div></div>
+            <div class="card stat-clickable" data-action="goto-words"><div class="num">${overview.total_words}</div><div class="label">总词数</div></div>
+            <div class="card stat-clickable" data-action="show-status-words" data-status="mastered"><div class="num" style="color:#4caf50">${overview.mastered}</div><div class="label">已掌握</div></div>
+            <div class="card stat-clickable" data-action="show-status-words" data-status="learning"><div class="num" style="color:#ff9800">${overview.learning}</div><div class="label">学习中</div></div>
+            <div class="card stat-clickable" data-action="show-status-words" data-status="review"><div class="num" style="color:#2196f3">${overview.review}</div><div class="label">待复习</div></div>
             <div class="card"><div class="num" style="color:#9e9e9e">${overview.new}</div><div class="label">新词</div></div>
         </div>`;
 
-    // 每日趋势
     html += `<div style="margin-top:30px">
         <h3>每日趋势</h3>
         <div class="card" style="margin-top:12px;padding:20px">
@@ -50,7 +77,6 @@ async function renderStats() {
 
     html += `</div></div></div>`;
 
-    // 练习历史
     html += `<div style="margin-top:30px">
         <h3>练习历史</h3>`;
 
@@ -62,7 +88,7 @@ async function renderStats() {
         html += `<div style="margin-top:12px">`;
         sessions.forEach(s => {
             const accColor = s.accuracy >= 80 ? "#4caf50" : s.accuracy >= 60 ? "#ff9800" : "#f44336";
-            html += `<div class="card session-card stat-clickable" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:12px 16px" onclick="showSessionDetail(${s.id})">
+            html += `<div class="card session-card stat-clickable" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:12px 16px" data-action="show-session-detail" data-session-id="${s.id}">
                 <div>
                     <span class="session-mode">${s.mode_name}</span>
                     <span style="color:#999;font-size:13px;margin-left:12px">${s.started_at}</span>
@@ -78,7 +104,6 @@ async function renderStats() {
 
     html += `</div>`;
 
-    // 薄弱词汇
     html += `<div style="margin-top:30px">
         <h3>薄弱词汇 <span style="font-size:14px;color:#999;font-weight:normal">(正确率 < 60%)</span></h3>`;
 
@@ -117,7 +142,6 @@ async function renderStats() {
     app.innerHTML = html;
 }
 
-// 按状态查看单词列表
 async function showStatusWords(status) {
     const statusNames = { mastered: "已掌握", learning: "学习中", review: "待复习" };
     const words = await api(`/api/stats/words-by-status?status=${status}`);
@@ -144,7 +168,6 @@ async function showStatusWords(status) {
     showModal(content);
 }
 
-// 查看练习详情
 async function showSessionDetail(sessionId) {
     const detail = await api(`/api/stats/sessions/${sessionId}`);
 
@@ -153,7 +176,7 @@ async function showSessionDetail(sessionId) {
 
     if (detail.records && detail.records.length > 0) {
         content += `<div style="max-height:400px;overflow-y:auto">`;
-        detail.records.forEach((r, i) => {
+        detail.records.forEach((r) => {
             const icon = r.is_correct ? "✓" : "✗";
             const color = r.is_correct ? "#4caf50" : "#f44336";
             const time = r.response_time_ms ? ` ${(r.response_time_ms / 1000).toFixed(1)}s` : "";
@@ -170,14 +193,15 @@ async function showSessionDetail(sessionId) {
     showModal(content);
 }
 
-// 弹窗
 function showModal(content) {
     const existing = document.querySelector(".modal-overlay");
     if (existing) existing.remove();
 
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay";
-    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+    overlay.onclick = (event) => {
+        if (event.target === overlay) overlay.remove();
+    };
     overlay.innerHTML = `<div class="modal-content" style="max-width:520px">${content}</div>`;
     document.body.appendChild(overlay);
 }

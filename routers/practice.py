@@ -1,6 +1,8 @@
-from datetime import date
+import random
+from datetime import date, datetime
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Word, UserProgress, PracticeSession, PracticeRecord, Category
@@ -14,6 +16,8 @@ class StartRequest(BaseModel):
     mode: str = "en_to_cn"
     count: int = 10
     category: str = ""
+    scope: str = "all"
+    word_ids: list[int] = []
 
 
 class AnswerRequest(BaseModel):
@@ -26,36 +30,49 @@ class AnswerRequest(BaseModel):
 
 @router.post("/start")
 def start_practice(req: StartRequest, db: Session = Depends(get_db)):
+    count = max(1, min(req.count, 50))
+
     # 按分类过滤
     word_query = db.query(Word)
+    category_id = None
     if req.category:
         cat = db.query(Category).filter(Category.name == req.category).first()
         if cat:
-            word_query = word_query.filter(Word.category_id == cat.id)
+            category_id = cat.id
+            word_query = word_query.filter(Word.category_id == category_id)
 
-    # 优先取到期复习词，其次新词
-    due = (
-        db.query(UserProgress)
-        .join(Word, Word.id == UserProgress.word_id)
-        .filter(UserProgress.next_review_date <= date.today())
-    )
-    if req.category:
-        cat = db.query(Category).filter(Category.name == req.category).first()
-        if cat:
-            due = due.filter(Word.category_id == cat.id)
-    due = due.order_by(UserProgress.next_review_date).limit(req.count).all()
-    word_ids = [p.word_id for p in due]
+    if req.word_ids:
+        requested_ids = list(dict.fromkeys(req.word_ids))
+        word_rows = word_query.filter(Word.id.in_(requested_ids)).all()
+        word_ids = [word.id for word in word_rows][:count]
+    elif req.scope == "due":
+        word_rows = (
+            db.query(Word.id)
+            .join(UserProgress, UserProgress.word_id == Word.id)
+            .filter(UserProgress.next_review_date <= date.today())
+        )
+        if category_id is not None:
+            word_rows = word_rows.filter(Word.category_id == category_id)
+        word_ids = [row.id for row in word_rows.order_by(func.random()).limit(count).all()]
+    elif req.scope == "wrong":
+        wrong_rows = (
+            db.query(Word.id)
+            .join(PracticeRecord, PracticeRecord.word_id == Word.id)
+            .filter(PracticeRecord.is_correct == False)
+            .distinct()
+        )
+        if category_id is not None:
+            wrong_rows = wrong_rows.filter(Word.category_id == category_id)
+        word_ids = [row.id for row in wrong_rows.order_by(func.random()).limit(count).all()]
+    else:
+        word_ids = [row.id for row in word_query.order_by(func.random()).limit(count).all()]
 
-    # 不够则补新词
-    if len(word_ids) < req.count:
-        seen = set(word_ids)
-        new_words = word_query.filter(Word.id.notin_(seen)).limit(req.count - len(word_ids)).all()
-        word_ids.extend(w.id for w in new_words)
+    random.shuffle(word_ids)
 
     # 生成题目
     questions = []
     for wid in word_ids:
-        word = db.query(Word).get(wid)
+        word = db.get(Word, wid)
         if word:
             questions.append(get_quiz(req.mode, db, word))
 
@@ -70,7 +87,7 @@ def start_practice(req: StartRequest, db: Session = Depends(get_db)):
 
 @router.post("/answer")
 def submit_answer(req: AnswerRequest, db: Session = Depends(get_db)):
-    word = db.query(Word).get(req.word_id)
+    word = db.get(Word, req.word_id)
     if not word:
         return {"error": "Word not found"}
 
@@ -95,7 +112,7 @@ def submit_answer(req: AnswerRequest, db: Session = Depends(get_db)):
         progress.repetitions = new_reps
         progress.easiness_factor = new_ef
         progress.interval_days = new_interval
-        progress.last_practiced = date.today()
+        progress.last_practiced = datetime.now()
         progress.total_attempts += 1
         if is_correct:
             progress.correct_attempts += 1
@@ -108,7 +125,7 @@ def submit_answer(req: AnswerRequest, db: Session = Depends(get_db)):
             progress.status = "learning"
 
     # 更新练习会话正确数
-    session = db.query(PracticeSession).get(req.session_id)
+    session = db.get(PracticeSession, req.session_id)
     if session and is_correct:
         session.correct_answers += 1
 
