@@ -161,6 +161,53 @@ function getEmptyPracticeMessage() {
     return "该分类下没有可练习的单词";
 }
 
+function getPracticeCategoryCounts(words) {
+    const counts = new Map();
+    words.forEach((word) => {
+        counts.set(word.category_name, (counts.get(word.category_name) || 0) + 1);
+    });
+    return counts;
+}
+
+function renderPracticeShell() {
+    app.innerHTML = `<div class="page" data-page="practice">
+        <h2>选择练习模式</h2>
+        <div class="mode-select">
+            <div class="mode-btn ${practiceState.mode === "en_to_cn" ? "selected" : ""}" data-mode="en_to_cn"><b>英译中</b><br>看英文选中文</div>
+            <div class="mode-btn ${practiceState.mode === "cn_to_en" ? "selected" : ""}" data-mode="cn_to_en"><b>中译英</b><br>看中文拼英文</div>
+            <div class="mode-btn ${practiceState.mode === "spelling" ? "selected" : ""}" data-mode="spelling"><b>拼写练习</b><br>给释义拼单词</div>
+            <div class="mode-btn ${practiceState.mode === "code_fill" ? "selected" : ""}" data-mode="code_fill"><b>代码填空</b><br>在代码中填词</div>
+        </div>
+        <h2 style="margin-top:24px">选择词库分类</h2>
+        <div id="cat-select" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;color:#999">加载词库分类中...</div>
+        <h2 style="margin-top:24px">选择练习范围</h2>
+        <div id="scope-select" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+            <button class="cat-btn ${practiceState.scope === "all" ? "active" : ""}" data-scope="all">全部单词</button>
+            <button class="cat-btn ${practiceState.scope === "due" ? "active" : ""}" data-scope="due">只练到期词</button>
+            <button class="cat-btn ${practiceState.scope === "wrong" ? "active" : ""}" data-scope="wrong">只练错题</button>
+        </div>
+        <h2 style="margin-top:24px">题量</h2>
+        <input class="answer-input" id="practice-count" type="number" min="1" max="50" value="${practiceState.count}" style="max-width:160px;margin-top:8px" />
+        <p style="margin-top:8px;color:#999;font-size:13px">建议 5~20 题，最多 50 题</p>
+        <button class="btn-primary" id="start-btn" data-action="start-quiz">开始练习</button>
+    </div>`;
+    checkStartReady();
+}
+
+function renderPracticeCategories(words) {
+    if (!isPracticePage()) return;
+
+    const categoryCounts = getPracticeCategoryCounts(words);
+    const categories = [...categoryCounts.keys()];
+    practiceCategories = ["", ...categories];
+
+    let html = `<button class="cat-btn ${practiceState.category === "" ? "active" : ""}" data-cat-index="0">全部</button>`;
+    categories.forEach((cat, index) => {
+        html += `<button class="cat-btn ${practiceState.category === cat ? "active" : ""}" data-cat-index="${index + 1}">${cat} (${categoryCounts.get(cat)})</button>`;
+    });
+    document.getElementById("cat-select").innerHTML = html;
+}
+
 async function renderPractice() {
     const previousMode = practiceState.mode;
     const previousCategory = practiceState.category;
@@ -177,39 +224,10 @@ async function renderPractice() {
         correct: 0,
         answered: [],
     };
-    const words = await api("/api/words/");
-    const categories = [...new Set(words.map(w => w.category_name))];
-    practiceCategories = ["", ...categories];
-
-    let html = `<div class="page" data-page="practice">
-        <h2>选择练习模式</h2>
-        <div class="mode-select">
-            <div class="mode-btn ${practiceState.mode === "en_to_cn" ? "selected" : ""}" data-mode="en_to_cn"><b>英译中</b><br>看英文选中文</div>
-            <div class="mode-btn ${practiceState.mode === "cn_to_en" ? "selected" : ""}" data-mode="cn_to_en"><b>中译英</b><br>看中文拼英文</div>
-            <div class="mode-btn ${practiceState.mode === "spelling" ? "selected" : ""}" data-mode="spelling"><b>拼写练习</b><br>给释义拼单词</div>
-            <div class="mode-btn ${practiceState.mode === "code_fill" ? "selected" : ""}" data-mode="code_fill"><b>代码填空</b><br>在代码中填词</div>
-        </div>
-        <h2 style="margin-top:24px">选择词库分类</h2>
-        <div id="cat-select" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-            <button class="cat-btn ${practiceState.category === "" ? "active" : ""}" data-cat-index="0">全部</button>`;
-    categories.forEach((cat, index) => {
-        const count = words.filter(w => w.category_name === cat).length;
-        html += `<button class="cat-btn ${practiceState.category === cat ? "active" : ""}" data-cat-index="${index + 1}">${cat} (${count})</button>`;
-    });
-    html += `</div>
-        <h2 style="margin-top:24px">选择练习范围</h2>
-        <div id="scope-select" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-            <button class="cat-btn ${practiceState.scope === "all" ? "active" : ""}" data-scope="all">全部单词</button>
-            <button class="cat-btn ${practiceState.scope === "due" ? "active" : ""}" data-scope="due">只练到期词</button>
-            <button class="cat-btn ${practiceState.scope === "wrong" ? "active" : ""}" data-scope="wrong">只练错题</button>
-        </div>
-        <h2 style="margin-top:24px">题量</h2>
-        <input class="answer-input" id="practice-count" type="number" min="1" max="50" value="${practiceState.count}" style="max-width:160px;margin-top:8px" />
-        <p style="margin-top:8px;color:#999;font-size:13px">建议 5~20 题，最多 50 题</p>
-        <button class="btn-primary" id="start-btn" data-action="start-quiz">开始练习</button>
-    </div>`;
-    app.innerHTML = html;
-    checkStartReady();
+    renderPracticeShell();
+    const words = await getWords();
+    if (!isPracticePage()) return;
+    renderPracticeCategories(words);
 }
 
 function checkStartReady() {

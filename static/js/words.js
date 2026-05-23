@@ -2,6 +2,8 @@ let wordsData = [];
 let currentWordList = [];
 let currentWordTitle = "";
 let currentStatusFilter = "all";
+let wordsPageInitialized = false;
+let searchWordsDebounced = null;
 
 const statusLabels = {
     all: "全部",
@@ -33,11 +35,15 @@ app.addEventListener("click", (event) => {
             showCategory(actionEl.dataset.category);
             break;
         case "back-to-words":
-            renderWords();
+            currentWordList = [];
+            currentWordTitle = "";
+            renderWordsPageContent();
             break;
         case "filter-status":
             currentStatusFilter = actionEl.dataset.status || "all";
-            renderWords();
+            currentWordList = [];
+            currentWordTitle = "";
+            renderWordsPageContent();
             break;
         case "speak-word": {
             const word = wordsData.find(item => item.id === Number(actionEl.dataset.wordId));
@@ -69,70 +75,131 @@ function getFilteredWords() {
     return wordsData.filter(w => (w.status || "new") === currentStatusFilter);
 }
 
+function getStatusCounts(words) {
+    const counts = { all: words.length, new: 0, learning: 0, review: 0, mastered: 0 };
+    words.forEach((word) => {
+        const status = word.status || "new";
+        counts[status] = (counts[status] || 0) + 1;
+    });
+    return counts;
+}
+
+function getCategoryCounts(words) {
+    const counts = new Map();
+    words.forEach((word) => {
+        counts.set(word.category_name, (counts.get(word.category_name) || 0) + 1);
+    });
+    return counts;
+}
+
 function renderStatusFilters() {
     const statuses = ["all", "new", "learning", "review", "mastered"];
+    const counts = getStatusCounts(wordsData);
     return `<div id="status-filter" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">${statuses.map(status => {
-        const count = status === "all"
-            ? wordsData.length
-            : wordsData.filter(w => (w.status || "new") === status).length;
+        const count = counts[status] || 0;
         return `<button class="cat-btn ${currentStatusFilter === status ? "active" : ""}" data-action="filter-status" data-status="${status}">${statusLabels[status]} (${count})</button>`;
     }).join("")}</div>`;
 }
 
-async function renderWords(options = {}) {
-    wordsData = await api("/api/words/");
-    const { preserveDetail = false, title = "", wordIds = [] } = options;
-    const filteredWords = getFilteredWords();
-    currentWordList = preserveDetail ? filteredWords.filter(w => wordIds.includes(w.id)) : [];
-    currentWordTitle = preserveDetail ? title : "";
-    const categories = [...new Set(filteredWords.map(w => w.category_name))];
-
-    let html = `<div class="page" data-page="words">
+function renderWordsShell() {
+    app.innerHTML = `<div class="page" data-page="words">
         <div style="display:flex;justify-content:space-between;align-items:center">
             <h2>词库浏览</h2>
             <button class="btn-primary" style="margin:0;width:auto;padding:10px 20px" data-action="show-add-word">+ 添加单词</button>
         </div>
         <input class="answer-input" id="search-input" placeholder="搜索单词..." style="margin-bottom:16px">
-        ${renderStatusFilters()}
-        <div id="cat-list">`;
-    categories.forEach(cat => {
-        const count = filteredWords.filter(w => w.category_name === cat).length;
-        html += `<div class="card cat-card" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:14px 18px" data-action="show-category" data-category="${cat}">
-            <span style="font-weight:600;font-size:15px">${cat}</span>
-            <span style="color:#999">${count} 词</span>
-        </div>`;
-    });
-    if (categories.length === 0) {
-        html += `<div class="card" style="color:#999">当前筛选下暂无单词</div>`;
-    }
-    html += `</div><div id="word-detail" style="display:none"></div>
-        <div id="word-modal" style="display:none"></div>
+        <div id="status-filter-wrap"></div>
+        <div id="cat-list"></div>
+        <div id="word-detail" style="display:none"></div>
     </div>`;
-    app.innerHTML = html;
+
+    if (!searchWordsDebounced) {
+        searchWordsDebounced = debounce((value) => {
+            if (!isWordsPage()) return;
+            const q = value.trim().toLowerCase();
+            if (!q) {
+                document.getElementById("cat-list").style.display = "";
+                document.getElementById("word-detail").style.display = "none";
+                currentWordList = [];
+                currentWordTitle = "";
+                return;
+            }
+            document.getElementById("cat-list").style.display = "none";
+            document.getElementById("word-detail").style.display = "";
+            const matched = getFilteredWords().filter(w =>
+                w.english.toLowerCase().includes(q) || w.chinese.includes(q)
+            );
+            renderWordList(matched, `${statusLabels[currentStatusFilter]} · 搜索结果`);
+        }, 120);
+    }
 
     document.getElementById("search-input").oninput = (e) => {
-        const q = e.target.value.toLowerCase();
-        if (!q) {
-            document.getElementById("cat-list").style.display = "";
-            document.getElementById("word-detail").style.display = "none";
-            currentWordList = [];
-            currentWordTitle = "";
-            return;
-        }
-        document.getElementById("cat-list").style.display = "none";
-        document.getElementById("word-detail").style.display = "";
-        const matched = getFilteredWords().filter(w =>
-            w.english.toLowerCase().includes(q) || w.chinese.includes(q)
-        );
-        renderWordList(matched, `${statusLabels[currentStatusFilter]} · 搜索结果`);
+        searchWordsDebounced(e.target.value);
     };
+}
 
-    if (preserveDetail && currentWordTitle) {
-        document.getElementById("cat-list").style.display = "none";
-        document.getElementById("search-input").style.display = "none";
-        document.getElementById("word-detail").style.display = "";
-        renderWordList(currentWordList, currentWordTitle);
+function renderWordsPageContent() {
+    if (!isWordsPage()) return;
+
+    const filteredWords = getFilteredWords();
+    const categoryCounts = getCategoryCounts(filteredWords);
+    const categories = [...categoryCounts.keys()];
+
+    document.getElementById("status-filter-wrap").innerHTML = renderStatusFilters();
+
+    let categoryHtml = "";
+    categories.forEach((cat) => {
+        categoryHtml += `<div class="card cat-card" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:14px 18px" data-action="show-category" data-category="${cat}">
+            <span style="font-weight:600;font-size:15px">${cat}</span>
+            <span style="color:#999">${categoryCounts.get(cat)} 词</span>
+        </div>`;
+    });
+
+    if (categories.length === 0) {
+        categoryHtml = `<div class="card" style="color:#999">当前筛选下暂无单词</div>`;
     }
+
+    document.getElementById("cat-list").innerHTML = categoryHtml;
+
+    const searchInput = document.getElementById("search-input");
+    const detail = document.getElementById("word-detail");
+    const list = document.getElementById("cat-list");
+
+    if (preserveCurrentWordDetail()) {
+        if (searchInput) searchInput.style.display = "none";
+        list.style.display = "none";
+        detail.style.display = "";
+        renderWordList(currentWordList, currentWordTitle);
+        return;
+    }
+
+    if (searchInput) {
+        searchInput.style.display = "";
+        searchInput.value = "";
+    }
+    list.style.display = "";
+    detail.style.display = "none";
+    detail.innerHTML = "";
+}
+
+function preserveCurrentWordDetail() {
+    if (!currentWordTitle) return false;
+    const filteredWords = getFilteredWords();
+    currentWordList = filteredWords.filter(w => currentWordList.some(item => item.id === w.id));
+    return currentWordList.length > 0;
+}
+
+async function renderWords(options = {}) {
+    const { preserveDetail = false, title = "", wordIds = [], forceRefresh = false } = options;
+    if (!wordsPageInitialized || !isWordsPage()) {
+        renderWordsShell();
+        wordsPageInitialized = true;
+    }
+
+    wordsData = await getWords(forceRefresh);
+    currentWordList = preserveDetail ? getFilteredWords().filter(w => wordIds.includes(w.id)) : [];
+    currentWordTitle = preserveDetail ? title : "";
+    renderWordsPageContent();
 }
 
 function showCategory(cat) {
@@ -193,8 +260,14 @@ async function showEditWordForm(wordId) {
 
 // ===== 通用表单 =====
 function showWordForm(title, word, categories) {
-    const modal = document.getElementById("word-modal");
-    modal.style.display = "block";
+    closeWordForm();
+
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.dataset.role = "word-modal-overlay";
+    overlay.onclick = (event) => {
+        if (event.target === overlay) closeWordForm();
+    };
 
     let catOptions = categories.map(c =>
         `<option value="${c.name}" ${word && word.category_name === c.name ? "selected" : ""}>${c.name}</option>`
@@ -202,59 +275,59 @@ function showWordForm(title, word, categories) {
 
     const isEdit = !!word;
 
-    modal.innerHTML = `
-        <div class="modal-overlay" data-action="close-word-form">
-            <div class="modal-content" data-role="word-modal-content">
-                <h3 style="margin-bottom:16px">${title}</h3>
-                <div class="form-group">
-                    <label>英文单词 *</label>
-                    <input class="form-input" id="word-english" value="${word ? word.english : ""}" placeholder="例: deploy" required>
-                </div>
-                <div class="form-group">
-                    <label>中文释义 *</label>
-                    <input class="form-input" id="word-chinese" value="${word ? word.chinese : ""}" placeholder="例: 部署" required>
-                </div>
-                <div class="form-group">
-                    <label>分类 *</label>
-                    <div style="display:flex;gap:8px">
-                        <select class="form-input" id="word-category-select" style="flex:1">
-                            ${catOptions}
-                            <option value="__custom__">自定义分类...</option>
-                        </select>
-                        <input class="form-input" id="word-category-custom" placeholder="输入新分类名" style="display:none;flex:1">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>词性</label>
-                    <select class="form-input" id="word-pos">
-                        <option value="noun" ${word && word.part_of_speech === "noun" ? "selected" : ""}>noun 名词</option>
-                        <option value="verb" ${word && word.part_of_speech === "verb" ? "selected" : ""}>verb 动词</option>
-                        <option value="adj" ${word && word.part_of_speech === "adj" ? "selected" : ""}>adj 形容词</option>
-                        <option value="adv" ${word && word.part_of_speech === "adv" ? "selected" : ""}>adv 副词</option>
-                        <option value="phrase" ${word && word.part_of_speech === "phrase" ? "selected" : ""}>phrase 短语</option>
-                        <option value="abbr" ${word && word.part_of_speech === "abbr" ? "selected" : ""}>abbr 缩写</option>
+    overlay.innerHTML = `
+        <div class="modal-content" data-role="word-modal-content">
+            <h3 style="margin-bottom:16px">${title}</h3>
+            <div class="form-group">
+                <label>英文单词 *</label>
+                <input class="form-input" id="word-english" value="${word ? word.english : ""}" placeholder="例: deploy" required>
+            </div>
+            <div class="form-group">
+                <label>中文释义 *</label>
+                <input class="form-input" id="word-chinese" value="${word ? word.chinese : ""}" placeholder="例: 部署" required>
+            </div>
+            <div class="form-group">
+                <label>分类 *</label>
+                <div style="display:flex;gap:8px">
+                    <select class="form-input" id="word-category-select" style="flex:1">
+                        ${catOptions}
+                        <option value="__custom__">自定义分类...</option>
                     </select>
+                    <input class="form-input" id="word-category-custom" placeholder="输入新分类名" style="display:none;flex:1">
                 </div>
-                <div class="form-group">
-                    <label>音标</label>
-                    <input class="form-input" id="word-pronunciation" value="${word ? word.pronunciation : ""}" placeholder="例: /dɪˈplɔɪ/">
-                </div>
-                <div class="form-group">
-                    <label>例句</label>
-                    <input class="form-input" id="word-example" value="${word ? word.example_sentence : ""}" placeholder="例: Deploy the app to production.">
-                </div>
-                <div class="form-group">
-                    <label>例句中文</label>
-                    <input class="form-input" id="word-example-cn" value="${word ? word.example_sentence_cn : ""}" placeholder="例: 将应用部署到生产环境。">
-                </div>
-                <div id="word-form-error" style="color:#f44336;font-size:14px;margin-top:8px"></div>
-                <div style="display:flex;gap:12px;margin-top:20px">
-                    <button class="submit-btn" data-action="submit-word" data-word-id="${word ? word.id : ""}" style="flex:1">${isEdit ? "保存" : "添加"}</button>
-                    <button class="submit-btn" data-action="close-word-form" style="flex:1;background:#999">取消</button>
-                </div>
+            </div>
+            <div class="form-group">
+                <label>词性</label>
+                <select class="form-input" id="word-pos">
+                    <option value="noun" ${word && word.part_of_speech === "noun" ? "selected" : ""}>noun 名词</option>
+                    <option value="verb" ${word && word.part_of_speech === "verb" ? "selected" : ""}>verb 动词</option>
+                    <option value="adj" ${word && word.part_of_speech === "adj" ? "selected" : ""}>adj 形容词</option>
+                    <option value="adv" ${word && word.part_of_speech === "adv" ? "selected" : ""}>adv 副词</option>
+                    <option value="phrase" ${word && word.part_of_speech === "phrase" ? "selected" : ""}>phrase 短语</option>
+                    <option value="abbr" ${word && word.part_of_speech === "abbr" ? "selected" : ""}>abbr 缩写</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>音标</label>
+                <input class="form-input" id="word-pronunciation" value="${word ? word.pronunciation : ""}" placeholder="例: /dɪˈplɔɪ/">
+            </div>
+            <div class="form-group">
+                <label>例句</label>
+                <input class="form-input" id="word-example" value="${word ? word.example_sentence : ""}" placeholder="例: Deploy the app to production.">
+            </div>
+            <div class="form-group">
+                <label>例句中文</label>
+                <input class="form-input" id="word-example-cn" value="${word ? word.example_sentence_cn : ""}" placeholder="例: 将应用部署到生产环境。">
+            </div>
+            <div id="word-form-error" style="color:#f44336;font-size:14px;margin-top:8px"></div>
+            <div style="display:flex;gap:12px;margin-top:20px">
+                <button class="submit-btn" data-action="submit-word" data-word-id="${word ? word.id : ""}" style="flex:1">${isEdit ? "保存" : "添加"}</button>
+                <button class="submit-btn" data-action="close-word-form" style="flex:1;background:#999">取消</button>
             </div>
         </div>
     `;
+
+    document.body.appendChild(overlay);
 }
 
 function toggleCustomCategory() {
@@ -265,10 +338,8 @@ function toggleCustomCategory() {
 }
 
 function closeWordForm() {
-    const modal = document.getElementById("word-modal");
-    if (!modal) return;
-    modal.style.display = "none";
-    modal.innerHTML = "";
+    const overlay = document.querySelector('[data-role="word-modal-overlay"]');
+    if (overlay) overlay.remove();
 }
 
 async function submitWord(wordId) {
@@ -309,8 +380,7 @@ async function submitWord(wordId) {
         const previousTitle = currentWordTitle;
         const previousWordIds = currentWordList.map(w => w.id);
         closeWordForm();
-        await renderWords({ preserveDetail: !!previousTitle, title: previousTitle, wordIds: previousWordIds });
-        if (previousTitle) renderWordList(currentWordList, currentWordTitle);
+        await renderWords({ preserveDetail: !!previousTitle, title: previousTitle, wordIds: previousWordIds, forceRefresh: true });
     } else {
         document.getElementById("word-form-error").textContent = res.detail || res.error || "操作失败";
     }
@@ -322,30 +392,25 @@ async function deleteWord(wordId, english) {
 
     const res = await api(`/api/words/${wordId}`, { method: "DELETE" });
     if (res.message) {
-        renderWords();
+        await renderWords({ forceRefresh: true });
     } else {
         alert(res.error || "删除失败");
     }
 }
 
 document.addEventListener("click", (event) => {
-    const modal = document.getElementById("word-modal");
-    if (!modal || modal.style.display !== "block") return;
+    const overlay = document.querySelector('[data-role="word-modal-overlay"]');
+    if (!overlay) return;
 
     const actionEl = event.target.closest("[data-action]");
-    if (actionEl) {
-        if (actionEl.dataset.action === "close-word-form") {
-            if (event.target.dataset.role === "word-modal-content") return;
-            closeWordForm();
-            return;
-        }
-        if (actionEl.dataset.action === "submit-word") {
-            submitWord(actionEl.dataset.wordId ? Number(actionEl.dataset.wordId) : null);
-            return;
-        }
+    if (!actionEl) return;
+
+    if (actionEl.dataset.action === "close-word-form") {
+        closeWordForm();
+        return;
     }
 
-    if (event.target.dataset.role === "word-modal-content") {
-        event.stopPropagation();
+    if (actionEl.dataset.action === "submit-word") {
+        submitWord(actionEl.dataset.wordId ? Number(actionEl.dataset.wordId) : null);
     }
 });
