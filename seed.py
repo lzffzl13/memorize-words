@@ -1,53 +1,101 @@
+import argparse
 import json
 from datetime import date
-from database import engine, SessionLocal, Base
-from models import Category, Word, UserProgress
+from pathlib import Path
 
-def seed():
-    Base.metadata.create_all(bind=engine)
-    db = SessionLocal()
+from database import Base, SessionLocal, engine
+from models import Category, DailyStats, PracticeRecord, PracticeSession, UserProgress, Word
 
-    # 清空旧数据
+DATA_FILE = Path(__file__).resolve().parent / "data" / "vocabulary.json"
+
+
+def reset_database(db):
+    db.query(PracticeRecord).delete()
+    db.query(PracticeSession).delete()
+    db.query(DailyStats).delete()
     db.query(UserProgress).delete()
     db.query(Word).delete()
     db.query(Category).delete()
     db.commit()
 
-    # 读取词汇数据
-    with open("data/vocabulary.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
 
-    # 创建分类
-    cat_map = {}
-    for cat in data["categories"]:
-        c = Category(name=cat["name"], name_en=cat["name_en"], icon=cat["icon"])
-        db.add(c)
-        db.flush()
-        cat_map[cat["name"]] = c.id
+def load_seed_data():
+    with DATA_FILE.open("r", encoding="utf-8") as f:
+        return json.load(f)
 
-    # 创建单词 + 初始进度
-    for w in data["words"]:
-        word = Word(
-            english=w["english"],
-            chinese=w["chinese"],
-            pronunciation=w.get("pronunciation", ""),
-            part_of_speech=w.get("part_of_speech", "noun"),
-            example_sentence=w.get("example_sentence", ""),
-            example_sentence_cn=w.get("example_sentence_cn", ""),
-            code_snippet=w.get("code_snippet"),
-            code_answer=w.get("code_answer"),
-            difficulty=w.get("difficulty", 1),
-            category_id=cat_map[w["category"]],
-        )
-        db.add(word)
-        db.flush()
 
-        progress = UserProgress(word_id=word.id, next_review_date=date.today())
-        db.add(progress)
+def seed(reset=False, skip_if_has_words=True):
+    Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
 
-    db.commit()
-    db.close()
-    print(f"Done! Seeded {len(data['words'])} words in {len(data['categories'])} categories.")
+    try:
+        existing_words = db.query(Word).count()
+        if reset:
+            reset_database(db)
+        elif skip_if_has_words and existing_words > 0:
+            print(f"Skip seed: database already has {existing_words} words.")
+            return
+
+        data = load_seed_data()
+
+        cat_map = {}
+        for cat in data["categories"]:
+            existing = db.query(Category).filter(Category.name == cat["name"]).first()
+            if existing:
+                cat_map[cat["name"]] = existing.id
+                continue
+
+            category = Category(name=cat["name"], name_en=cat["name_en"], icon=cat["icon"])
+            db.add(category)
+            db.flush()
+            cat_map[cat["name"]] = category.id
+
+        inserted = 0
+        for w in data["words"]:
+            category_id = cat_map[w["category"]]
+            existing = (
+                db.query(Word)
+                .filter(
+                    Word.english == w["english"],
+                    Word.chinese == w["chinese"],
+                    Word.category_id == category_id,
+                )
+                .first()
+            )
+            if existing:
+                continue
+
+            word = Word(
+                english=w["english"],
+                chinese=w["chinese"],
+                pronunciation=w.get("pronunciation", ""),
+                part_of_speech=w.get("part_of_speech", "noun"),
+                example_sentence=w.get("example_sentence", ""),
+                example_sentence_cn=w.get("example_sentence_cn", ""),
+                code_snippet=w.get("code_snippet"),
+                code_answer=w.get("code_answer"),
+                difficulty=w.get("difficulty", 1),
+                category_id=category_id,
+            )
+            db.add(word)
+            db.flush()
+
+            progress = UserProgress(word_id=word.id, next_review_date=date.today())
+            db.add(progress)
+            inserted += 1
+
+        db.commit()
+        print(f"Done! Seeded {inserted} words in {len(data['categories'])} categories.")
+    finally:
+        db.close()
+
+
+def initialize_database():
+    seed(reset=False, skip_if_has_words=True)
+
 
 if __name__ == "__main__":
-    seed()
+    parser = argparse.ArgumentParser(description="Initialize vocabulary data.")
+    parser.add_argument("--reset", action="store_true", help="Clear existing data before seeding.")
+    args = parser.parse_args()
+    seed(reset=args.reset, skip_if_has_words=not args.reset)
