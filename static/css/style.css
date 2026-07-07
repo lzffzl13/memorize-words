@@ -265,17 +265,10 @@ select.form-input { background: #fff; }
         white-space: normal;
     }
 
-    .mode-select,
     .choices {
         grid-template-columns: 1fr;
     }
 
-    .mode-select {
-        gap: 10px;
-        margin-top: 14px;
-    }
-
-    .mode-btn,
     .choice-btn {
         min-height: 52px;
         padding: 14px 16px;
@@ -481,7 +474,6 @@ select.form-input { background: #fff; }
         font-size: 20px;
     }
 
-    .mode-btn,
     .choice-btn {
         font-size: 15px;
     }
