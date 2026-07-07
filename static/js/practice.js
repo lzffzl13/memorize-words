@@ -2,13 +2,6 @@ let practiceState = { mode: null, category: "", scope: "all", count: 10, session
 let practiceCategories = [];
 
 // TTS 发音
-function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 0.9;
-    speechSynthesis.speak(utterance);
-}
-
 app.addEventListener("click", (event) => {
     if (!isPracticePage()) return;
 
@@ -49,7 +42,7 @@ app.addEventListener("click", (event) => {
             break;
         case "speak-question": {
             const question = getCurrentQuestion();
-            if (question) speak(question.english);
+            if (question) window.speakWord(question.english);
             break;
         }
         case "choose-answer": {

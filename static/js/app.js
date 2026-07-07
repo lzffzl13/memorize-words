@@ -43,6 +43,64 @@ window.debounce = function debounce(fn, delay = 120) {
     };
 };
 
+let activeSpeechUtterance = null;
+let cachedEnglishVoice = null;
+
+function getEnglishVoice() {
+    if (!("speechSynthesis" in window)) return null;
+
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+
+    cachedEnglishVoice =
+        voices.find(voice => voice.lang === "en-US") ||
+        voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en-")) ||
+        null;
+
+    return cachedEnglishVoice;
+}
+
+if ("speechSynthesis" in window) {
+    if (typeof window.speechSynthesis.addEventListener === "function") {
+        window.speechSynthesis.addEventListener("voiceschanged", getEnglishVoice);
+    } else {
+        window.speechSynthesis.onvoiceschanged = getEnglishVoice;
+    }
+}
+
+window.speakWord = function speakWord(text) {
+    const word = String(text || "").trim();
+    if (!word) return false;
+    if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+        console.warn("This browser does not support speech synthesis.");
+        return false;
+    }
+
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(word);
+    const voice = cachedEnglishVoice || getEnglishVoice();
+
+    utterance.lang = "en-US";
+    utterance.rate = 0.85;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    if (voice) utterance.voice = voice;
+
+    activeSpeechUtterance = utterance;
+    utterance.onend = utterance.onerror = () => {
+        if (activeSpeechUtterance === utterance) activeSpeechUtterance = null;
+    };
+
+    synth.cancel();
+    if (synth.paused) synth.resume();
+    synth.speak(utterance);
+    setTimeout(() => {
+        if (synth.paused) synth.resume();
+    }, 0);
+
+    return true;
+};
+
 function navigate(page) {
     navLinks.forEach(l => l.classList.remove("active"));
     const link = document.querySelector(`[data-page="${page}"]`);

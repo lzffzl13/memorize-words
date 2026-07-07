@@ -14,13 +14,6 @@ const statusLabels = {
 };
 
 // TTS 发音
-function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 0.9;
-    speechSynthesis.speak(utterance);
-}
-
 app.addEventListener("click", (event) => {
     if (!isWordsPage()) return;
 
@@ -47,7 +40,7 @@ app.addEventListener("click", (event) => {
             break;
         case "speak-word": {
             const word = wordsData.find(item => item.id === Number(actionEl.dataset.wordId));
-            if (word) speak(word.english);
+            if (word) window.speakWord(word.english);
             break;
         }
         case "edit-word":
