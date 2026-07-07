@@ -367,6 +367,82 @@ select.form-input { background: #fff; }
         font-size: 10px;
     }
 
+    .page[data-page="stats"] h3 {
+        font-size: 18px;
+        line-height: 1.25;
+    }
+
+    .page[data-page="stats"] #stats-daily,
+    .page[data-page="stats"] #stats-sessions {
+        margin-top: 24px !important;
+    }
+
+    .page[data-page="stats"] #stats-daily .card {
+        padding: 14px 16px !important;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(24, 39, 75, 0.06);
+    }
+
+    .page[data-page="stats"] #stats-daily .card > div:first-child {
+        margin-bottom: 8px !important;
+        align-items: baseline !important;
+    }
+
+    .page[data-page="stats"] #stats-daily .card span[style*="font-size:28px"] {
+        margin-left: 5px !important;
+        font-size: 22px !important;
+    }
+
+    .page[data-page="stats"] #stats-daily .card span[style*="font-size:14px"] {
+        font-size: 12px !important;
+    }
+
+    .page[data-page="stats"] #stats-daily .daily-chart {
+        height: 82px;
+        gap: 6px;
+    }
+
+    .page[data-page="stats"] #stats-daily .daily-bar-wrap {
+        height: 58px;
+    }
+
+    .page[data-page="stats"] #stats-sessions > div {
+        margin-top: 8px !important;
+    }
+
+    .page[data-page="stats"] #stats-sessions .session-card {
+        flex-direction: row;
+        align-items: center !important;
+        gap: 8px;
+        min-height: 54px;
+        margin-bottom: 8px !important;
+        padding: 10px 12px !important;
+        border-radius: 12px;
+        box-shadow: 0 8px 18px rgba(24, 39, 75, 0.055);
+    }
+
+    .page[data-page="stats"] #stats-sessions .session-card > div:first-child {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .page[data-page="stats"] #stats-sessions .session-card > div:first-child span[style*="margin-left"] {
+        margin-left: 0 !important;
+    }
+
+    .page[data-page="stats"] #stats-sessions .session-card > div:last-child {
+        margin-left: auto;
+        text-align: right !important;
+    }
+
+    .page[data-page="stats"] #stats-sessions .session-mode {
+        padding: 3px 9px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
     .session-card,
     .weak-word-card,
     .cat-card {
