@@ -40,7 +40,7 @@ app.addEventListener("click", (event) => {
             break;
         case "speak-word": {
             const word = wordsData.find(item => item.id === Number(actionEl.dataset.wordId));
-            if (word) window.speakWord(word.english);
+            if (word) window.playWordPronunciation(word.english);
             break;
         }
         case "edit-word":

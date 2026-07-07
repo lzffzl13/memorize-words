@@ -42,7 +42,7 @@ app.addEventListener("click", (event) => {
             break;
         case "speak-question": {
             const question = getCurrentQuestion();
-            if (question) window.speakWord(question.english);
+            if (question) window.playWordPronunciation(question.english);
             break;
         }
         case "choose-answer": {
@@ -345,6 +345,8 @@ function showQuestion() {
         const input = document.getElementById("answer-input");
         if (input) input.focus();
     }
+
+    window.preloadWordPronunciation(q.english);
 }
 
 function navigateQuestion(direction) {

@@ -1,0 +1,2887 @@
+{
+  "variable": {
+    "file": "words/variable.mp3",
+    "text": "variable",
+    "spoken_text": "variable"
+  },
+  "function": {
+    "file": "words/function.mp3",
+    "text": "function",
+    "spoken_text": "function"
+  },
+  "loop": {
+    "file": "words/loop.mp3",
+    "text": "loop",
+    "spoken_text": "loop"
+  },
+  "condition": {
+    "file": "words/condition.mp3",
+    "text": "condition",
+    "spoken_text": "condition"
+  },
+  "string": {
+    "file": "words/string.mp3",
+    "text": "string",
+    "spoken_text": "string"
+  },
+  "integer": {
+    "file": "words/integer.mp3",
+    "text": "integer",
+    "spoken_text": "integer"
+  },
+  "boolean": {
+    "file": "words/boolean.mp3",
+    "text": "boolean",
+    "spoken_text": "boolean"
+  },
+  "list": {
+    "file": "words/list.mp3",
+    "text": "list",
+    "spoken_text": "list"
+  },
+  "dictionary": {
+    "file": "words/dictionary.mp3",
+    "text": "dictionary",
+    "spoken_text": "dictionary"
+  },
+  "tuple": {
+    "file": "words/tuple.mp3",
+    "text": "tuple",
+    "spoken_text": "tuple"
+  },
+  "set": {
+    "file": "words/set.mp3",
+    "text": "set",
+    "spoken_text": "set"
+  },
+  "index": {
+    "file": "words/index.mp3",
+    "text": "index",
+    "spoken_text": "index"
+  },
+  "operator": {
+    "file": "words/operator.mp3",
+    "text": "operator",
+    "spoken_text": "operator"
+  },
+  "expression": {
+    "file": "words/expression.mp3",
+    "text": "expression",
+    "spoken_text": "expression"
+  },
+  "statement": {
+    "file": "words/statement.mp3",
+    "text": "statement",
+    "spoken_text": "statement"
+  },
+  "comment": {
+    "file": "words/comment.mp3",
+    "text": "comment",
+    "spoken_text": "comment"
+  },
+  "parameter": {
+    "file": "words/parameter.mp3",
+    "text": "parameter",
+    "spoken_text": "parameter"
+  },
+  "argument": {
+    "file": "words/argument.mp3",
+    "text": "argument",
+    "spoken_text": "argument"
+  },
+  "return": {
+    "file": "words/return.mp3",
+    "text": "return",
+    "spoken_text": "return"
+  },
+  "class": {
+    "file": "words/class.mp3",
+    "text": "class",
+    "spoken_text": "class"
+  },
+  "object": {
+    "file": "words/object.mp3",
+    "text": "object",
+    "spoken_text": "object"
+  },
+  "method": {
+    "file": "words/method.mp3",
+    "text": "method",
+    "spoken_text": "method"
+  },
+  "attribute": {
+    "file": "words/attribute.mp3",
+    "text": "attribute",
+    "spoken_text": "attribute"
+  },
+  "inheritance": {
+    "file": "words/inheritance.mp3",
+    "text": "inheritance",
+    "spoken_text": "inheritance"
+  },
+  "exception": {
+    "file": "words/exception.mp3",
+    "text": "exception",
+    "spoken_text": "exception"
+  },
+  "import": {
+    "file": "words/import.mp3",
+    "text": "import",
+    "spoken_text": "import"
+  },
+  "module": {
+    "file": "words/module.mp3",
+    "text": "module",
+    "spoken_text": "module"
+  },
+  "library": {
+    "file": "words/library.mp3",
+    "text": "library",
+    "spoken_text": "library"
+  },
+  "print": {
+    "file": "words/print.mp3",
+    "text": "print",
+    "spoken_text": "print"
+  },
+  "input": {
+    "file": "words/input.mp3",
+    "text": "input",
+    "spoken_text": "input"
+  },
+  "type": {
+    "file": "words/type.mp3",
+    "text": "type",
+    "spoken_text": "type"
+  },
+  "cast": {
+    "file": "words/cast.mp3",
+    "text": "cast",
+    "spoken_text": "cast"
+  },
+  "scope": {
+    "file": "words/scope.mp3",
+    "text": "scope",
+    "spoken_text": "scope"
+  },
+  "global": {
+    "file": "words/global.mp3",
+    "text": "global",
+    "spoken_text": "global"
+  },
+  "local": {
+    "file": "words/local.mp3",
+    "text": "local",
+    "spoken_text": "local"
+  },
+  "iteration": {
+    "file": "words/iteration.mp3",
+    "text": "iteration",
+    "spoken_text": "iteration"
+  },
+  "slice": {
+    "file": "words/slice.mp3",
+    "text": "slice",
+    "spoken_text": "slice"
+  },
+  "length": {
+    "file": "words/length.mp3",
+    "text": "length",
+    "spoken_text": "length"
+  },
+  "none": {
+    "file": "words/none.mp3",
+    "text": "none",
+    "spoken_text": "none"
+  },
+  "true": {
+    "file": "words/true.mp3",
+    "text": "true",
+    "spoken_text": "true"
+  },
+  "false": {
+    "file": "words/false.mp3",
+    "text": "false",
+    "spoken_text": "false"
+  },
+  "and": {
+    "file": "words/and.mp3",
+    "text": "and",
+    "spoken_text": "and"
+  },
+  "or": {
+    "file": "words/or.mp3",
+    "text": "or",
+    "spoken_text": "or"
+  },
+  "not": {
+    "file": "words/not.mp3",
+    "text": "not",
+    "spoken_text": "not"
+  },
+  "while": {
+    "file": "words/while.mp3",
+    "text": "while",
+    "spoken_text": "while"
+  },
+  "break": {
+    "file": "words/break.mp3",
+    "text": "break",
+    "spoken_text": "break"
+  },
+  "continue": {
+    "file": "words/continue.mp3",
+    "text": "continue",
+    "spoken_text": "continue"
+  },
+  "pass": {
+    "file": "words/pass.mp3",
+    "text": "pass",
+    "spoken_text": "pass"
+  },
+  "array": {
+    "file": "words/array.mp3",
+    "text": "array",
+    "spoken_text": "array"
+  },
+  "stack": {
+    "file": "words/stack.mp3",
+    "text": "stack",
+    "spoken_text": "stack"
+  },
+  "queue": {
+    "file": "words/queue.mp3",
+    "text": "queue",
+    "spoken_text": "queue"
+  },
+  "linked list": {
+    "file": "words/linked-list.mp3",
+    "text": "linked list",
+    "spoken_text": "linked list"
+  },
+  "tree": {
+    "file": "words/tree.mp3",
+    "text": "tree",
+    "spoken_text": "tree"
+  },
+  "binary tree": {
+    "file": "words/binary-tree.mp3",
+    "text": "binary tree",
+    "spoken_text": "binary tree"
+  },
+  "graph": {
+    "file": "words/graph.mp3",
+    "text": "graph",
+    "spoken_text": "graph"
+  },
+  "hash table": {
+    "file": "words/hash-table.mp3",
+    "text": "hash table",
+    "spoken_text": "hash table"
+  },
+  "node": {
+    "file": "words/node.mp3",
+    "text": "node",
+    "spoken_text": "node"
+  },
+  "pointer": {
+    "file": "words/pointer.mp3",
+    "text": "pointer",
+    "spoken_text": "pointer"
+  },
+  "head": {
+    "file": "words/head.mp3",
+    "text": "head",
+    "spoken_text": "head"
+  },
+  "tail": {
+    "file": "words/tail.mp3",
+    "text": "tail",
+    "spoken_text": "tail"
+  },
+  "push": {
+    "file": "words/push.mp3",
+    "text": "push",
+    "spoken_text": "push"
+  },
+  "pop": {
+    "file": "words/pop.mp3",
+    "text": "pop",
+    "spoken_text": "pop"
+  },
+  "enqueue": {
+    "file": "words/enqueue.mp3",
+    "text": "enqueue",
+    "spoken_text": "enqueue"
+  },
+  "dequeue": {
+    "file": "words/dequeue.mp3",
+    "text": "dequeue",
+    "spoken_text": "dequeue"
+  },
+  "priority queue": {
+    "file": "words/priority-queue.mp3",
+    "text": "priority queue",
+    "spoken_text": "priority queue"
+  },
+  "heap": {
+    "file": "words/heap.mp3",
+    "text": "heap",
+    "spoken_text": "heap"
+  },
+  "binary search tree": {
+    "file": "words/binary-search-tree.mp3",
+    "text": "binary search tree",
+    "spoken_text": "binary search tree"
+  },
+  "traversal": {
+    "file": "words/traversal.mp3",
+    "text": "traversal",
+    "spoken_text": "traversal"
+  },
+  "depth": {
+    "file": "words/depth.mp3",
+    "text": "depth",
+    "spoken_text": "depth"
+  },
+  "breadth": {
+    "file": "words/breadth.mp3",
+    "text": "breadth",
+    "spoken_text": "breadth"
+  },
+  "adjacency list": {
+    "file": "words/adjacency-list.mp3",
+    "text": "adjacency list",
+    "spoken_text": "adjacency list"
+  },
+  "adjacency matrix": {
+    "file": "words/adjacency-matrix.mp3",
+    "text": "adjacency matrix",
+    "spoken_text": "adjacency matrix"
+  },
+  "vertex": {
+    "file": "words/vertex.mp3",
+    "text": "vertex",
+    "spoken_text": "vertex"
+  },
+  "edge": {
+    "file": "words/edge.mp3",
+    "text": "edge",
+    "spoken_text": "edge"
+  },
+  "weight": {
+    "file": "words/weight.mp3",
+    "text": "weight",
+    "spoken_text": "weight"
+  },
+  "directed graph": {
+    "file": "words/directed-graph.mp3",
+    "text": "directed graph",
+    "spoken_text": "directed graph"
+  },
+  "undirected graph": {
+    "file": "words/undirected-graph.mp3",
+    "text": "undirected graph",
+    "spoken_text": "undirected graph"
+  },
+  "recursion": {
+    "file": "words/recursion.mp3",
+    "text": "recursion",
+    "spoken_text": "recursion"
+  },
+  "base case": {
+    "file": "words/base-case.mp3",
+    "text": "base case",
+    "spoken_text": "base case"
+  },
+  "dynamic array": {
+    "file": "words/dynamic-array.mp3",
+    "text": "dynamic array",
+    "spoken_text": "dynamic array"
+  },
+  "capacity": {
+    "file": "words/capacity.mp3",
+    "text": "capacity",
+    "spoken_text": "capacity"
+  },
+  "size": {
+    "file": "words/size.mp3",
+    "text": "size",
+    "spoken_text": "size"
+  },
+  "empty": {
+    "file": "words/empty.mp3",
+    "text": "empty",
+    "spoken_text": "empty"
+  },
+  "peek": {
+    "file": "words/peek.mp3",
+    "text": "peek",
+    "spoken_text": "peek"
+  },
+  "sorted": {
+    "file": "words/sorted.mp3",
+    "text": "sorted",
+    "spoken_text": "sorted"
+  },
+  "reverse": {
+    "file": "words/reverse.mp3",
+    "text": "reverse",
+    "spoken_text": "reverse"
+  },
+  "merge": {
+    "file": "words/merge.mp3",
+    "text": "merge",
+    "spoken_text": "merge"
+  },
+  "split": {
+    "file": "words/split.mp3",
+    "text": "split",
+    "spoken_text": "split"
+  },
+  "duplicate": {
+    "file": "words/duplicate.mp3",
+    "text": "duplicate",
+    "spoken_text": "duplicate"
+  },
+  "unique": {
+    "file": "words/unique.mp3",
+    "text": "unique",
+    "spoken_text": "unique"
+  },
+  "count": {
+    "file": "words/count.mp3",
+    "text": "count",
+    "spoken_text": "count"
+  },
+  "find": {
+    "file": "words/find.mp3",
+    "text": "find",
+    "spoken_text": "find"
+  },
+  "insert": {
+    "file": "words/insert.mp3",
+    "text": "insert",
+    "spoken_text": "insert"
+  },
+  "remove": {
+    "file": "words/remove.mp3",
+    "text": "remove",
+    "spoken_text": "remove"
+  },
+  "append": {
+    "file": "words/append.mp3",
+    "text": "append",
+    "spoken_text": "append"
+  },
+  "extend": {
+    "file": "words/extend.mp3",
+    "text": "extend",
+    "spoken_text": "extend"
+  },
+  "sort": {
+    "file": "words/sort.mp3",
+    "text": "sort",
+    "spoken_text": "sort"
+  },
+  "search": {
+    "file": "words/search.mp3",
+    "text": "search",
+    "spoken_text": "search"
+  },
+  "binary search": {
+    "file": "words/binary-search.mp3",
+    "text": "binary search",
+    "spoken_text": "binary search"
+  },
+  "linear search": {
+    "file": "words/linear-search.mp3",
+    "text": "linear search",
+    "spoken_text": "linear search"
+  },
+  "bubble sort": {
+    "file": "words/bubble-sort.mp3",
+    "text": "bubble sort",
+    "spoken_text": "bubble sort"
+  },
+  "quick sort": {
+    "file": "words/quick-sort.mp3",
+    "text": "quick sort",
+    "spoken_text": "quick sort"
+  },
+  "merge sort": {
+    "file": "words/merge-sort.mp3",
+    "text": "merge sort",
+    "spoken_text": "merge sort"
+  },
+  "insertion sort": {
+    "file": "words/insertion-sort.mp3",
+    "text": "insertion sort",
+    "spoken_text": "insertion sort"
+  },
+  "selection sort": {
+    "file": "words/selection-sort.mp3",
+    "text": "selection sort",
+    "spoken_text": "selection sort"
+  },
+  "greedy": {
+    "file": "words/greedy.mp3",
+    "text": "greedy",
+    "spoken_text": "greedy"
+  },
+  "dynamic programming": {
+    "file": "words/dynamic-programming.mp3",
+    "text": "dynamic programming",
+    "spoken_text": "dynamic programming"
+  },
+  "backtracking": {
+    "file": "words/backtracking.mp3",
+    "text": "backtracking",
+    "spoken_text": "backtracking"
+  },
+  "divide and conquer": {
+    "file": "words/divide-and-conquer.mp3",
+    "text": "divide and conquer",
+    "spoken_text": "divide and conquer"
+  },
+  "brute force": {
+    "file": "words/brute-force.mp3",
+    "text": "brute force",
+    "spoken_text": "brute force"
+  },
+  "hash function": {
+    "file": "words/hash-function.mp3",
+    "text": "hash function",
+    "spoken_text": "hash function"
+  },
+  "complexity": {
+    "file": "words/complexity.mp3",
+    "text": "complexity",
+    "spoken_text": "complexity"
+  },
+  "time complexity": {
+    "file": "words/time-complexity.mp3",
+    "text": "time complexity",
+    "spoken_text": "time complexity"
+  },
+  "space complexity": {
+    "file": "words/space-complexity.mp3",
+    "text": "space complexity",
+    "spoken_text": "space complexity"
+  },
+  "big o": {
+    "file": "words/big-o.mp3",
+    "text": "big O",
+    "spoken_text": "big O"
+  },
+  "o(1)": {
+    "file": "words/o-1.mp3",
+    "text": "O(1)",
+    "spoken_text": "big O of one"
+  },
+  "o(n)": {
+    "file": "words/o-n.mp3",
+    "text": "O(n)",
+    "spoken_text": "big O of N"
+  },
+  "o(log n)": {
+    "file": "words/o-log-n.mp3",
+    "text": "O(log n)",
+    "spoken_text": "big O of log N"
+  },
+  "optimal": {
+    "file": "words/optimal.mp3",
+    "text": "optimal",
+    "spoken_text": "optimal"
+  },
+  "subproblem": {
+    "file": "words/subproblem.mp3",
+    "text": "subproblem",
+    "spoken_text": "subproblem"
+  },
+  "memoization": {
+    "file": "words/memoization.mp3",
+    "text": "memoization",
+    "spoken_text": "memoization"
+  },
+  "tabulation": {
+    "file": "words/tabulation.mp3",
+    "text": "tabulation",
+    "spoken_text": "tabulation"
+  },
+  "two pointers": {
+    "file": "words/two-pointers.mp3",
+    "text": "two pointers",
+    "spoken_text": "two pointers"
+  },
+  "sliding window": {
+    "file": "words/sliding-window.mp3",
+    "text": "sliding window",
+    "spoken_text": "sliding window"
+  },
+  "dfs": {
+    "file": "words/dfs.mp3",
+    "text": "DFS",
+    "spoken_text": "D F S"
+  },
+  "bfs": {
+    "file": "words/bfs.mp3",
+    "text": "BFS",
+    "spoken_text": "B F S"
+  },
+  "shortest path": {
+    "file": "words/shortest-path.mp3",
+    "text": "shortest path",
+    "spoken_text": "shortest path"
+  },
+  "greedy choice": {
+    "file": "words/greedy-choice.mp3",
+    "text": "greedy choice",
+    "spoken_text": "greedy choice"
+  },
+  "overlap": {
+    "file": "words/overlap.mp3",
+    "text": "overlap",
+    "spoken_text": "overlap"
+  },
+  "state": {
+    "file": "words/state.mp3",
+    "text": "state",
+    "spoken_text": "state"
+  },
+  "transition": {
+    "file": "words/transition.mp3",
+    "text": "transition",
+    "spoken_text": "transition"
+  },
+  "edge case": {
+    "file": "words/edge-case.mp3",
+    "text": "edge case",
+    "spoken_text": "edge case"
+  },
+  "corner case": {
+    "file": "words/corner-case.mp3",
+    "text": "corner case",
+    "spoken_text": "corner case"
+  },
+  "in-place": {
+    "file": "words/in-place.mp3",
+    "text": "in-place",
+    "spoken_text": "in place"
+  },
+  "stable": {
+    "file": "words/stable.mp3",
+    "text": "stable",
+    "spoken_text": "stable"
+  },
+  "recursive": {
+    "file": "words/recursive.mp3",
+    "text": "recursive",
+    "spoken_text": "recursive"
+  },
+  "swap": {
+    "file": "words/swap.mp3",
+    "text": "swap",
+    "spoken_text": "swap"
+  },
+  "partition": {
+    "file": "words/partition.mp3",
+    "text": "partition",
+    "spoken_text": "partition"
+  },
+  "pivot": {
+    "file": "words/pivot.mp3",
+    "text": "pivot",
+    "spoken_text": "pivot"
+  },
+  "repository": {
+    "file": "words/repository.mp3",
+    "text": "repository",
+    "spoken_text": "repository"
+  },
+  "commit": {
+    "file": "words/commit.mp3",
+    "text": "commit",
+    "spoken_text": "commit"
+  },
+  "branch": {
+    "file": "words/branch.mp3",
+    "text": "branch",
+    "spoken_text": "branch"
+  },
+  "clone": {
+    "file": "words/clone.mp3",
+    "text": "clone",
+    "spoken_text": "clone"
+  },
+  "pull": {
+    "file": "words/pull.mp3",
+    "text": "pull",
+    "spoken_text": "pull"
+  },
+  "fetch": {
+    "file": "words/fetch.mp3",
+    "text": "fetch",
+    "spoken_text": "fetch"
+  },
+  "stage": {
+    "file": "words/stage.mp3",
+    "text": "stage",
+    "spoken_text": "stage"
+  },
+  "staging area": {
+    "file": "words/staging-area.mp3",
+    "text": "staging area",
+    "spoken_text": "staging area"
+  },
+  "working directory": {
+    "file": "words/working-directory.mp3",
+    "text": "working directory",
+    "spoken_text": "working directory"
+  },
+  "remote": {
+    "file": "words/remote.mp3",
+    "text": "remote",
+    "spoken_text": "remote"
+  },
+  "origin": {
+    "file": "words/origin.mp3",
+    "text": "origin",
+    "spoken_text": "origin"
+  },
+  "main": {
+    "file": "words/main.mp3",
+    "text": "main",
+    "spoken_text": "main"
+  },
+  "diff": {
+    "file": "words/diff.mp3",
+    "text": "diff",
+    "spoken_text": "diff"
+  },
+  "log": {
+    "file": "words/log.mp3",
+    "text": "log",
+    "spoken_text": "log"
+  },
+  "status": {
+    "file": "words/status.mp3",
+    "text": "status",
+    "spoken_text": "status"
+  },
+  "checkout": {
+    "file": "words/checkout.mp3",
+    "text": "checkout",
+    "spoken_text": "checkout"
+  },
+  "stash": {
+    "file": "words/stash.mp3",
+    "text": "stash",
+    "spoken_text": "stash"
+  },
+  "conflict": {
+    "file": "words/conflict.mp3",
+    "text": "conflict",
+    "spoken_text": "conflict"
+  },
+  "resolve": {
+    "file": "words/resolve.mp3",
+    "text": "resolve",
+    "spoken_text": "resolve"
+  },
+  "rebase": {
+    "file": "words/rebase.mp3",
+    "text": "rebase",
+    "spoken_text": "rebase"
+  },
+  "cherry-pick": {
+    "file": "words/cherry-pick.mp3",
+    "text": "cherry-pick",
+    "spoken_text": "cherry pick"
+  },
+  "tag": {
+    "file": "words/tag.mp3",
+    "text": "tag",
+    "spoken_text": "tag"
+  },
+  "fork": {
+    "file": "words/fork.mp3",
+    "text": "fork",
+    "spoken_text": "fork"
+  },
+  "pull request": {
+    "file": "words/pull-request.mp3",
+    "text": "pull request",
+    "spoken_text": "pull request"
+  },
+  "issue": {
+    "file": "words/issue.mp3",
+    "text": "issue",
+    "spoken_text": "issue"
+  },
+  ".gitignore": {
+    "file": "words/gitignore.mp3",
+    "text": ".gitignore",
+    "spoken_text": "git ignore"
+  },
+  "readme": {
+    "file": "words/readme.mp3",
+    "text": "README",
+    "spoken_text": "read me"
+  },
+  "commit message": {
+    "file": "words/commit-message.mp3",
+    "text": "commit message",
+    "spoken_text": "commit message"
+  },
+  "snapshot": {
+    "file": "words/snapshot.mp3",
+    "text": "snapshot",
+    "spoken_text": "snapshot"
+  },
+  "hash": {
+    "file": "words/hash.mp3",
+    "text": "hash",
+    "spoken_text": "hash"
+  },
+  "sha": {
+    "file": "words/sha.mp3",
+    "text": "SHA",
+    "spoken_text": "S H A"
+  },
+  "parent": {
+    "file": "words/parent.mp3",
+    "text": "parent",
+    "spoken_text": "parent"
+  },
+  "reset": {
+    "file": "words/reset.mp3",
+    "text": "reset",
+    "spoken_text": "reset"
+  },
+  "revert": {
+    "file": "words/revert.mp3",
+    "text": "revert",
+    "spoken_text": "revert"
+  },
+  "blame": {
+    "file": "words/blame.mp3",
+    "text": "blame",
+    "spoken_text": "blame"
+  },
+  "bisect": {
+    "file": "words/bisect.mp3",
+    "text": "bisect",
+    "spoken_text": "bisect"
+  },
+  "submodule": {
+    "file": "words/submodule.mp3",
+    "text": "submodule",
+    "spoken_text": "submodule"
+  },
+  "hook": {
+    "file": "words/hook.mp3",
+    "text": "hook",
+    "spoken_text": "hook"
+  },
+  "workflow": {
+    "file": "words/workflow.mp3",
+    "text": "workflow",
+    "spoken_text": "workflow"
+  },
+  "version": {
+    "file": "words/version.mp3",
+    "text": "version",
+    "spoken_text": "version"
+  },
+  "track": {
+    "file": "words/track.mp3",
+    "text": "track",
+    "spoken_text": "track"
+  },
+  "untracked": {
+    "file": "words/untracked.mp3",
+    "text": "untracked",
+    "spoken_text": "untracked"
+  },
+  "modified": {
+    "file": "words/modified.mp3",
+    "text": "modified",
+    "spoken_text": "modified"
+  },
+  "staged": {
+    "file": "words/staged.mp3",
+    "text": "staged",
+    "spoken_text": "staged"
+  },
+  "http": {
+    "file": "words/http.mp3",
+    "text": "HTTP",
+    "spoken_text": "H T T P"
+  },
+  "https": {
+    "file": "words/https.mp3",
+    "text": "HTTPS",
+    "spoken_text": "H T T P S"
+  },
+  "url": {
+    "file": "words/url.mp3",
+    "text": "URL",
+    "spoken_text": "U R L"
+  },
+  "request": {
+    "file": "words/request.mp3",
+    "text": "request",
+    "spoken_text": "request"
+  },
+  "response": {
+    "file": "words/response.mp3",
+    "text": "response",
+    "spoken_text": "response"
+  },
+  "get": {
+    "file": "words/get.mp3",
+    "text": "GET",
+    "spoken_text": "get"
+  },
+  "post": {
+    "file": "words/post.mp3",
+    "text": "POST",
+    "spoken_text": "post"
+  },
+  "put": {
+    "file": "words/put.mp3",
+    "text": "PUT",
+    "spoken_text": "put"
+  },
+  "delete": {
+    "file": "words/delete.mp3",
+    "text": "DELETE",
+    "spoken_text": "delete"
+  },
+  "patch": {
+    "file": "words/patch.mp3",
+    "text": "PATCH",
+    "spoken_text": "patch"
+  },
+  "status code": {
+    "file": "words/status-code.mp3",
+    "text": "status code",
+    "spoken_text": "status code"
+  },
+  "200": {
+    "file": "words/200.mp3",
+    "text": "200",
+    "spoken_text": "two hundred"
+  },
+  "404": {
+    "file": "words/404.mp3",
+    "text": "404",
+    "spoken_text": "four oh four"
+  },
+  "500": {
+    "file": "words/500.mp3",
+    "text": "500",
+    "spoken_text": "five hundred"
+  },
+  "header": {
+    "file": "words/header.mp3",
+    "text": "header",
+    "spoken_text": "header"
+  },
+  "body": {
+    "file": "words/body.mp3",
+    "text": "body",
+    "spoken_text": "body"
+  },
+  "cookie": {
+    "file": "words/cookie.mp3",
+    "text": "cookie",
+    "spoken_text": "cookie"
+  },
+  "session": {
+    "file": "words/session.mp3",
+    "text": "session",
+    "spoken_text": "session"
+  },
+  "api": {
+    "file": "words/api.mp3",
+    "text": "API",
+    "spoken_text": "A P I"
+  },
+  "rest": {
+    "file": "words/rest.mp3",
+    "text": "REST",
+    "spoken_text": "rest"
+  },
+  "json": {
+    "file": "words/json.mp3",
+    "text": "JSON",
+    "spoken_text": "Jason"
+  },
+  "client": {
+    "file": "words/client.mp3",
+    "text": "client",
+    "spoken_text": "client"
+  },
+  "server": {
+    "file": "words/server.mp3",
+    "text": "server",
+    "spoken_text": "server"
+  },
+  "endpoint": {
+    "file": "words/endpoint.mp3",
+    "text": "endpoint",
+    "spoken_text": "endpoint"
+  },
+  "route": {
+    "file": "words/route.mp3",
+    "text": "route",
+    "spoken_text": "route"
+  },
+  "query string": {
+    "file": "words/query-string.mp3",
+    "text": "query string",
+    "spoken_text": "query string"
+  },
+  "path parameter": {
+    "file": "words/path-parameter.mp3",
+    "text": "path parameter",
+    "spoken_text": "path parameter"
+  },
+  "content type": {
+    "file": "words/content-type.mp3",
+    "text": "content type",
+    "spoken_text": "content type"
+  },
+  "authorization": {
+    "file": "words/authorization.mp3",
+    "text": "authorization",
+    "spoken_text": "authorization"
+  },
+  "token": {
+    "file": "words/token.mp3",
+    "text": "token",
+    "spoken_text": "token"
+  },
+  "cors": {
+    "file": "words/cors.mp3",
+    "text": "CORS",
+    "spoken_text": "cors"
+  },
+  "middleware": {
+    "file": "words/middleware.mp3",
+    "text": "middleware",
+    "spoken_text": "middleware"
+  },
+  "payload": {
+    "file": "words/payload.mp3",
+    "text": "payload",
+    "spoken_text": "payload"
+  },
+  "timeout": {
+    "file": "words/timeout.mp3",
+    "text": "timeout",
+    "spoken_text": "timeout"
+  },
+  "retry": {
+    "file": "words/retry.mp3",
+    "text": "retry",
+    "spoken_text": "retry"
+  },
+  "cache": {
+    "file": "words/cache.mp3",
+    "text": "cache",
+    "spoken_text": "cache"
+  },
+  "dns": {
+    "file": "words/dns.mp3",
+    "text": "DNS",
+    "spoken_text": "D N S"
+  },
+  "tcp": {
+    "file": "words/tcp.mp3",
+    "text": "TCP",
+    "spoken_text": "T C P"
+  },
+  "ip address": {
+    "file": "words/ip-address.mp3",
+    "text": "IP address",
+    "spoken_text": "I P address"
+  },
+  "port": {
+    "file": "words/port.mp3",
+    "text": "port",
+    "spoken_text": "port"
+  },
+  "localhost": {
+    "file": "words/localhost.mp3",
+    "text": "localhost",
+    "spoken_text": "localhost"
+  },
+  "webhook": {
+    "file": "words/webhook.mp3",
+    "text": "webhook",
+    "spoken_text": "webhook"
+  },
+  "polling": {
+    "file": "words/polling.mp3",
+    "text": "polling",
+    "spoken_text": "polling"
+  },
+  "websocket": {
+    "file": "words/websocket.mp3",
+    "text": "WebSocket",
+    "spoken_text": "web socket"
+  },
+  "latency": {
+    "file": "words/latency.mp3",
+    "text": "latency",
+    "spoken_text": "latency"
+  },
+  "bandwidth": {
+    "file": "words/bandwidth.mp3",
+    "text": "bandwidth",
+    "spoken_text": "bandwidth"
+  },
+  "rate limit": {
+    "file": "words/rate-limit.mp3",
+    "text": "rate limit",
+    "spoken_text": "rate limit"
+  },
+  "streaming": {
+    "file": "words/streaming.mp3",
+    "text": "streaming",
+    "spoken_text": "streaming"
+  },
+  "database": {
+    "file": "words/database.mp3",
+    "text": "database",
+    "spoken_text": "database"
+  },
+  "table": {
+    "file": "words/table.mp3",
+    "text": "table",
+    "spoken_text": "table"
+  },
+  "row": {
+    "file": "words/row.mp3",
+    "text": "row",
+    "spoken_text": "row"
+  },
+  "column": {
+    "file": "words/column.mp3",
+    "text": "column",
+    "spoken_text": "column"
+  },
+  "sql": {
+    "file": "words/sql.mp3",
+    "text": "SQL",
+    "spoken_text": "S Q L"
+  },
+  "query": {
+    "file": "words/query.mp3",
+    "text": "query",
+    "spoken_text": "query"
+  },
+  "select": {
+    "file": "words/select.mp3",
+    "text": "SELECT",
+    "spoken_text": "select"
+  },
+  "update": {
+    "file": "words/update.mp3",
+    "text": "UPDATE",
+    "spoken_text": "update"
+  },
+  "where": {
+    "file": "words/where.mp3",
+    "text": "WHERE",
+    "spoken_text": "where"
+  },
+  "join": {
+    "file": "words/join.mp3",
+    "text": "JOIN",
+    "spoken_text": "join"
+  },
+  "primary key": {
+    "file": "words/primary-key.mp3",
+    "text": "primary key",
+    "spoken_text": "primary key"
+  },
+  "foreign key": {
+    "file": "words/foreign-key.mp3",
+    "text": "foreign key",
+    "spoken_text": "foreign key"
+  },
+  "schema": {
+    "file": "words/schema.mp3",
+    "text": "schema",
+    "spoken_text": "schema"
+  },
+  "orm": {
+    "file": "words/orm.mp3",
+    "text": "ORM",
+    "spoken_text": "O R M"
+  },
+  "migration": {
+    "file": "words/migration.mp3",
+    "text": "migration",
+    "spoken_text": "migration"
+  },
+  "transaction": {
+    "file": "words/transaction.mp3",
+    "text": "transaction",
+    "spoken_text": "transaction"
+  },
+  "rollback": {
+    "file": "words/rollback.mp3",
+    "text": "rollback",
+    "spoken_text": "rollback"
+  },
+  "acid": {
+    "file": "words/acid.mp3",
+    "text": "ACID",
+    "spoken_text": "acid"
+  },
+  "normalization": {
+    "file": "words/normalization.mp3",
+    "text": "normalization",
+    "spoken_text": "normalization"
+  },
+  "aggregate": {
+    "file": "words/aggregate.mp3",
+    "text": "aggregate",
+    "spoken_text": "aggregate"
+  },
+  "group by": {
+    "file": "words/group-by.mp3",
+    "text": "GROUP BY",
+    "spoken_text": "group by"
+  },
+  "order by": {
+    "file": "words/order-by.mp3",
+    "text": "ORDER BY",
+    "spoken_text": "order by"
+  },
+  "limit": {
+    "file": "words/limit.mp3",
+    "text": "LIMIT",
+    "spoken_text": "limit"
+  },
+  "offset": {
+    "file": "words/offset.mp3",
+    "text": "OFFSET",
+    "spoken_text": "offset"
+  },
+  "sum": {
+    "file": "words/sum.mp3",
+    "text": "SUM",
+    "spoken_text": "sum"
+  },
+  "avg": {
+    "file": "words/avg.mp3",
+    "text": "AVG",
+    "spoken_text": "average"
+  },
+  "max": {
+    "file": "words/max.mp3",
+    "text": "MAX",
+    "spoken_text": "max"
+  },
+  "min": {
+    "file": "words/min.mp3",
+    "text": "MIN",
+    "spoken_text": "min"
+  },
+  "having": {
+    "file": "words/having.mp3",
+    "text": "HAVING",
+    "spoken_text": "having"
+  },
+  "union": {
+    "file": "words/union.mp3",
+    "text": "UNION",
+    "spoken_text": "union"
+  },
+  "subquery": {
+    "file": "words/subquery.mp3",
+    "text": "subquery",
+    "spoken_text": "subquery"
+  },
+  "view": {
+    "file": "words/view.mp3",
+    "text": "view",
+    "spoken_text": "view"
+  },
+  "trigger": {
+    "file": "words/trigger.mp3",
+    "text": "trigger",
+    "spoken_text": "trigger"
+  },
+  "stored procedure": {
+    "file": "words/stored-procedure.mp3",
+    "text": "stored procedure",
+    "spoken_text": "stored procedure"
+  },
+  "constraint": {
+    "file": "words/constraint.mp3",
+    "text": "constraint",
+    "spoken_text": "constraint"
+  },
+  "null": {
+    "file": "words/null.mp3",
+    "text": "NULL",
+    "spoken_text": "null"
+  },
+  "not null": {
+    "file": "words/not-null.mp3",
+    "text": "NOT NULL",
+    "spoken_text": "not null"
+  },
+  "default": {
+    "file": "words/default.mp3",
+    "text": "DEFAULT",
+    "spoken_text": "default"
+  },
+  "alter": {
+    "file": "words/alter.mp3",
+    "text": "ALTER",
+    "spoken_text": "alter"
+  },
+  "drop": {
+    "file": "words/drop.mp3",
+    "text": "DROP",
+    "spoken_text": "drop"
+  },
+  "truncate": {
+    "file": "words/truncate.mp3",
+    "text": "TRUNCATE",
+    "spoken_text": "truncate"
+  },
+  "sqlite": {
+    "file": "words/sqlite.mp3",
+    "text": "SQLite",
+    "spoken_text": "S Q lite"
+  },
+  "cursor": {
+    "file": "words/cursor.mp3",
+    "text": "cursor",
+    "spoken_text": "cursor"
+  },
+  "decorator": {
+    "file": "words/decorator.mp3",
+    "text": "decorator",
+    "spoken_text": "decorator"
+  },
+  "generator": {
+    "file": "words/generator.mp3",
+    "text": "generator",
+    "spoken_text": "generator"
+  },
+  "lambda": {
+    "file": "words/lambda.mp3",
+    "text": "lambda",
+    "spoken_text": "lambda"
+  },
+  "list comprehension": {
+    "file": "words/list-comprehension.mp3",
+    "text": "list comprehension",
+    "spoken_text": "list comprehension"
+  },
+  "dictionary comprehension": {
+    "file": "words/dictionary-comprehension.mp3",
+    "text": "dictionary comprehension",
+    "spoken_text": "dictionary comprehension"
+  },
+  "enumerate": {
+    "file": "words/enumerate.mp3",
+    "text": "enumerate",
+    "spoken_text": "enumerate"
+  },
+  "zip": {
+    "file": "words/zip.mp3",
+    "text": "zip",
+    "spoken_text": "zip"
+  },
+  "map": {
+    "file": "words/map.mp3",
+    "text": "map",
+    "spoken_text": "map"
+  },
+  "filter": {
+    "file": "words/filter.mp3",
+    "text": "filter",
+    "spoken_text": "filter"
+  },
+  "reduce": {
+    "file": "words/reduce.mp3",
+    "text": "reduce",
+    "spoken_text": "reduce"
+  },
+  "try except": {
+    "file": "words/try-except.mp3",
+    "text": "try except",
+    "spoken_text": "try except"
+  },
+  "raise": {
+    "file": "words/raise.mp3",
+    "text": "raise",
+    "spoken_text": "raise"
+  },
+  "with statement": {
+    "file": "words/with-statement.mp3",
+    "text": "with statement",
+    "spoken_text": "with statement"
+  },
+  "open": {
+    "file": "words/open.mp3",
+    "text": "open",
+    "spoken_text": "open"
+  },
+  "read": {
+    "file": "words/read.mp3",
+    "text": "read",
+    "spoken_text": "read"
+  },
+  "write": {
+    "file": "words/write.mp3",
+    "text": "write",
+    "spoken_text": "write"
+  },
+  "assert": {
+    "file": "words/assert.mp3",
+    "text": "assert",
+    "spoken_text": "assert"
+  },
+  "isinstance": {
+    "file": "words/isinstance.mp3",
+    "text": "isinstance",
+    "spoken_text": "isinstance"
+  },
+  "type hint": {
+    "file": "words/type-hint.mp3",
+    "text": "type hint",
+    "spoken_text": "type hint"
+  },
+  "dataclass": {
+    "file": "words/dataclass.mp3",
+    "text": "dataclass",
+    "spoken_text": "dataclass"
+  },
+  "async": {
+    "file": "words/async.mp3",
+    "text": "async",
+    "spoken_text": "async"
+  },
+  "await": {
+    "file": "words/await.mp3",
+    "text": "await",
+    "spoken_text": "await"
+  },
+  "pip": {
+    "file": "words/pip.mp3",
+    "text": "pip",
+    "spoken_text": "pip"
+  },
+  "virtual environment": {
+    "file": "words/virtual-environment.mp3",
+    "text": "virtual environment",
+    "spoken_text": "virtual environment"
+  },
+  "requirements.txt": {
+    "file": "words/requirements-txt.mp3",
+    "text": "requirements.txt",
+    "spoken_text": "requirements dot T X T"
+  },
+  "pep 8": {
+    "file": "words/pep-8.mp3",
+    "text": "PEP 8",
+    "spoken_text": "P E P eight"
+  },
+  "__init__": {
+    "file": "words/init.mp3",
+    "text": "__init__",
+    "spoken_text": "dunder init"
+  },
+  "self": {
+    "file": "words/self.mp3",
+    "text": "self",
+    "spoken_text": "self"
+  },
+  "property": {
+    "file": "words/property.mp3",
+    "text": "property",
+    "spoken_text": "property"
+  },
+  "static method": {
+    "file": "words/static-method.mp3",
+    "text": "static method",
+    "spoken_text": "static method"
+  },
+  "class method": {
+    "file": "words/class-method.mp3",
+    "text": "class method",
+    "spoken_text": "class method"
+  },
+  "super": {
+    "file": "words/super.mp3",
+    "text": "super",
+    "spoken_text": "super"
+  },
+  "abstract": {
+    "file": "words/abstract.mp3",
+    "text": "abstract",
+    "spoken_text": "abstract"
+  },
+  "protocol": {
+    "file": "words/protocol.mp3",
+    "text": "protocol",
+    "spoken_text": "protocol"
+  },
+  "typing": {
+    "file": "words/typing.mp3",
+    "text": "typing",
+    "spoken_text": "typing"
+  },
+  "optional": {
+    "file": "words/optional.mp3",
+    "text": "Optional",
+    "spoken_text": "Optional"
+  },
+  "dict": {
+    "file": "words/dict.mp3",
+    "text": "Dict",
+    "spoken_text": "Dict"
+  },
+  "any": {
+    "file": "words/any.mp3",
+    "text": "Any",
+    "spoken_text": "Any"
+  },
+  "match": {
+    "file": "words/match.mp3",
+    "text": "match",
+    "spoken_text": "match"
+  },
+  "walrus operator": {
+    "file": "words/walrus-operator.mp3",
+    "text": "walrus operator",
+    "spoken_text": "walrus operator"
+  },
+  "f-string": {
+    "file": "words/f-string.mp3",
+    "text": "f-string",
+    "spoken_text": "F string"
+  },
+  "unpacking": {
+    "file": "words/unpacking.mp3",
+    "text": "unpacking",
+    "spoken_text": "unpacking"
+  },
+  "mutable": {
+    "file": "words/mutable.mp3",
+    "text": "mutable",
+    "spoken_text": "mutable"
+  },
+  "immutable": {
+    "file": "words/immutable.mp3",
+    "text": "immutable",
+    "spoken_text": "immutable"
+  },
+  "framework": {
+    "file": "words/framework.mp3",
+    "text": "framework",
+    "spoken_text": "framework"
+  },
+  "django": {
+    "file": "words/django.mp3",
+    "text": "Django",
+    "spoken_text": "Django"
+  },
+  "flask": {
+    "file": "words/flask.mp3",
+    "text": "Flask",
+    "spoken_text": "Flask"
+  },
+  "fastapi": {
+    "file": "words/fastapi.mp3",
+    "text": "FastAPI",
+    "spoken_text": "Fast A P I"
+  },
+  "template": {
+    "file": "words/template.mp3",
+    "text": "template",
+    "spoken_text": "template"
+  },
+  "render": {
+    "file": "words/render.mp3",
+    "text": "render",
+    "spoken_text": "render"
+  },
+  "redirect": {
+    "file": "words/redirect.mp3",
+    "text": "redirect",
+    "spoken_text": "redirect"
+  },
+  "form": {
+    "file": "words/form.mp3",
+    "text": "form",
+    "spoken_text": "form"
+  },
+  "submit": {
+    "file": "words/submit.mp3",
+    "text": "submit",
+    "spoken_text": "submit"
+  },
+  "authentication": {
+    "file": "words/authentication.mp3",
+    "text": "authentication",
+    "spoken_text": "authentication"
+  },
+  "oauth": {
+    "file": "words/oauth.mp3",
+    "text": "OAuth",
+    "spoken_text": "O Auth"
+  },
+  "jwt": {
+    "file": "words/jwt.mp3",
+    "text": "JWT",
+    "spoken_text": "J W T"
+  },
+  "password hash": {
+    "file": "words/password-hash.mp3",
+    "text": "password hash",
+    "spoken_text": "password hash"
+  },
+  "dependency injection": {
+    "file": "words/dependency-injection.mp3",
+    "text": "dependency injection",
+    "spoken_text": "dependency injection"
+  },
+  "pydantic": {
+    "file": "words/pydantic.mp3",
+    "text": "Pydantic",
+    "spoken_text": "Pydantic"
+  },
+  "schema validation": {
+    "file": "words/schema-validation.mp3",
+    "text": "schema validation",
+    "spoken_text": "schema validation"
+  },
+  "static files": {
+    "file": "words/static-files.mp3",
+    "text": "static files",
+    "spoken_text": "static files"
+  },
+  "html template": {
+    "file": "words/html-template.mp3",
+    "text": "HTML template",
+    "spoken_text": "H T M L template"
+  },
+  "jinja2": {
+    "file": "words/jinja2.mp3",
+    "text": "Jinja2",
+    "spoken_text": "Jinja two"
+  },
+  "dotenv": {
+    "file": "words/dotenv.mp3",
+    "text": "dotenv",
+    "spoken_text": "dotenv"
+  },
+  "environment variable": {
+    "file": "words/environment-variable.mp3",
+    "text": "environment variable",
+    "spoken_text": "environment variable"
+  },
+  "deploy": {
+    "file": "words/deploy.mp3",
+    "text": "deploy",
+    "spoken_text": "deploy"
+  },
+  "docker": {
+    "file": "words/docker.mp3",
+    "text": "Docker",
+    "spoken_text": "Docker"
+  },
+  "container": {
+    "file": "words/container.mp3",
+    "text": "container",
+    "spoken_text": "container"
+  },
+  "cloud": {
+    "file": "words/cloud.mp3",
+    "text": "cloud",
+    "spoken_text": "cloud"
+  },
+  "microservice": {
+    "file": "words/microservice.mp3",
+    "text": "microservice",
+    "spoken_text": "microservice"
+  },
+  "monolith": {
+    "file": "words/monolith.mp3",
+    "text": "monolith",
+    "spoken_text": "monolith"
+  },
+  "load balancer": {
+    "file": "words/load-balancer.mp3",
+    "text": "load balancer",
+    "spoken_text": "load balancer"
+  },
+  "reverse proxy": {
+    "file": "words/reverse-proxy.mp3",
+    "text": "reverse proxy",
+    "spoken_text": "reverse proxy"
+  },
+  "sse": {
+    "file": "words/sse.mp3",
+    "text": "SSE",
+    "spoken_text": "S S E"
+  },
+  "rate limiting": {
+    "file": "words/rate-limiting.mp3",
+    "text": "rate limiting",
+    "spoken_text": "rate limiting"
+  },
+  "caching": {
+    "file": "words/caching.mp3",
+    "text": "caching",
+    "spoken_text": "caching"
+  },
+  "pagination": {
+    "file": "words/pagination.mp3",
+    "text": "pagination",
+    "spoken_text": "pagination"
+  },
+  "restful": {
+    "file": "words/restful.mp3",
+    "text": "RESTful",
+    "spoken_text": "restful"
+  },
+  "graphql": {
+    "file": "words/graphql.mp3",
+    "text": "GraphQL",
+    "spoken_text": "Graph Q L"
+  },
+  "ci/cd": {
+    "file": "words/ci-cd.mp3",
+    "text": "CI/CD",
+    "spoken_text": "C I C D"
+  },
+  "health check": {
+    "file": "words/health-check.mp3",
+    "text": "health check",
+    "spoken_text": "health check"
+  },
+  "routing": {
+    "file": "words/routing.mp3",
+    "text": "routing",
+    "spoken_text": "routing"
+  },
+  "handler": {
+    "file": "words/handler.mp3",
+    "text": "handler",
+    "spoken_text": "handler"
+  },
+  "resource": {
+    "file": "words/resource.mp3",
+    "text": "resource",
+    "spoken_text": "resource"
+  },
+  "validation": {
+    "file": "words/validation.mp3",
+    "text": "validation",
+    "spoken_text": "validation"
+  },
+  "serialization": {
+    "file": "words/serialization.mp3",
+    "text": "serialization",
+    "spoken_text": "serialization"
+  },
+  "deserialization": {
+    "file": "words/deserialization.mp3",
+    "text": "deserialization",
+    "spoken_text": "deserialization"
+  },
+  "deployment": {
+    "file": "words/deployment.mp3",
+    "text": "deployment",
+    "spoken_text": "deployment"
+  },
+  "html": {
+    "file": "words/html.mp3",
+    "text": "HTML",
+    "spoken_text": "H T M L"
+  },
+  "css": {
+    "file": "words/css.mp3",
+    "text": "CSS",
+    "spoken_text": "C S S"
+  },
+  "javascript": {
+    "file": "words/javascript.mp3",
+    "text": "JavaScript",
+    "spoken_text": "JavaScript"
+  },
+  "dom": {
+    "file": "words/dom.mp3",
+    "text": "DOM",
+    "spoken_text": "D O M"
+  },
+  "selector": {
+    "file": "words/selector.mp3",
+    "text": "selector",
+    "spoken_text": "selector"
+  },
+  "flexbox": {
+    "file": "words/flexbox.mp3",
+    "text": "flexbox",
+    "spoken_text": "flexbox"
+  },
+  "responsive": {
+    "file": "words/responsive.mp3",
+    "text": "responsive",
+    "spoken_text": "responsive"
+  },
+  "event listener": {
+    "file": "words/event-listener.mp3",
+    "text": "event listener",
+    "spoken_text": "event listener"
+  },
+  "component": {
+    "file": "words/component.mp3",
+    "text": "component",
+    "spoken_text": "component"
+  },
+  "props": {
+    "file": "words/props.mp3",
+    "text": "props",
+    "spoken_text": "props"
+  },
+  "modal": {
+    "file": "words/modal.mp3",
+    "text": "modal",
+    "spoken_text": "modal"
+  },
+  "grid": {
+    "file": "words/grid.mp3",
+    "text": "grid",
+    "spoken_text": "grid"
+  },
+  "terminal": {
+    "file": "words/terminal.mp3",
+    "text": "terminal",
+    "spoken_text": "terminal"
+  },
+  "shell": {
+    "file": "words/shell.mp3",
+    "text": "shell",
+    "spoken_text": "shell"
+  },
+  "directory": {
+    "file": "words/directory.mp3",
+    "text": "directory",
+    "spoken_text": "directory"
+  },
+  "file": {
+    "file": "words/file.mp3",
+    "text": "file",
+    "spoken_text": "file"
+  },
+  "path": {
+    "file": "words/path.mp3",
+    "text": "path",
+    "spoken_text": "path"
+  },
+  "command": {
+    "file": "words/command.mp3",
+    "text": "command",
+    "spoken_text": "command"
+  },
+  "flag": {
+    "file": "words/flag.mp3",
+    "text": "flag",
+    "spoken_text": "flag"
+  },
+  "pipe": {
+    "file": "words/pipe.mp3",
+    "text": "pipe",
+    "spoken_text": "pipe"
+  },
+  "stdin": {
+    "file": "words/stdin.mp3",
+    "text": "stdin",
+    "spoken_text": "standard input"
+  },
+  "stdout": {
+    "file": "words/stdout.mp3",
+    "text": "stdout",
+    "spoken_text": "standard output"
+  },
+  "stderr": {
+    "file": "words/stderr.mp3",
+    "text": "stderr",
+    "spoken_text": "standard error"
+  },
+  "permission": {
+    "file": "words/permission.mp3",
+    "text": "permission",
+    "spoken_text": "permission"
+  },
+  "grep": {
+    "file": "words/grep.mp3",
+    "text": "grep",
+    "spoken_text": "grep"
+  },
+  "curl": {
+    "file": "words/curl.mp3",
+    "text": "curl",
+    "spoken_text": "curl"
+  },
+  "wildcard": {
+    "file": "words/wildcard.mp3",
+    "text": "wildcard",
+    "spoken_text": "wildcard"
+  },
+  "debugging": {
+    "file": "words/debugging.mp3",
+    "text": "debugging",
+    "spoken_text": "debugging"
+  },
+  "refactoring": {
+    "file": "words/refactoring.mp3",
+    "text": "refactoring",
+    "spoken_text": "refactoring"
+  },
+  "testing": {
+    "file": "words/testing.mp3",
+    "text": "testing",
+    "spoken_text": "testing"
+  },
+  "unit test": {
+    "file": "words/unit-test.mp3",
+    "text": "unit test",
+    "spoken_text": "unit test"
+  },
+  "code review": {
+    "file": "words/code-review.mp3",
+    "text": "code review",
+    "spoken_text": "code review"
+  },
+  "documentation": {
+    "file": "words/documentation.mp3",
+    "text": "documentation",
+    "spoken_text": "documentation"
+  },
+  "agile": {
+    "file": "words/agile.mp3",
+    "text": "agile",
+    "spoken_text": "agile"
+  },
+  "bug": {
+    "file": "words/bug.mp3",
+    "text": "bug",
+    "spoken_text": "bug"
+  },
+  "feature": {
+    "file": "words/feature.mp3",
+    "text": "feature",
+    "spoken_text": "feature"
+  },
+  "requirement": {
+    "file": "words/requirement.mp3",
+    "text": "requirement",
+    "spoken_text": "requirement"
+  },
+  "dependency": {
+    "file": "words/dependency.mp3",
+    "text": "dependency",
+    "spoken_text": "dependency"
+  },
+  "release": {
+    "file": "words/release.mp3",
+    "text": "release",
+    "spoken_text": "release"
+  },
+  "hotfix": {
+    "file": "words/hotfix.mp3",
+    "text": "hotfix",
+    "spoken_text": "hotfix"
+  },
+  "milestone": {
+    "file": "words/milestone.mp3",
+    "text": "milestone",
+    "spoken_text": "milestone"
+  },
+  "technical debt": {
+    "file": "words/technical-debt.mp3",
+    "text": "technical debt",
+    "spoken_text": "technical debt"
+  },
+  "regression": {
+    "file": "words/regression.mp3",
+    "text": "regression",
+    "spoken_text": "regression"
+  },
+  "reviewer": {
+    "file": "words/reviewer.mp3",
+    "text": "reviewer",
+    "spoken_text": "reviewer"
+  },
+  "approval": {
+    "file": "words/approval.mp3",
+    "text": "approval",
+    "spoken_text": "approval"
+  },
+  "blocker": {
+    "file": "words/blocker.mp3",
+    "text": "blocker",
+    "spoken_text": "blocker"
+  },
+  "roadmap": {
+    "file": "words/roadmap.mp3",
+    "text": "roadmap",
+    "spoken_text": "roadmap"
+  },
+  "ownership": {
+    "file": "words/ownership.mp3",
+    "text": "ownership",
+    "spoken_text": "ownership"
+  },
+  "acceptance criteria": {
+    "file": "words/acceptance-criteria.mp3",
+    "text": "acceptance criteria",
+    "spoken_text": "acceptance criteria"
+  },
+  "estimate": {
+    "file": "words/estimate.mp3",
+    "text": "estimate",
+    "spoken_text": "estimate"
+  },
+  "incident": {
+    "file": "words/incident.mp3",
+    "text": "incident",
+    "spoken_text": "incident"
+  },
+  "restart": {
+    "file": "words/restart.mp3",
+    "text": "restart",
+    "spoken_text": "restart"
+  },
+  "add": {
+    "file": "words/add.mp3",
+    "text": "add",
+    "spoken_text": "add"
+  },
+  "create": {
+    "file": "words/create.mp3",
+    "text": "create",
+    "spoken_text": "create"
+  },
+  "save": {
+    "file": "words/save.mp3",
+    "text": "save",
+    "spoken_text": "save"
+  },
+  "load": {
+    "file": "words/load.mp3",
+    "text": "load",
+    "spoken_text": "load"
+  },
+  "parse": {
+    "file": "words/parse.mp3",
+    "text": "parse",
+    "spoken_text": "parse"
+  },
+  "convert": {
+    "file": "words/convert.mp3",
+    "text": "convert",
+    "spoken_text": "convert"
+  },
+  "validate": {
+    "file": "words/validate.mp3",
+    "text": "validate",
+    "spoken_text": "validate"
+  },
+  "serialize": {
+    "file": "words/serialize.mp3",
+    "text": "serialize",
+    "spoken_text": "serialize"
+  },
+  "deserialize": {
+    "file": "words/deserialize.mp3",
+    "text": "deserialize",
+    "spoken_text": "deserialize"
+  },
+  "encode": {
+    "file": "words/encode.mp3",
+    "text": "encode",
+    "spoken_text": "encode"
+  },
+  "decode": {
+    "file": "words/decode.mp3",
+    "text": "decode",
+    "spoken_text": "decode"
+  },
+  "send": {
+    "file": "words/send.mp3",
+    "text": "send",
+    "spoken_text": "send"
+  },
+  "receive": {
+    "file": "words/receive.mp3",
+    "text": "receive",
+    "spoken_text": "receive"
+  },
+  "connect": {
+    "file": "words/connect.mp3",
+    "text": "connect",
+    "spoken_text": "connect"
+  },
+  "close": {
+    "file": "words/close.mp3",
+    "text": "close",
+    "spoken_text": "close"
+  },
+  "rename": {
+    "file": "words/rename.mp3",
+    "text": "rename",
+    "spoken_text": "rename"
+  },
+  "iterate": {
+    "file": "words/iterate.mp3",
+    "text": "iterate",
+    "spoken_text": "iterate"
+  },
+  "compare": {
+    "file": "words/compare.mp3",
+    "text": "compare",
+    "spoken_text": "compare"
+  },
+  "export": {
+    "file": "words/export.mp3",
+    "text": "export",
+    "spoken_text": "export"
+  },
+  "execute": {
+    "file": "words/execute.mp3",
+    "text": "execute",
+    "spoken_text": "execute"
+  },
+  "call": {
+    "file": "words/call.mp3",
+    "text": "call",
+    "spoken_text": "call"
+  },
+  "assign": {
+    "file": "words/assign.mp3",
+    "text": "assign",
+    "spoken_text": "assign"
+  },
+  "replace": {
+    "file": "words/replace.mp3",
+    "text": "replace",
+    "spoken_text": "replace"
+  },
+  "check": {
+    "file": "words/check.mp3",
+    "text": "check",
+    "spoken_text": "check"
+  },
+  "abort": {
+    "file": "words/abort.mp3",
+    "text": "abort",
+    "spoken_text": "abort"
+  },
+  "skip": {
+    "file": "words/skip.mp3",
+    "text": "skip",
+    "spoken_text": "skip"
+  },
+  "persist": {
+    "file": "words/persist.mp3",
+    "text": "persist",
+    "spoken_text": "persist"
+  },
+  "dispatch": {
+    "file": "words/dispatch.mp3",
+    "text": "dispatch",
+    "spoken_text": "dispatch"
+  },
+  "instantiate": {
+    "file": "words/instantiate.mp3",
+    "text": "instantiate",
+    "spoken_text": "instantiate"
+  },
+  "observe": {
+    "file": "words/observe.mp3",
+    "text": "observe",
+    "spoken_text": "observe"
+  },
+  "data": {
+    "file": "words/data.mp3",
+    "text": "data",
+    "spoken_text": "data"
+  },
+  "result": {
+    "file": "words/result.mp3",
+    "text": "result",
+    "spoken_text": "result"
+  },
+  "user": {
+    "file": "words/user.mp3",
+    "text": "user",
+    "spoken_text": "user"
+  },
+  "item": {
+    "file": "words/item.mp3",
+    "text": "item",
+    "spoken_text": "item"
+  },
+  "total": {
+    "file": "words/total.mp3",
+    "text": "total",
+    "spoken_text": "total"
+  },
+  "name": {
+    "file": "words/name.mp3",
+    "text": "name",
+    "spoken_text": "name"
+  },
+  "value": {
+    "file": "words/value.mp3",
+    "text": "value",
+    "spoken_text": "value"
+  },
+  "key": {
+    "file": "words/key.mp3",
+    "text": "key",
+    "spoken_text": "key"
+  },
+  "config": {
+    "file": "words/config.mp3",
+    "text": "config",
+    "spoken_text": "config"
+  },
+  "db": {
+    "file": "words/db.mp3",
+    "text": "db",
+    "spoken_text": "D B"
+  },
+  "conn": {
+    "file": "words/conn.mp3",
+    "text": "conn",
+    "spoken_text": "connection"
+  },
+  "rows": {
+    "file": "words/rows.mp3",
+    "text": "rows",
+    "spoken_text": "rows"
+  },
+  "error": {
+    "file": "words/error.mp3",
+    "text": "error",
+    "spoken_text": "error"
+  },
+  "message": {
+    "file": "words/message.mp3",
+    "text": "message",
+    "spoken_text": "message"
+  },
+  "items": {
+    "file": "words/items.mp3",
+    "text": "items",
+    "spoken_text": "items"
+  },
+  "params": {
+    "file": "words/params.mp3",
+    "text": "params",
+    "spoken_text": "params"
+  },
+  "args": {
+    "file": "words/args.mp3",
+    "text": "args",
+    "spoken_text": "args"
+  },
+  "kwargs": {
+    "file": "words/kwargs.mp3",
+    "text": "kwargs",
+    "spoken_text": "keyword args"
+  },
+  "content": {
+    "file": "words/content.mp3",
+    "text": "content",
+    "spoken_text": "content"
+  },
+  "record": {
+    "file": "words/record.mp3",
+    "text": "record",
+    "spoken_text": "record"
+  },
+  "temp": {
+    "file": "words/temp.mp3",
+    "text": "temp",
+    "spoken_text": "temp"
+  },
+  "output": {
+    "file": "words/output.mp3",
+    "text": "output",
+    "spoken_text": "output"
+  },
+  "logger": {
+    "file": "words/logger.mp3",
+    "text": "logger",
+    "spoken_text": "logger"
+  },
+  "id": {
+    "file": "words/id.mp3",
+    "text": "id",
+    "spoken_text": "I D"
+  },
+  "ids": {
+    "file": "words/ids.mp3",
+    "text": "ids",
+    "spoken_text": "I D's"
+  },
+  "filename": {
+    "file": "words/filename.mp3",
+    "text": "filename",
+    "spoken_text": "filename"
+  },
+  "filepath": {
+    "file": "words/filepath.mp3",
+    "text": "filepath",
+    "spoken_text": "file path"
+  },
+  "line": {
+    "file": "words/line.mp3",
+    "text": "line",
+    "spoken_text": "line"
+  },
+  "headers": {
+    "file": "words/headers.mp3",
+    "text": "headers",
+    "spoken_text": "headers"
+  },
+  "job": {
+    "file": "words/job.mp3",
+    "text": "job",
+    "spoken_text": "job"
+  },
+  "task": {
+    "file": "words/task.mp3",
+    "text": "task",
+    "spoken_text": "task"
+  },
+  "worker": {
+    "file": "words/worker.mp3",
+    "text": "worker",
+    "spoken_text": "worker"
+  },
+  "event": {
+    "file": "words/event.mp3",
+    "text": "event",
+    "spoken_text": "event"
+  },
+  "env": {
+    "file": "words/env.mp3",
+    "text": "env",
+    "spoken_text": "environment"
+  },
+  "meta": {
+    "file": "words/meta.mp3",
+    "text": "meta",
+    "spoken_text": "meta"
+  },
+  "context": {
+    "file": "words/context.mp3",
+    "text": "context",
+    "spoken_text": "context"
+  },
+  "source": {
+    "file": "words/source.mp3",
+    "text": "source",
+    "spoken_text": "source"
+  },
+  "target": {
+    "file": "words/target.mp3",
+    "text": "target",
+    "spoken_text": "target"
+  },
+  "syntaxerror": {
+    "file": "words/syntaxerror.mp3",
+    "text": "SyntaxError",
+    "spoken_text": "syntax error"
+  },
+  "typeerror": {
+    "file": "words/typeerror.mp3",
+    "text": "TypeError",
+    "spoken_text": "type error"
+  },
+  "valueerror": {
+    "file": "words/valueerror.mp3",
+    "text": "ValueError",
+    "spoken_text": "value error"
+  },
+  "nameerror": {
+    "file": "words/nameerror.mp3",
+    "text": "NameError",
+    "spoken_text": "name error"
+  },
+  "indexerror": {
+    "file": "words/indexerror.mp3",
+    "text": "IndexError",
+    "spoken_text": "index error"
+  },
+  "keyerror": {
+    "file": "words/keyerror.mp3",
+    "text": "KeyError",
+    "spoken_text": "key error"
+  },
+  "attributeerror": {
+    "file": "words/attributeerror.mp3",
+    "text": "AttributeError",
+    "spoken_text": "attribute error"
+  },
+  "importerror": {
+    "file": "words/importerror.mp3",
+    "text": "ImportError",
+    "spoken_text": "import error"
+  },
+  "modulenotfounderror": {
+    "file": "words/modulenotfounderror.mp3",
+    "text": "ModuleNotFoundError",
+    "spoken_text": "module not found error"
+  },
+  "filenotfounderror": {
+    "file": "words/filenotfounderror.mp3",
+    "text": "FileNotFoundError",
+    "spoken_text": "file not found error"
+  },
+  "permissionerror": {
+    "file": "words/permissionerror.mp3",
+    "text": "PermissionError",
+    "spoken_text": "permission error"
+  },
+  "zerodivisionerror": {
+    "file": "words/zerodivisionerror.mp3",
+    "text": "ZeroDivisionError",
+    "spoken_text": "zero division error"
+  },
+  "stopiteration": {
+    "file": "words/stopiteration.mp3",
+    "text": "StopIteration",
+    "spoken_text": "stop iteration"
+  },
+  "recursionerror": {
+    "file": "words/recursionerror.mp3",
+    "text": "RecursionError",
+    "spoken_text": "recursion error"
+  },
+  "timeouterror": {
+    "file": "words/timeouterror.mp3",
+    "text": "TimeoutError",
+    "spoken_text": "timeout error"
+  },
+  "connectionerror": {
+    "file": "words/connectionerror.mp3",
+    "text": "ConnectionError",
+    "spoken_text": "connection error"
+  },
+  "httperror": {
+    "file": "words/httperror.mp3",
+    "text": "HTTPError",
+    "spoken_text": "H T T P error"
+  },
+  "assertionerror": {
+    "file": "words/assertionerror.mp3",
+    "text": "AssertionError",
+    "spoken_text": "assertion error"
+  },
+  "notimplementederror": {
+    "file": "words/notimplementederror.mp3",
+    "text": "NotImplementedError",
+    "spoken_text": "not implemented error"
+  },
+  "traceback": {
+    "file": "words/traceback.mp3",
+    "text": "traceback",
+    "spoken_text": "traceback"
+  },
+  "depends": {
+    "file": "words/depends.mp3",
+    "text": "Depends",
+    "spoken_text": "Depends"
+  },
+  "apirouter": {
+    "file": "words/apirouter.mp3",
+    "text": "APIRouter",
+    "spoken_text": "A P I router"
+  },
+  "basemodel": {
+    "file": "words/basemodel.mp3",
+    "text": "BaseModel",
+    "spoken_text": "base model"
+  },
+  "status_code": {
+    "file": "words/status-code-e77743a7.mp3",
+    "text": "status_code",
+    "spoken_text": "status code"
+  },
+  "httpexception": {
+    "file": "words/httpexception.mp3",
+    "text": "HTTPException",
+    "spoken_text": "H T T P exception"
+  },
+  "backgroundtasks": {
+    "file": "words/backgroundtasks.mp3",
+    "text": "BackgroundTasks",
+    "spoken_text": "background tasks"
+  },
+  "testclient": {
+    "file": "words/testclient.mp3",
+    "text": "TestClient",
+    "spoken_text": "test client"
+  },
+  "get_db": {
+    "file": "words/get-db.mp3",
+    "text": "get_db",
+    "spoken_text": "get D B"
+  },
+  "tags": {
+    "file": "words/tags.mp3",
+    "text": "tags",
+    "spoken_text": "tags"
+  },
+  "response_model": {
+    "file": "words/response-model.mp3",
+    "text": "response_model",
+    "spoken_text": "response model"
+  },
+  "uploadfile": {
+    "file": "words/uploadfile.mp3",
+    "text": "UploadFile",
+    "spoken_text": "upload file"
+  },
+  "jsonresponse": {
+    "file": "words/jsonresponse.mp3",
+    "text": "JSONResponse",
+    "spoken_text": "Jason response"
+  },
+  "corsmiddleware": {
+    "file": "words/corsmiddleware.mp3",
+    "text": "CORSMiddleware",
+    "spoken_text": "cors middleware"
+  },
+  "lifespan": {
+    "file": "words/lifespan.mp3",
+    "text": "lifespan",
+    "spoken_text": "lifespan"
+  },
+  "streamingresponse": {
+    "file": "words/streamingresponse.mp3",
+    "text": "StreamingResponse",
+    "spoken_text": "streaming response"
+  },
+  "plain text": {
+    "file": "words/plain-text.mp3",
+    "text": "plain text",
+    "spoken_text": "plain text"
+  },
+  "router prefix": {
+    "file": "words/router-prefix.mp3",
+    "text": "router prefix",
+    "spoken_text": "router prefix"
+  },
+  "linux": {
+    "file": "words/linux.mp3",
+    "text": "Linux",
+    "spoken_text": "Linux"
+  },
+  "bash": {
+    "file": "words/bash.mp3",
+    "text": "bash",
+    "spoken_text": "bash"
+  },
+  "ssh": {
+    "file": "words/ssh.mp3",
+    "text": "ssh",
+    "spoken_text": "S S H"
+  },
+  "chmod": {
+    "file": "words/chmod.mp3",
+    "text": "chmod",
+    "spoken_text": "change mode"
+  },
+  "systemctl": {
+    "file": "words/systemctl.mp3",
+    "text": "systemctl",
+    "spoken_text": "system control"
+  },
+  "nginx": {
+    "file": "words/nginx.mp3",
+    "text": "nginx",
+    "spoken_text": "engine X"
+  },
+  "gunicorn": {
+    "file": "words/gunicorn.mp3",
+    "text": "gunicorn",
+    "spoken_text": "gunicorn"
+  },
+  "uvicorn": {
+    "file": "words/uvicorn.mp3",
+    "text": "uvicorn",
+    "spoken_text": "you vee corn"
+  },
+  "docker-compose": {
+    "file": "words/docker-compose.mp3",
+    "text": "docker-compose",
+    "spoken_text": "docker compose"
+  },
+  "environment": {
+    "file": "words/environment.mp3",
+    "text": "environment",
+    "spoken_text": "environment"
+  },
+  "supervisor": {
+    "file": "words/supervisor.mp3",
+    "text": "supervisor",
+    "spoken_text": "supervisor"
+  },
+  "cron": {
+    "file": "words/cron.mp3",
+    "text": "cron",
+    "spoken_text": "cron"
+  },
+  "image": {
+    "file": "words/image.mp3",
+    "text": "image",
+    "spoken_text": "image"
+  },
+  "backup": {
+    "file": "words/backup.mp3",
+    "text": "backup",
+    "spoken_text": "backup"
+  },
+  "monitoring": {
+    "file": "words/monitoring.mp3",
+    "text": "monitoring",
+    "spoken_text": "monitoring"
+  },
+  "alert": {
+    "file": "words/alert.mp3",
+    "text": "alert",
+    "spoken_text": "alert"
+  },
+  "toggle": {
+    "file": "words/toggle.mp3",
+    "text": "toggle",
+    "spoken_text": "toggle"
+  },
+  "dropdown": {
+    "file": "words/dropdown.mp3",
+    "text": "dropdown",
+    "spoken_text": "dropdown"
+  },
+  "tooltip": {
+    "file": "words/tooltip.mp3",
+    "text": "tooltip",
+    "spoken_text": "tooltip"
+  },
+  "spacing": {
+    "file": "words/spacing.mp3",
+    "text": "spacing",
+    "spoken_text": "spacing"
+  },
+  "theme": {
+    "file": "words/theme.mp3",
+    "text": "theme",
+    "spoken_text": "theme"
+  },
+  "alias": {
+    "file": "words/alias.mp3",
+    "text": "alias",
+    "spoken_text": "alias"
+  },
+  "history": {
+    "file": "words/history.mp3",
+    "text": "history",
+    "spoken_text": "history"
+  },
+  "process": {
+    "file": "words/process.mp3",
+    "text": "process",
+    "spoken_text": "process"
+  },
+  "prompt template": {
+    "file": "words/prompt-template.mp3",
+    "text": "prompt template",
+    "spoken_text": "prompt template"
+  },
+  "tool use": {
+    "file": "words/tool-use.mp3",
+    "text": "tool use",
+    "spoken_text": "tool use"
+  },
+  "grounding": {
+    "file": "words/grounding.mp3",
+    "text": "grounding",
+    "spoken_text": "grounding"
+  },
+  "few-shot": {
+    "file": "words/few-shot.mp3",
+    "text": "few-shot",
+    "spoken_text": "few shot"
+  },
+  "cache hit": {
+    "file": "words/cache-hit.mp3",
+    "text": "cache hit",
+    "spoken_text": "cache hit"
+  },
+  "cache miss": {
+    "file": "words/cache-miss.mp3",
+    "text": "cache miss",
+    "spoken_text": "cache miss"
+  },
+  "context window": {
+    "file": "words/context-window.mp3",
+    "text": "context window",
+    "spoken_text": "context window"
+  },
+  "hallucination": {
+    "file": "words/hallucination.mp3",
+    "text": "hallucination",
+    "spoken_text": "hallucination"
+  },
+  "temperature": {
+    "file": "words/temperature.mp3",
+    "text": "temperature",
+    "spoken_text": "temperature"
+  },
+  "evaluation": {
+    "file": "words/evaluation.mp3",
+    "text": "evaluation",
+    "spoken_text": "evaluation"
+  },
+  "retrieval": {
+    "file": "words/retrieval.mp3",
+    "text": "retrieval",
+    "spoken_text": "retrieval"
+  },
+  "vector database": {
+    "file": "words/vector-database.mp3",
+    "text": "vector database",
+    "spoken_text": "vector database"
+  },
+  "agent": {
+    "file": "words/agent.mp3",
+    "text": "agent",
+    "spoken_text": "agent"
+  },
+  "runtimeerror": {
+    "file": "words/runtimeerror.mp3",
+    "text": "RuntimeError",
+    "spoken_text": "runtime error"
+  },
+  "unicodedecodeerror": {
+    "file": "words/unicodedecodeerror.mp3",
+    "text": "UnicodeDecodeError",
+    "spoken_text": "unicode decode error"
+  },
+  "jsondecodeerror": {
+    "file": "words/jsondecodeerror.mp3",
+    "text": "JSONDecodeError",
+    "spoken_text": "Jason decode error"
+  },
+  "oserror": {
+    "file": "words/oserror.mp3",
+    "text": "OSError",
+    "spoken_text": "O S error"
+  },
+  "memoryerror": {
+    "file": "words/memoryerror.mp3",
+    "text": "MemoryError",
+    "spoken_text": "memory error"
+  },
+  "brokenpipeerror": {
+    "file": "words/brokenpipeerror.mp3",
+    "text": "BrokenPipeError",
+    "spoken_text": "broken pipe error"
+  },
+  "model": {
+    "file": "words/model.mp3",
+    "text": "model",
+    "spoken_text": "model"
+  },
+  "train": {
+    "file": "words/train.mp3",
+    "text": "train",
+    "spoken_text": "train"
+  },
+  "predict": {
+    "file": "words/predict.mp3",
+    "text": "predict",
+    "spoken_text": "predict"
+  },
+  "dataset": {
+    "file": "words/dataset.mp3",
+    "text": "dataset",
+    "spoken_text": "dataset"
+  },
+  "label": {
+    "file": "words/label.mp3",
+    "text": "label",
+    "spoken_text": "label"
+  },
+  "accuracy": {
+    "file": "words/accuracy.mp3",
+    "text": "accuracy",
+    "spoken_text": "accuracy"
+  },
+  "loss": {
+    "file": "words/loss.mp3",
+    "text": "loss",
+    "spoken_text": "loss"
+  },
+  "epoch": {
+    "file": "words/epoch.mp3",
+    "text": "epoch",
+    "spoken_text": "epoch"
+  },
+  "gradient": {
+    "file": "words/gradient.mp3",
+    "text": "gradient",
+    "spoken_text": "gradient"
+  },
+  "neural network": {
+    "file": "words/neural-network.mp3",
+    "text": "neural network",
+    "spoken_text": "neural network"
+  },
+  "transformer": {
+    "file": "words/transformer.mp3",
+    "text": "transformer",
+    "spoken_text": "transformer"
+  },
+  "embedding": {
+    "file": "words/embedding.mp3",
+    "text": "embedding",
+    "spoken_text": "embedding"
+  },
+  "fine-tune": {
+    "file": "words/fine-tune.mp3",
+    "text": "fine-tune",
+    "spoken_text": "fine tune"
+  },
+  "inference": {
+    "file": "words/inference.mp3",
+    "text": "inference",
+    "spoken_text": "inference"
+  },
+  "batch": {
+    "file": "words/batch.mp3",
+    "text": "batch",
+    "spoken_text": "batch"
+  }
+}

@@ -4,3 +4,4 @@ pydantic_core==2.23.2
 SQLAlchemy==2.0.35
 uvicorn==0.30.0
 PyMySQL==1.1.1
+edge-tts==7.2.8

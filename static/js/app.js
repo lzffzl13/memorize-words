@@ -45,6 +45,39 @@ window.debounce = function debounce(fn, delay = 120) {
 
 let activeSpeechUtterance = null;
 let cachedEnglishVoice = null;
+let activePronunciationAudio = null;
+let pronunciationManifest = null;
+let pronunciationManifestPromise = null;
+const pronunciationAudioCache = new Map();
+const missingPronunciationAudio = new Set();
+
+function normalizePronunciationKey(text) {
+    return String(text || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function getPronunciationSlug(text) {
+    const slug = normalizePronunciationKey(text).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return slug || "word";
+}
+
+function loadPronunciationManifest() {
+    if (pronunciationManifest) return Promise.resolve(pronunciationManifest);
+    if (!pronunciationManifestPromise) {
+        pronunciationManifestPromise = fetch("/static/audio/manifest.json", { cache: "force-cache" })
+            .then((response) => (response.ok ? response.json() : {}))
+            .then((manifest) => {
+                pronunciationManifest = manifest || {};
+                return pronunciationManifest;
+            })
+            .catch(() => {
+                pronunciationManifest = {};
+                return pronunciationManifest;
+            });
+    }
+    return pronunciationManifestPromise;
+}
+
+loadPronunciationManifest();
 
 function getEnglishVoice() {
     if (!("speechSynthesis" in window)) return null;
@@ -80,6 +113,11 @@ window.speakWord = function speakWord(text) {
     const utterance = new SpeechSynthesisUtterance(word);
     const voice = cachedEnglishVoice || getEnglishVoice();
 
+    if (activePronunciationAudio) {
+        activePronunciationAudio.pause();
+        activePronunciationAudio.currentTime = 0;
+    }
+
     utterance.lang = "en-US";
     utterance.rate = 0.85;
     utterance.pitch = 1;
@@ -99,6 +137,67 @@ window.speakWord = function speakWord(text) {
     }, 0);
 
     return true;
+};
+
+function getPronunciationAudio(text) {
+    const key = normalizePronunciationKey(text);
+    if (!key || missingPronunciationAudio.has(key)) return null;
+
+    const item = pronunciationManifest ? pronunciationManifest[key] : null;
+    const file = item && item.file ? item.file : `words/${getPronunciationSlug(text)}.mp3`;
+
+    if (!pronunciationAudioCache.has(key)) {
+        const audio = new Audio(`/static/audio/${file}`);
+        audio.preload = "auto";
+        pronunciationAudioCache.set(key, audio);
+    }
+    return pronunciationAudioCache.get(key);
+}
+
+window.preloadWordPronunciation = function preloadWordPronunciation(text) {
+    loadPronunciationManifest().then(() => {
+        const audio = getPronunciationAudio(text);
+        if (audio) audio.load();
+    });
+};
+
+window.playWordPronunciation = function playWordPronunciation(text) {
+    const word = String(text || "").trim();
+    if (!word) return false;
+
+    const playFromManifest = () => {
+        const key = normalizePronunciationKey(word);
+        const audio = getPronunciationAudio(word);
+        if (!audio) return window.speakWord(word);
+
+        let fellBack = false;
+        const fallback = () => {
+            if (fellBack) return;
+            fellBack = true;
+            missingPronunciationAudio.add(key);
+            window.speakWord(word);
+        };
+
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+        if (activePronunciationAudio && activePronunciationAudio !== audio) {
+            activePronunciationAudio.pause();
+            activePronunciationAudio.currentTime = 0;
+        }
+
+        activePronunciationAudio = audio;
+        audio.currentTime = 0;
+        audio.onerror = fallback;
+
+        const playPromise = audio.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(fallback);
+        }
+        return true;
+    };
+
+    const played = playFromManifest();
+    if (!pronunciationManifest) loadPronunciationManifest();
+    return played;
 };
 
 function navigate(page) {
