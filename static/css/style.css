@@ -329,6 +329,32 @@ select.form-input { background: #fff; }
         height: 110px;
     }
 
+    .page[data-page="stats"] #stats-overview .stats-cards {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 12px !important;
+    }
+
+    .page[data-page="stats"] #stats-overview .card {
+        min-height: 68px;
+        padding: 9px 4px;
+        border-radius: 10px;
+        box-shadow: 0 6px 16px rgba(24, 39, 75, 0.06);
+    }
+
+    .page[data-page="stats"] #stats-overview .card .num {
+        font-size: 19px;
+        line-height: 1.1;
+    }
+
+    .page[data-page="stats"] #stats-overview .card .label {
+        margin-top: 5px;
+        font-size: 11px;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
     .daily-bar-wrap {
         height: 88px;
     }
