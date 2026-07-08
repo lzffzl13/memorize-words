@@ -1,5 +1,6 @@
 let practiceState = { mode: null, category: "", scope: "all", count: 10, sessionId: null, questions: [], current: 0, correct: 0, answered: [] };
 let practiceCategories = [];
+let practiceCategoryCounts = new Map();
 
 // TTS 发音
 app.addEventListener("click", (event) => {
@@ -16,9 +17,7 @@ app.addEventListener("click", (event) => {
 
     const catBtn = event.target.closest("#cat-select .cat-btn[data-cat-index]");
     if (catBtn) {
-        document.querySelectorAll("#cat-select .cat-btn").forEach(btn => btn.classList.remove("active"));
-        catBtn.classList.add("active");
-        practiceState.category = practiceCategories[Number(catBtn.dataset.catIndex)] || "";
+        selectPracticeCategory(Number(catBtn.dataset.catIndex));
         return;
     }
 
@@ -27,6 +26,19 @@ app.addEventListener("click", (event) => {
         document.querySelectorAll("#scope-select .cat-btn").forEach(btn => btn.classList.remove("active"));
         scopeBtn.classList.add("active");
         practiceState.scope = scopeBtn.dataset.scope;
+        return;
+    }
+
+    const sheetOption = event.target.closest(".category-option[data-cat-index]");
+    if (sheetOption) {
+        selectPracticeCategory(Number(sheetOption.dataset.catIndex));
+        closeCategorySheet();
+        return;
+    }
+
+    const sheetOverlay = event.target.closest(".category-sheet-overlay");
+    if (sheetOverlay && event.target === sheetOverlay) {
+        closeCategorySheet();
         return;
     }
 
@@ -70,6 +82,12 @@ app.addEventListener("click", (event) => {
             break;
         case "return-practice-selection":
             renderPractice();
+            break;
+        case "open-category-sheet":
+            openCategorySheet();
+            break;
+        case "close-category-sheet":
+            closeCategorySheet();
             break;
     }
 });
@@ -162,27 +180,90 @@ function getPracticeCategoryCounts(words) {
     return counts;
 }
 
+function getSelectedCategoryName() {
+    return practiceState.category || "全部";
+}
+
+function getSelectedCategoryCount() {
+    if (practiceState.category) return practiceCategoryCounts.get(practiceState.category) || 0;
+    let total = 0;
+    practiceCategoryCounts.forEach((count) => {
+        total += count;
+    });
+    return total;
+}
+
+function updateCategorySummary() {
+    const nameEl = document.getElementById("selected-category-name");
+    const countEl = document.getElementById("selected-category-count");
+    if (nameEl) nameEl.textContent = getSelectedCategoryName();
+    if (countEl) countEl.textContent = `${getSelectedCategoryCount()} 词`;
+}
+
+function syncCategorySelection() {
+    document.querySelectorAll("[data-cat-index]").forEach((el) => {
+        const selected = practiceCategories[Number(el.dataset.catIndex)] === practiceState.category;
+        el.classList.toggle("active", selected);
+        el.classList.toggle("selected", selected);
+    });
+    updateCategorySummary();
+}
+
+function selectPracticeCategory(index) {
+    practiceState.category = practiceCategories[index] || "";
+    syncCategorySelection();
+}
+
+function openCategorySheet() {
+    const sheet = document.getElementById("category-sheet");
+    if (sheet) sheet.classList.add("open");
+}
+
+function closeCategorySheet() {
+    const sheet = document.getElementById("category-sheet");
+    if (sheet) sheet.classList.remove("open");
+}
+
 function renderPracticeShell() {
-    app.innerHTML = `<div class="page" data-page="practice">
-        <h2>选择练习模式</h2>
-        <div class="mode-select">
-            <div class="mode-btn ${practiceState.mode === "en_to_cn" ? "selected" : ""}" data-mode="en_to_cn"><b>英译中</b><br>看英文选中文</div>
-            <div class="mode-btn ${practiceState.mode === "cn_to_en" ? "selected" : ""}" data-mode="cn_to_en"><b>中译英</b><br>看中文拼英文</div>
-            <div class="mode-btn ${practiceState.mode === "spelling" ? "selected" : ""}" data-mode="spelling"><b>拼写练习</b><br>给释义拼单词</div>
-            <div class="mode-btn ${practiceState.mode === "code_fill" ? "selected" : ""}" data-mode="code_fill"><b>代码填空</b><br>在代码中填词</div>
+    app.innerHTML = `<div class="page practice-setup" data-page="practice">
+        <div class="practice-header">
+            <h2>选择练习</h2>
+            <span class="practice-count-pill">${practiceState.count} 题</span>
         </div>
-        <h2 style="margin-top:24px">选择词库分类</h2>
-        <div id="cat-select" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;color:#999">加载词库分类中...</div>
-        <h2 style="margin-top:24px">选择练习范围</h2>
-        <div id="scope-select" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-            <button class="cat-btn ${practiceState.scope === "all" ? "active" : ""}" data-scope="all">全部单词</button>
-            <button class="cat-btn ${practiceState.scope === "due" ? "active" : ""}" data-scope="due">只练到期词</button>
-            <button class="cat-btn ${practiceState.scope === "wrong" ? "active" : ""}" data-scope="wrong">只练错题</button>
-        </div>
-        <h2 style="margin-top:24px">题量</h2>
-        <input class="answer-input" id="practice-count" type="number" min="1" max="50" value="${practiceState.count}" style="max-width:160px;margin-top:8px" />
-        <p style="margin-top:8px;color:#999;font-size:13px">建议 5~20 题，最多 50 题</p>
-        <button class="btn-primary" id="start-btn" data-action="start-quiz">开始练习</button>
+        <section class="practice-section">
+            <h3 class="practice-section-title">练习模式</h3>
+            <div class="mode-select">
+                <div class="mode-btn ${practiceState.mode === "en_to_cn" ? "selected" : ""}" data-mode="en_to_cn"><b>英译中</b><span>看英文选中文</span></div>
+                <div class="mode-btn ${practiceState.mode === "cn_to_en" ? "selected" : ""}" data-mode="cn_to_en"><b>中译英</b><span>看中文拼英文</span></div>
+                <div class="mode-btn ${practiceState.mode === "spelling" ? "selected" : ""}" data-mode="spelling"><b>拼写练习</b><span>给释义拼单词</span></div>
+                <div class="mode-btn ${practiceState.mode === "code_fill" ? "selected" : ""}" data-mode="code_fill"><b>代码填空</b><span>在代码中填词</span></div>
+            </div>
+        </section>
+        <section class="practice-section practice-category-section">
+            <div class="practice-section-heading">
+                <h3 class="practice-section-title">词库分类</h3>
+                <button class="category-change-btn" data-action="open-category-sheet">更换</button>
+            </div>
+            <div id="cat-select" class="practice-category-picker">加载词库分类中...</div>
+        </section>
+        <section class="practice-settings-card">
+            <div>
+                <h3 class="practice-section-title">练习范围</h3>
+                <div id="scope-select" class="practice-chip-row practice-scope-row">
+                    <button class="cat-btn ${practiceState.scope === "all" ? "active" : ""}" data-scope="all">全部单词</button>
+                    <button class="cat-btn ${practiceState.scope === "due" ? "active" : ""}" data-scope="due">只练到期词</button>
+                    <button class="cat-btn ${practiceState.scope === "wrong" ? "active" : ""}" data-scope="wrong">只练错题</button>
+                </div>
+            </div>
+            <div class="practice-count-row">
+                <div>
+                    <h3 class="practice-section-title">题量</h3>
+                    <p class="practice-hint">建议 5~20 题，最多 50 题</p>
+                </div>
+                <input class="answer-input practice-count-input" id="practice-count" type="number" min="1" max="50" value="${practiceState.count}" />
+            </div>
+        </section>
+        <button class="btn-primary practice-start-btn" id="start-btn" data-action="start-quiz">开始练习</button>
     </div>`;
     checkStartReady();
 }
@@ -191,14 +272,49 @@ function renderPracticeCategories(words) {
     if (!isPracticePage()) return;
 
     const categoryCounts = getPracticeCategoryCounts(words);
+    practiceCategoryCounts = categoryCounts;
     const categories = [...categoryCounts.keys()];
     practiceCategories = ["", ...categories];
 
-    let html = `<button class="cat-btn ${practiceState.category === "" ? "active" : ""}" data-cat-index="0">全部</button>`;
+    const totalCount = words.length;
+
+    let desktopChips = `<button class="cat-btn ${practiceState.category === "" ? "active" : ""}" data-cat-index="0">全部</button>`;
     categories.forEach((cat, index) => {
-        html += `<button class="cat-btn ${practiceState.category === cat ? "active" : ""}" data-cat-index="${index + 1}">${cat} (${categoryCounts.get(cat)})</button>`;
+        desktopChips += `<button class="cat-btn ${practiceState.category === cat ? "active" : ""}" data-cat-index="${index + 1}">${cat} (${categoryCounts.get(cat)})</button>`;
     });
-    document.getElementById("cat-select").innerHTML = html;
+
+    let sheetOptions = `<button class="category-option ${practiceState.category === "" ? "selected" : ""}" data-cat-index="0">
+        <span>全部</span>
+        <span>${totalCount} 词</span>
+    </button>`;
+    categories.forEach((cat, index) => {
+        sheetOptions += `<button class="category-option ${practiceState.category === cat ? "selected" : ""}" data-cat-index="${index + 1}">
+            <span>${cat}</span>
+            <span>${categoryCounts.get(cat)} 词</span>
+        </button>`;
+    });
+
+    document.getElementById("cat-select").innerHTML = `
+        <button class="category-summary" data-action="open-category-sheet">
+            <span class="category-summary-label">当前分类</span>
+            <span class="category-summary-main" id="selected-category-name">${getSelectedCategoryName()}</span>
+            <span class="category-summary-count" id="selected-category-count">${getSelectedCategoryCount()} 词</span>
+        </button>
+        <div class="practice-chip-row category-chip-row">${desktopChips}</div>
+        <div class="category-sheet" id="category-sheet">
+            <div class="category-sheet-overlay"></div>
+            <div class="category-sheet-panel">
+                <div class="category-sheet-header">
+                    <div>
+                        <div class="category-sheet-title">选择词库分类</div>
+                        <div class="category-sheet-subtitle">${categories.length} 个分类</div>
+                    </div>
+                    <button class="icon-btn category-sheet-close" data-action="close-category-sheet" title="关闭">×</button>
+                </div>
+                <div class="category-option-grid">${sheetOptions}</div>
+            </div>
+        </div>
+    `;
 }
 
 async function renderPractice() {
@@ -280,12 +396,21 @@ function showQuestion() {
     const pct = (practiceState.current / total * 100).toFixed(0);
     const answered = practiceState.answered[practiceState.current];
 
-    let html = `<div class="page" data-page="practice"><div class="quiz-area">
-        <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
-        <p style="margin:10px 0;color:#999">第 ${practiceState.current + 1}/${total} 题</p>`;
+    let html = `<div class="page practice-quiz-page" data-page="practice"><div class="quiz-area">
+        <div class="quiz-topbar">
+            <span class="quiz-index">第 ${practiceState.current + 1}/${total} 题</span>
+            <span class="quiz-correct-count">已对 ${practiceState.correct}</span>
+        </div>
+        <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>`;
 
     if (practiceState.mode === "en_to_cn") {
-        html += `<div class="question">${q.english} <button class="icon-btn speak-btn" data-action="speak-question" title="发音">🔊</button> <span style="color:#999;font-size:14px">${q.pronunciation}</span></div>`;
+        html += `<div class="question question-card">
+            <div class="question-main">
+                <span class="question-word">${q.english}</span>
+                <button class="icon-btn speak-btn" data-action="speak-question" title="发音">🔊</button>
+            </div>
+            <div class="question-meta">${q.pronunciation}</div>
+        </div>`;
         if (answered) {
             html += `<div class="choices">${q.choices.map(c => {
                 let cls = "choice-btn";
@@ -297,29 +422,43 @@ function showQuestion() {
             html += `<div class="choices">${q.choices.map((c, index) => `<button class="choice-btn" data-action="choose-answer" data-choice-index="${index}">${index + 1}. ${c}</button>`).join("")}</div>`;
         }
     } else if (practiceState.mode === "cn_to_en") {
-        html += `<div class="question">${q.chinese} <span style="color:#999">(${q.part_of_speech})</span></div>`;
+        html += `<div class="question question-card">
+            <div class="question-main">${q.chinese}</div>
+            <div class="question-meta">${q.part_of_speech}</div>
+        </div>`;
         if (answered) {
-            html += `<div style="margin-top:10px;padding:12px;background:#f5f5f5;border-radius:8px">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
+            html += `<div class="answer-review">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
         } else {
-            html += `<input class="answer-input" id="answer-input" placeholder="输入英文..." autofocus>
-                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>`;
+            html += `<div class="answer-form">
+                <input class="answer-input" id="answer-input" placeholder="输入英文..." autofocus>
+                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>
+            </div>`;
         }
     } else if (practiceState.mode === "spelling") {
-        html += `<div class="question">${q.chinese} <span style="color:#999">${q.pronunciation}</span></div>`;
+        html += `<div class="question question-card">
+            <div class="question-main">${q.chinese}</div>
+            <div class="question-meta">${q.pronunciation}</div>
+        </div>`;
         if (answered) {
-            html += `<div style="margin-top:10px;padding:12px;background:#f5f5f5;border-radius:8px">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
+            html += `<div class="answer-review">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
         } else {
-            html += `<input class="answer-input" id="answer-input" placeholder="拼写单词..." autofocus>
-                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>`;
+            html += `<div class="answer-form">
+                <input class="answer-input" id="answer-input" placeholder="拼写单词..." autofocus>
+                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>
+            </div>`;
         }
     } else if (practiceState.mode === "code_fill") {
-        html += `<div class="question">填入关键字: ${q.hint}</div>
-            <div class="code-block">${q.code_snippet.replace(q.code_answer, "______")}</div>`;
+        html += `<div class="question question-card">
+            <div class="question-main">填入关键字: ${q.hint}</div>
+            <div class="code-block">${q.code_snippet.replace(q.code_answer, "______")}</div>
+        </div>`;
         if (answered) {
-            html += `<div style="margin-top:10px;padding:12px;background:#f5f5f5;border-radius:8px">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
+            html += `<div class="answer-review">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
         } else {
-            html += `<input class="answer-input" id="answer-input" placeholder="填入代码..." autofocus>
-                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>`;
+            html += `<div class="answer-form">
+                <input class="answer-input" id="answer-input" placeholder="填入代码..." autofocus>
+                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>
+            </div>`;
         }
     }
 
@@ -334,9 +473,9 @@ function showQuestion() {
     const canPrev = practiceState.current > 0;
     const isLast = practiceState.current >= total - 1;
     const canNext = answered && !isLast;
-    html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px">
-        ${canPrev ? `<button class="nav-btn" data-action="prev-question">⬅ 上一题</button>` : `<span></span>`}
-        ${canNext ? `<button class="nav-btn" data-action="next-question">下一题 ➡</button>` : isLast && answered ? `<button class="nav-btn" style="background:#4a90d9;color:#fff;border-color:#4a90d9" data-action="show-result">查看结果</button>` : `<span></span>`}
+    html += `<div class="quiz-actions">
+        ${canPrev ? `<button class="nav-btn" data-action="prev-question">⬅ 上一题</button>` : `<span class="quiz-action-spacer"></span>`}
+        ${canNext ? `<button class="nav-btn quiz-primary-action" data-action="next-question">下一题 ➡</button>` : isLast && answered ? `<button class="nav-btn quiz-primary-action" data-action="show-result">查看结果</button>` : `<span class="quiz-action-spacer"></span>`}
     </div></div></div>`;
 
     app.innerHTML = html;
@@ -425,19 +564,19 @@ function showResult() {
     const wrongAnswers = getWrongAnswers();
 
     let wrongSection = `
-        <div class="card" style="margin-top:24px;text-align:left">
-            <h3 style="margin-bottom:12px">错题回顾</h3>`;
+        <div class="card practice-wrong-card">
+            <h3>错题回顾</h3>`;
 
     if (wrongAnswers.length === 0) {
-        wrongSection += `<div style="color:#4caf50">本轮没有错题，继续保持。</div>`;
+        wrongSection += `<div class="practice-empty-result">本轮没有错题，继续保持。</div>`;
     } else {
-        wrongSection += `<div style="display:flex;flex-direction:column;gap:10px">`;
+        wrongSection += `<div class="wrong-list">`;
         wrongAnswers.forEach((item, index) => {
             wrongSection += `
-                <div style="padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa">
-                    <div style="font-weight:700;margin-bottom:6px">${index + 1}. ${getQuestionLabel(item.question)}</div>
-                    <div style="color:#c62828">你的答案：${item.answered.answer || "（空）"}</div>
-                    <div style="color:#2e7d32;margin-top:4px">正确答案：${item.answered.correct_answer}</div>
+                <div class="wrong-item">
+                    <div class="wrong-question">${index + 1}. ${getQuestionLabel(item.question)}</div>
+                    <div class="wrong-answer">你的答案：${item.answered.answer || "（空）"}</div>
+                    <div class="right-answer">正确答案：${item.answered.correct_answer}</div>
                 </div>`;
         });
         wrongSection += `</div>`;
@@ -446,17 +585,17 @@ function showResult() {
     wrongSection += `</div>`;
 
     app.innerHTML = `
-        <div class="page" data-page="practice" style="text-align:center">
+        <div class="page practice-result-page" data-page="practice">
             <h2>练习完成!</h2>
-            <div class="stats-cards" style="margin-top:20px">
+            <div class="stats-cards practice-result-stats">
                 <div class="card"><div class="num">${practiceState.correct}</div><div class="label">答对</div></div>
                 <div class="card"><div class="num">${total}</div><div class="label">总题数</div></div>
                 <div class="card"><div class="num">${pct}%</div><div class="label">正确率</div></div>
             </div>
-            <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px">
-                <button class="btn-primary" style="width:auto;margin:0;padding:14px 28px" data-action="restart-quiz">再来一轮</button>
-                ${wrongAnswers.length > 0 ? `<button class="nav-btn" style="padding:14px 28px;background:#fff3e0;border-color:#ff9800;color:#ff9800" data-action="restart-wrong-quiz">重练错题</button>` : ""}
-                <button class="nav-btn" style="padding:14px 28px" data-action="return-practice-selection">返回选择</button>
+            <div class="practice-result-actions">
+                <button class="btn-primary" data-action="restart-quiz">再来一轮</button>
+                ${wrongAnswers.length > 0 ? `<button class="nav-btn practice-wrong-retry" data-action="restart-wrong-quiz">重练错题</button>` : ""}
+                <button class="nav-btn" data-action="return-practice-selection">返回选择</button>
             </div>
             ${wrongSection}
         </div>
