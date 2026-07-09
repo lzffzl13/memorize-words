@@ -65,6 +65,11 @@ main { max-width: 860px; margin: 28px auto; padding: 0 16px 32px; }
 .feedback { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 15px; }
 .feedback.correct { background: #e8f5e9; color: #2e7d32; }
 .feedback.wrong { background: #ffebee; color: #c62828; }
+.feedback-main { font-weight: 700; }
+.feedback-word-row { display: flex; align-items: center; gap: 8px; margin-top: 7px; color: #7f1d1d; }
+.feedback-word { font-weight: 800; color: #1f2a37; }
+.feedback-pronunciation { color: #9f6b6b; font-size: 13px; }
+.icon-btn.feedback-speak-btn { min-width: 30px; min-height: 30px; padding: 4px 6px; border-radius: 8px; background: rgba(255,255,255,0.7); opacity: 1; }
 
 /* 代码块 */
 .code-block { max-width: 100%; background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 8px; font-family: "Cascadia Code", "Fira Code", monospace; font-size: 14px; white-space: pre; margin: 12px 0; overflow-x: auto; }
@@ -634,7 +639,12 @@ select.form-input { background: #fff; }
 .answer-form { display: flex; align-items: stretch; gap: 10px; margin-top: 12px; }
 .answer-form .answer-input { flex: 1; min-width: 0; margin-top: 0; }
 .answer-form .submit-btn { margin-top: 0; }
-.answer-review { margin-top: 10px; padding: 12px; background: #f5f7fb; border: 1px solid #e6ebf2; border-radius: 10px; color: #475467; }
+.answer-review { margin-top: 10px; padding: 12px; background: #f5f7fb; border: 1px solid #e6ebf2; border-radius: 10px; color: #475467; display: grid; gap: 7px; }
+.answer-review-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.answer-review-label { flex: 0 0 auto; color: #98a2b3; font-size: 13px; }
+.answer-review-value { min-width: 0; text-align: right; overflow-wrap: anywhere; }
+.answer-review-value.wrong { color: #c62828; }
+.answer-review-value.correct { color: #2e7d32; }
 .quiz-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 20px; }
 .quiz-action-spacer { min-width: 1px; }
 .quiz-primary-action { background: #4a90d9; color: #fff; border-color: #4a90d9; }
@@ -651,10 +661,21 @@ select.form-input { background: #fff; }
 .practice-wrong-card h3 { margin-bottom: 12px; }
 .practice-empty-result { color: #4caf50; }
 .wrong-list { display: flex; flex-direction: column; gap: 10px; }
-.wrong-item { padding: 12px; border: 1px solid #e6ebf2; border-radius: 10px; background: #fafcff; }
-.wrong-question { font-weight: 700; margin-bottom: 6px; color: #1f2a37; }
-.wrong-answer { color: #c62828; }
-.right-answer { margin-top: 4px; color: #2e7d32; }
+.wrong-item { padding: 13px; border: 1px solid #e6ebf2; border-radius: 10px; background: #fafcff; }
+.wrong-item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.wrong-word-main { min-width: 0; }
+.wrong-question { font-weight: 800; color: #1f2a37; overflow-wrap: anywhere; }
+.wrong-meaning { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; color: #667085; font-size: 13px; line-height: 1.35; }
+.wrong-pronunciation { color: #98a2b3; }
+.review-speak-btn { flex: 0 0 auto; width: 34px; min-width: 34px; min-height: 34px; border-radius: 10px; background: #eef5ff; color: #4a90d9; opacity: 1; }
+.wrong-answer-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.wrong-answer,
+.right-answer { padding: 8px 10px; border-radius: 8px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.wrong-answer { background: #fff1f2; color: #c62828; }
+.right-answer { background: #ecfdf3; color: #2e7d32; }
+.wrong-example { margin-top: 10px; color: #475467; font-size: 14px; line-height: 1.55; }
+.wrong-example-cn { margin-top: 3px; color: #98a2b3; font-size: 13px; line-height: 1.5; }
+.wrong-code { margin-top: 10px; font-size: 13px; }
 
 @media (max-width: 720px) {
     .practice-setup {
@@ -946,6 +967,15 @@ select.form-input { background: #fff; }
         font-size: 14px;
     }
 
+    .feedback-word-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .answer-review-row {
+        gap: 10px;
+    }
+
     .quiz-actions {
         margin-top: 0;
         gap: 8px;
@@ -1024,5 +1054,20 @@ select.form-input { background: #fff; }
         border-radius: 10px;
         font-size: 14px;
         line-height: 1.45;
+    }
+
+    .wrong-answer-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        margin-top: 9px;
+    }
+
+    .wrong-example,
+    .wrong-example-cn {
+        font-size: 13px;
+    }
+
+    .wrong-code {
+        font-size: 12px;
     }
 }

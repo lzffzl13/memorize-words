@@ -57,6 +57,9 @@ app.addEventListener("click", (event) => {
             if (question) window.playWordPronunciation(question.english);
             break;
         }
+        case "speak-review-word":
+            window.playWordPronunciation(actionEl.dataset.word);
+            break;
         case "choose-answer": {
             const question = getCurrentQuestion();
             if (!question || practiceState.answered[practiceState.current]) return;
@@ -164,6 +167,95 @@ function getQuestionLabel(question) {
     if (practiceState.mode === "en_to_cn") return question.english;
     if (practiceState.mode === "cn_to_en" || practiceState.mode === "spelling") return question.chinese;
     return question.hint;
+}
+
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;",
+    }[char]));
+}
+
+function formatAnswer(value) {
+    const text = String(value ?? "").trim();
+    return text || "（空）";
+}
+
+function getReviewEnglish(question, answered = null) {
+    return question.english || (practiceState.mode !== "en_to_cn" && answered ? answered.correct_answer : "") || "";
+}
+
+function getReviewChinese(question, answered = null) {
+    return question.chinese || question.hint || (practiceState.mode === "en_to_cn" && answered ? answered.correct_answer : "") || "";
+}
+
+function renderAnswerReview(answered) {
+    return `<div class="answer-review">
+        <div class="answer-review-row">
+            <span class="answer-review-label">你的答案</span>
+            <strong class="answer-review-value wrong">${escapeHtml(formatAnswer(answered.answer))}</strong>
+        </div>
+        <div class="answer-review-row">
+            <span class="answer-review-label">正确答案</span>
+            <strong class="answer-review-value correct">${escapeHtml(answered.correct_answer)}</strong>
+        </div>
+    </div>`;
+}
+
+function renderAnswerFeedback(question, answered) {
+    if (answered.is_correct) {
+        return `<div class="feedback correct">正确!</div>`;
+    }
+
+    const english = getReviewEnglish(question, answered);
+    const pronunciation = question.pronunciation || "";
+    const wordLine = english ? `
+        <div class="feedback-word-row">
+            <span class="feedback-word">${escapeHtml(english)}</span>
+            ${pronunciation ? `<span class="feedback-pronunciation">${escapeHtml(pronunciation)}</span>` : ""}
+            <button class="icon-btn feedback-speak-btn" data-action="speak-question" title="发音">🔊</button>
+        </div>` : "";
+
+    return `<div class="feedback wrong">
+        <div class="feedback-main">错误! 正确答案: ${escapeHtml(answered.correct_answer)}</div>
+        ${wordLine}
+    </div>`;
+}
+
+function renderWrongAnswerItem(item, index) {
+    const { question, answered } = item;
+    const english = getReviewEnglish(question, answered);
+    const chinese = getReviewChinese(question, answered);
+    const pronunciation = question.pronunciation || "";
+    const partOfSpeech = question.part_of_speech || "";
+    const example = question.example_sentence || "";
+    const exampleCn = question.example_sentence_cn || "";
+    const codeSnippet = question.code_snippet || "";
+
+    return `
+        <div class="wrong-item">
+            <div class="wrong-item-head">
+                <div class="wrong-word-main">
+                    <div class="wrong-question">${index + 1}. ${escapeHtml(english || getQuestionLabel(question))}</div>
+                    <div class="wrong-meaning">
+                        ${chinese ? `<span>${escapeHtml(chinese)}</span>` : ""}
+                        ${partOfSpeech ? `<span>${escapeHtml(partOfSpeech)}</span>` : ""}
+                        ${pronunciation ? `<span class="wrong-pronunciation">${escapeHtml(pronunciation)}</span>` : ""}
+                    </div>
+                </div>
+                ${english ? `<button class="icon-btn review-speak-btn" data-action="speak-review-word" data-word="${escapeHtml(english)}" title="发音">🔊</button>` : ""}
+            </div>
+            <div class="wrong-answer-grid">
+                <div class="wrong-answer">你的答案：${escapeHtml(formatAnswer(answered.answer))}</div>
+                <div class="right-answer">正确答案：${escapeHtml(answered.correct_answer)}</div>
+            </div>
+            ${example ? `<div class="wrong-example">${escapeHtml(example)}</div>` : ""}
+            ${exampleCn ? `<div class="wrong-example-cn">${escapeHtml(exampleCn)}</div>` : ""}
+            ${codeSnippet ? `<div class="code-block wrong-code">${escapeHtml(codeSnippet)}</div>` : ""}
+        </div>`;
 }
 
 function getEmptyPracticeMessage() {
@@ -427,7 +519,7 @@ function showQuestion() {
             <div class="question-meta">${q.part_of_speech}</div>
         </div>`;
         if (answered) {
-            html += `<div class="answer-review">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
+            html += renderAnswerReview(answered);
         } else {
             html += `<div class="answer-form">
                 <input class="answer-input" id="answer-input" placeholder="输入英文..." autofocus>
@@ -440,7 +532,7 @@ function showQuestion() {
             <div class="question-meta">${q.pronunciation}</div>
         </div>`;
         if (answered) {
-            html += `<div class="answer-review">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
+            html += renderAnswerReview(answered);
         } else {
             html += `<div class="answer-form">
                 <input class="answer-input" id="answer-input" placeholder="拼写单词..." autofocus>
@@ -453,7 +545,7 @@ function showQuestion() {
             <div class="code-block">${q.code_snippet.replace(q.code_answer, "______")}</div>
         </div>`;
         if (answered) {
-            html += `<div class="answer-review">你的答案: ${answered.answer} | 正确答案: ${answered.correct_answer}</div>`;
+            html += renderAnswerReview(answered);
         } else {
             html += `<div class="answer-form">
                 <input class="answer-input" id="answer-input" placeholder="填入代码..." autofocus>
@@ -463,9 +555,7 @@ function showQuestion() {
     }
 
     if (answered) {
-        const fbClass = answered.is_correct ? "feedback correct" : "feedback wrong";
-        const fbText = answered.is_correct ? "正确!" : `错误! 正确答案: ${answered.correct_answer}`;
-        html += `<div class="${fbClass}">${fbText}</div>`;
+        html += renderAnswerFeedback(q, answered);
     } else {
         html += `<div id="feedback"></div>`;
     }
@@ -572,12 +662,7 @@ function showResult() {
     } else {
         wrongSection += `<div class="wrong-list">`;
         wrongAnswers.forEach((item, index) => {
-            wrongSection += `
-                <div class="wrong-item">
-                    <div class="wrong-question">${index + 1}. ${getQuestionLabel(item.question)}</div>
-                    <div class="wrong-answer">你的答案：${item.answered.answer || "（空）"}</div>
-                    <div class="right-answer">正确答案：${item.answered.correct_answer}</div>
-                </div>`;
+            wrongSection += renderWrongAnswerItem(item, index);
         });
         wrongSection += `</div>`;
     }
