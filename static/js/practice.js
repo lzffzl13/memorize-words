@@ -1,6 +1,31 @@
-let practiceState = { mode: null, category: "", scope: "all", count: 10, sessionId: null, questions: [], current: 0, correct: 0, answered: [] };
+let practiceState = {
+    mode: null,
+    category: "",
+    scope: "all",
+    count: 10,
+    sessionId: null,
+    questions: [],
+    current: 0,
+    correct: 0,
+    answered: [],
+    reinforcementQueued: new Set(),
+    wrongAttempts: new Map(),
+    reinforcementResults: new Map(),
+    autoStart: false,
+};
 let practiceCategories = [];
 let practiceCategoryCounts = new Map();
+let categorySheetTrigger = null;
+let practiceSubmissionPending = false;
+let practiceAdvanceTimer = null;
+
+window.setPracticePreset = function setPracticePreset({ scope = "all", count = 10, mode = "en_to_cn", autoStart = false } = {}) {
+    if (["all", "due", "wrong"].includes(scope)) practiceState.scope = scope;
+    practiceState.count = Math.max(1, Math.min(Number(count) || 10, 50));
+    practiceState.mode = mode || practiceState.mode || "en_to_cn";
+    practiceState.category = "";
+    practiceState.autoStart = Boolean(autoStart);
+};
 
 // TTS 发音
 app.addEventListener("click", (event) => {
@@ -8,8 +33,12 @@ app.addEventListener("click", (event) => {
 
     const modeBtn = event.target.closest(".mode-btn[data-mode]");
     if (modeBtn) {
-        document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("selected"));
+        document.querySelectorAll(".mode-btn").forEach((btn) => {
+            btn.classList.remove("selected");
+            btn.setAttribute("aria-pressed", "false");
+        });
         modeBtn.classList.add("selected");
+        modeBtn.setAttribute("aria-pressed", "true");
         practiceState.mode = modeBtn.dataset.mode;
         checkStartReady();
         return;
@@ -23,8 +52,12 @@ app.addEventListener("click", (event) => {
 
     const scopeBtn = event.target.closest("#scope-select .cat-btn[data-scope]");
     if (scopeBtn) {
-        document.querySelectorAll("#scope-select .cat-btn").forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll("#scope-select .cat-btn").forEach((btn) => {
+            btn.classList.remove("active");
+            btn.setAttribute("aria-pressed", "false");
+        });
         scopeBtn.classList.add("active");
+        scopeBtn.setAttribute("aria-pressed", "true");
         practiceState.scope = scopeBtn.dataset.scope;
         return;
     }
@@ -77,6 +110,9 @@ app.addEventListener("click", (event) => {
         case "next-question":
             navigateQuestion(1);
             break;
+        case "continue-pending":
+            continuePendingQuestions();
+            break;
         case "show-result":
             showResult();
             break;
@@ -107,15 +143,37 @@ app.addEventListener("input", (event) => {
 
 document.addEventListener("keydown", (event) => {
     if (!isPracticePage()) return;
+
+    const openSheet = document.querySelector(".category-sheet.open");
+    if (openSheet) {
+        if (event.key === "Escape") {
+            event.preventDefault();
+            closeCategorySheet();
+            return;
+        }
+        window.trapFocusWithin(openSheet, event);
+        return;
+    }
+
     if (!document.querySelector(".quiz-area")) return;
 
-    if (event.key === "ArrowUp") {
+    const input = document.getElementById("answer-input");
+    const isTyping = ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName);
+    if (isTyping) {
+        if (input && event.key === "Enter") {
+            event.preventDefault();
+            submitAnswer(input.value);
+        }
+        return;
+    }
+
+    if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
         event.preventDefault();
         navigateQuestion(-1);
         return;
     }
 
-    if (event.key === "ArrowDown") {
+    if (event.key === "ArrowDown" || event.key === "ArrowRight") {
         event.preventDefault();
         navigateQuestion(1);
         return;
@@ -135,10 +193,6 @@ document.addEventListener("keydown", (event) => {
         return;
     }
 
-    const input = document.getElementById("answer-input");
-    if (input && event.key === "Enter") {
-        submitAnswer(input.value);
-    }
 });
 
 function isPracticePage() {
@@ -150,17 +204,59 @@ function getCurrentQuestion() {
 }
 
 function getWrongAnswers() {
-    return practiceState.questions
-        .map((question, index) => {
-            const answered = practiceState.answered[index];
-            if (!answered || answered.is_correct) return null;
-            return { question, answered };
-        })
-        .filter(Boolean);
+    return [...practiceState.wrongAttempts.values()].map((item) => ({
+        ...item,
+        reinforcement: practiceState.reinforcementResults.get(item.question.word_id) || null,
+    }));
 }
 
 function getWrongAnswerIds() {
     return getWrongAnswers().map(item => item.question.word_id);
+}
+
+function choicesAreEqual(left = [], right = []) {
+    return left.length === right.length && left.every((choice, index) => choice === right[index]);
+}
+
+function buildReinforcementQuestion(question, freshQuestion = null) {
+    const canUseFreshQuestion = freshQuestion && freshQuestion.word_id === question.word_id;
+    const reinforcement = {
+        ...question,
+        ...(canUseFreshQuestion ? freshQuestion : {}),
+        word_id: question.word_id,
+        _isReinforcement: true,
+    };
+
+    if (Array.isArray(question.choices)) {
+        let refreshedChoices = Array.isArray(reinforcement.choices)
+            ? [...reinforcement.choices]
+            : [...question.choices];
+
+        // 后端会刷新干扰项；极小词库无法刷新时，至少改变选项顺序。
+        if (refreshedChoices.length > 1 && choicesAreEqual(refreshedChoices, question.choices)) {
+            refreshedChoices = [...refreshedChoices.slice(1), refreshedChoices[0]];
+        }
+        reinforcement.choices = refreshedChoices;
+    }
+
+    return reinforcement;
+}
+
+function queueWrongAnswerForReinforcement(question, freshQuestion = null) {
+    if (!question || question._isReinforcement || practiceState.reinforcementQueued.has(question.word_id)) {
+        return null;
+    }
+
+    const insertAt = Math.min(practiceState.current + 3, practiceState.questions.length);
+    const reinforcement = buildReinforcementQuestion(question, freshQuestion);
+    if (practiceState.answered.length < practiceState.questions.length) {
+        practiceState.answered.length = practiceState.questions.length;
+    }
+    practiceState.questions.splice(insertAt, 0, reinforcement);
+    practiceState.answered.splice(insertAt, 0, undefined);
+    practiceState.reinforcementQueued.add(question.word_id);
+
+    return "已加入本轮加练，稍后会再次出现。";
 }
 
 function getQuestionLabel(question) {
@@ -207,7 +303,7 @@ function renderAnswerReview(answered) {
 
 function renderAnswerFeedback(question, answered) {
     if (answered.is_correct) {
-        return `<div class="feedback correct">正确!</div>`;
+        return `<div class="feedback correct" role="status" aria-live="polite" aria-atomic="true">${question._isReinforcement ? "加练答对，已经巩固!" : "正确!"}</div>`;
     }
 
     const english = getReviewEnglish(question, answered);
@@ -216,17 +312,18 @@ function renderAnswerFeedback(question, answered) {
         <div class="feedback-word-row">
             <span class="feedback-word">${escapeHtml(english)}</span>
             ${pronunciation ? `<span class="feedback-pronunciation">${escapeHtml(pronunciation)}</span>` : ""}
-            <button class="icon-btn feedback-speak-btn" data-action="speak-question" title="发音">🔊</button>
+            <button type="button" class="icon-btn feedback-speak-btn" data-action="speak-question" title="发音" aria-label="播放 ${escapeHtml(english)} 的发音">🔊</button>
         </div>` : "";
 
-    return `<div class="feedback wrong">
+    return `<div class="feedback wrong" role="status" aria-live="polite" aria-atomic="true">
         <div class="feedback-main">错误! 正确答案: ${escapeHtml(answered.correct_answer)}</div>
         ${wordLine}
+        ${answered.reinforcement_note ? `<div class="feedback-reinforcement-note">${escapeHtml(answered.reinforcement_note)}</div>` : ""}
     </div>`;
 }
 
 function renderWrongAnswerItem(item, index) {
-    const { question, answered } = item;
+    const { question, answered, reinforcement } = item;
     const english = getReviewEnglish(question, answered);
     const chinese = getReviewChinese(question, answered);
     const pronunciation = question.pronunciation || "";
@@ -234,6 +331,8 @@ function renderWrongAnswerItem(item, index) {
     const example = question.example_sentence || "";
     const exampleCn = question.example_sentence_cn || "";
     const codeSnippet = question.code_snippet || "";
+    const reinforcementText = reinforcement?.is_correct ? "加练已答对" : "加练仍需巩固";
+    const reinforcementClass = reinforcement?.is_correct ? "resolved" : "unresolved";
 
     return `
         <div class="wrong-item">
@@ -246,7 +345,10 @@ function renderWrongAnswerItem(item, index) {
                         ${pronunciation ? `<span class="wrong-pronunciation">${escapeHtml(pronunciation)}</span>` : ""}
                     </div>
                 </div>
-                ${english ? `<button class="icon-btn review-speak-btn" data-action="speak-review-word" data-word="${escapeHtml(english)}" title="发音">🔊</button>` : ""}
+                <div class="wrong-item-tools">
+                    <span class="reinforcement-result ${reinforcementClass}">${reinforcementText}</span>
+                    ${english ? `<button type="button" class="icon-btn review-speak-btn" data-action="speak-review-word" data-word="${escapeHtml(english)}" title="发音" aria-label="播放 ${escapeHtml(english)} 的发音">🔊</button>` : ""}
+                </div>
             </div>
             <div class="wrong-answer-grid">
                 <div class="wrong-answer">你的答案：${escapeHtml(formatAnswer(answered.answer))}</div>
@@ -297,6 +399,7 @@ function syncCategorySelection() {
         const selected = practiceCategories[Number(el.dataset.catIndex)] === practiceState.category;
         el.classList.toggle("active", selected);
         el.classList.toggle("selected", selected);
+        el.setAttribute("aria-pressed", String(selected));
     });
     updateCategorySummary();
 }
@@ -308,12 +411,22 @@ function selectPracticeCategory(index) {
 
 function openCategorySheet() {
     const sheet = document.getElementById("category-sheet");
-    if (sheet) sheet.classList.add("open");
+    if (!sheet) return;
+    categorySheetTrigger = document.activeElement;
+    sheet.classList.add("open");
+    sheet.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    requestAnimationFrame(() => sheet.querySelector(".category-sheet-close")?.focus());
 }
 
 function closeCategorySheet() {
     const sheet = document.getElementById("category-sheet");
-    if (sheet) sheet.classList.remove("open");
+    if (!sheet || !sheet.classList.contains("open")) return;
+    sheet.classList.remove("open");
+    sheet.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    categorySheetTrigger?.focus();
+    categorySheetTrigger = null;
 }
 
 function renderPracticeShell() {
@@ -325,16 +438,16 @@ function renderPracticeShell() {
         <section class="practice-section">
             <h3 class="practice-section-title">练习模式</h3>
             <div class="mode-select">
-                <div class="mode-btn ${practiceState.mode === "en_to_cn" ? "selected" : ""}" data-mode="en_to_cn"><b>英译中</b><span>看英文选中文</span></div>
-                <div class="mode-btn ${practiceState.mode === "cn_to_en" ? "selected" : ""}" data-mode="cn_to_en"><b>中译英</b><span>看中文拼英文</span></div>
-                <div class="mode-btn ${practiceState.mode === "spelling" ? "selected" : ""}" data-mode="spelling"><b>拼写练习</b><span>给释义拼单词</span></div>
-                <div class="mode-btn ${practiceState.mode === "code_fill" ? "selected" : ""}" data-mode="code_fill"><b>代码填空</b><span>在代码中填词</span></div>
+                <button type="button" class="mode-btn ${practiceState.mode === "en_to_cn" ? "selected" : ""}" data-mode="en_to_cn" aria-pressed="${practiceState.mode === "en_to_cn"}"><b>英译中</b><span>看英文选中文</span></button>
+                <button type="button" class="mode-btn ${practiceState.mode === "cn_to_en" ? "selected" : ""}" data-mode="cn_to_en" aria-pressed="${practiceState.mode === "cn_to_en"}"><b>中译英</b><span>看中文拼英文</span></button>
+                <button type="button" class="mode-btn ${practiceState.mode === "spelling" ? "selected" : ""}" data-mode="spelling" aria-pressed="${practiceState.mode === "spelling"}"><b>拼写练习</b><span>给释义拼单词</span></button>
+                <button type="button" class="mode-btn ${practiceState.mode === "code_fill" ? "selected" : ""}" data-mode="code_fill" aria-pressed="${practiceState.mode === "code_fill"}"><b>代码填空</b><span>在代码中填词</span></button>
             </div>
         </section>
         <section class="practice-section practice-category-section">
             <div class="practice-section-heading">
                 <h3 class="practice-section-title">词库分类</h3>
-                <button class="category-change-btn" data-action="open-category-sheet">更换</button>
+                <button type="button" class="category-change-btn" data-action="open-category-sheet" aria-haspopup="dialog">更换</button>
             </div>
             <div id="cat-select" class="practice-category-picker">加载词库分类中...</div>
         </section>
@@ -342,26 +455,28 @@ function renderPracticeShell() {
             <div>
                 <h3 class="practice-section-title">练习范围</h3>
                 <div id="scope-select" class="practice-chip-row practice-scope-row">
-                    <button class="cat-btn ${practiceState.scope === "all" ? "active" : ""}" data-scope="all">全部单词</button>
-                    <button class="cat-btn ${practiceState.scope === "due" ? "active" : ""}" data-scope="due">只练到期词</button>
-                    <button class="cat-btn ${practiceState.scope === "wrong" ? "active" : ""}" data-scope="wrong">只练错题</button>
+                    <button type="button" class="cat-btn ${practiceState.scope === "all" ? "active" : ""}" data-scope="all" aria-pressed="${practiceState.scope === "all"}">全部单词</button>
+                    <button type="button" class="cat-btn ${practiceState.scope === "due" ? "active" : ""}" data-scope="due" aria-pressed="${practiceState.scope === "due"}">只练到期词</button>
+                    <button type="button" class="cat-btn ${practiceState.scope === "wrong" ? "active" : ""}" data-scope="wrong" aria-pressed="${practiceState.scope === "wrong"}">只练错题</button>
                 </div>
             </div>
             <div class="practice-count-row">
                 <div>
-                    <h3 class="practice-section-title">题量</h3>
-                    <p class="practice-hint">建议 5~20 题，最多 50 题</p>
+                    <h3 class="practice-section-title" id="practice-count-label">题量</h3>
+                    <p class="practice-hint" id="practice-count-hint">建议 5~20 题，最多 50 题</p>
                 </div>
-                <input class="answer-input practice-count-input" id="practice-count" type="number" min="1" max="50" value="${practiceState.count}" />
+                <input class="answer-input practice-count-input" id="practice-count" type="number" min="1" max="50" value="${practiceState.count}" aria-labelledby="practice-count-label" aria-describedby="practice-count-hint" />
             </div>
         </section>
-        <button class="btn-primary practice-start-btn" id="start-btn" data-action="start-quiz">开始练习</button>
+        <button type="button" class="btn-primary practice-start-btn" id="start-btn" data-action="start-quiz">开始练习</button>
     </div>`;
     checkStartReady();
 }
 
 function renderPracticeCategories(words) {
     if (!isPracticePage()) return;
+    const categoryPicker = document.getElementById("cat-select");
+    if (!categoryPicker) return;
 
     const categoryCounts = getPracticeCategoryCounts(words);
     practiceCategoryCounts = categoryCounts;
@@ -370,38 +485,38 @@ function renderPracticeCategories(words) {
 
     const totalCount = words.length;
 
-    let desktopChips = `<button class="cat-btn ${practiceState.category === "" ? "active" : ""}" data-cat-index="0">全部</button>`;
+    let desktopChips = `<button type="button" class="cat-btn ${practiceState.category === "" ? "active" : ""}" data-cat-index="0" aria-pressed="${practiceState.category === ""}">全部</button>`;
     categories.forEach((cat, index) => {
-        desktopChips += `<button class="cat-btn ${practiceState.category === cat ? "active" : ""}" data-cat-index="${index + 1}">${cat} (${categoryCounts.get(cat)})</button>`;
+        desktopChips += `<button type="button" class="cat-btn ${practiceState.category === cat ? "active" : ""}" data-cat-index="${index + 1}" aria-pressed="${practiceState.category === cat}">${cat} (${categoryCounts.get(cat)})</button>`;
     });
 
-    let sheetOptions = `<button class="category-option ${practiceState.category === "" ? "selected" : ""}" data-cat-index="0">
+    let sheetOptions = `<button type="button" class="category-option ${practiceState.category === "" ? "selected" : ""}" data-cat-index="0" aria-pressed="${practiceState.category === ""}">
         <span>全部</span>
         <span>${totalCount} 词</span>
     </button>`;
     categories.forEach((cat, index) => {
-        sheetOptions += `<button class="category-option ${practiceState.category === cat ? "selected" : ""}" data-cat-index="${index + 1}">
+        sheetOptions += `<button type="button" class="category-option ${practiceState.category === cat ? "selected" : ""}" data-cat-index="${index + 1}" aria-pressed="${practiceState.category === cat}">
             <span>${cat}</span>
             <span>${categoryCounts.get(cat)} 词</span>
         </button>`;
     });
 
-    document.getElementById("cat-select").innerHTML = `
-        <button class="category-summary" data-action="open-category-sheet">
+    categoryPicker.innerHTML = `
+        <button type="button" class="category-summary" data-action="open-category-sheet" aria-haspopup="dialog">
             <span class="category-summary-label">当前分类</span>
             <span class="category-summary-main" id="selected-category-name">${getSelectedCategoryName()}</span>
             <span class="category-summary-count" id="selected-category-count">${getSelectedCategoryCount()} 词</span>
         </button>
         <div class="practice-chip-row category-chip-row">${desktopChips}</div>
-        <div class="category-sheet" id="category-sheet">
+        <div class="category-sheet" id="category-sheet" aria-hidden="true">
             <div class="category-sheet-overlay"></div>
-            <div class="category-sheet-panel">
+            <div class="category-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="category-sheet-title">
                 <div class="category-sheet-header">
                     <div>
-                        <div class="category-sheet-title">选择词库分类</div>
+                        <div class="category-sheet-title" id="category-sheet-title">选择词库分类</div>
                         <div class="category-sheet-subtitle">${categories.length} 个分类</div>
                     </div>
-                    <button class="icon-btn category-sheet-close" data-action="close-category-sheet" title="关闭">×</button>
+                    <button type="button" class="icon-btn category-sheet-close" data-action="close-category-sheet" title="关闭" aria-label="关闭词库分类选择">×</button>
                 </div>
                 <div class="category-option-grid">${sheetOptions}</div>
             </div>
@@ -410,10 +525,13 @@ function renderPracticeCategories(words) {
 }
 
 async function renderPractice() {
+    clearPracticeAdvanceTimer();
+    practiceSubmissionPending = false;
     const previousMode = practiceState.mode;
     const previousCategory = practiceState.category;
     const previousScope = practiceState.scope;
     const previousCount = practiceState.count;
+    const shouldAutoStart = Boolean(practiceState.autoStart);
     practiceState = {
         mode: previousMode || "en_to_cn",
         category: previousCategory || "",
@@ -424,11 +542,16 @@ async function renderPractice() {
         current: 0,
         correct: 0,
         answered: [],
+        reinforcementQueued: new Set(),
+        wrongAttempts: new Map(),
+        reinforcementResults: new Map(),
+        autoStart: false,
     };
     renderPracticeShell();
     const words = await getWords();
     if (!isPracticePage()) return;
     renderPracticeCategories(words);
+    if (shouldAutoStart) await startQuiz();
 }
 
 function checkStartReady() {
@@ -437,6 +560,8 @@ function checkStartReady() {
 }
 
 async function startQuiz(extra = {}) {
+    clearPracticeAdvanceTimer();
+    practiceSubmissionPending = false;
     const countInput = document.getElementById("practice-count");
     const requestedCount = countInput ? Number(countInput.value) : practiceState.count;
     practiceState.count = Math.max(1, Math.min(Number.isNaN(requestedCount) ? 10 : requestedCount, 50));
@@ -450,11 +575,35 @@ async function startQuiz(extra = {}) {
         ...extra,
     };
 
-    const data = await api("/api/practice/start", {
-        method: "POST",
-        body: JSON.stringify(payload),
-    });
+    const startBtn = document.getElementById("start-btn");
+    const startBtnText = startBtn?.textContent || "开始练习";
+    if (startBtn) {
+        startBtn.disabled = true;
+        startBtn.setAttribute("aria-busy", "true");
+        startBtn.textContent = "正在准备...";
+    }
+
+    let data;
+    try {
+        data = await api("/api/practice/start", {
+            method: "POST",
+            body: JSON.stringify(payload),
+        });
+    } catch (error) {
+        if (startBtn) {
+            startBtn.disabled = false;
+            startBtn.removeAttribute("aria-busy");
+            startBtn.textContent = startBtnText;
+        }
+        alert("暂时无法开始练习，请稍后重试。");
+        return;
+    }
     if (!data.questions || data.questions.length === 0) {
+        if (startBtn) {
+            startBtn.disabled = false;
+            startBtn.removeAttribute("aria-busy");
+            startBtn.textContent = startBtnText;
+        }
         alert(getEmptyPracticeMessage());
         return;
     }
@@ -463,6 +612,9 @@ async function startQuiz(extra = {}) {
     practiceState.current = 0;
     practiceState.correct = 0;
     practiceState.answered = [];
+    practiceState.reinforcementQueued = new Set();
+    practiceState.wrongAttempts = new Map();
+    practiceState.reinforcementResults = new Map();
     showQuestion();
 }
 
@@ -480,6 +632,50 @@ async function restartWrongQuiz() {
     practiceState.scope = previousScope;
 }
 
+function clearPracticeAdvanceTimer() {
+    if (practiceAdvanceTimer !== null) {
+        clearTimeout(practiceAdvanceTimer);
+        practiceAdvanceTimer = null;
+    }
+}
+
+function getFirstUnansweredIndex(startIndex = 0) {
+    for (let index = Math.max(0, startIndex); index < practiceState.questions.length; index++) {
+        if (!practiceState.answered[index]) return index;
+    }
+    return -1;
+}
+
+function getNextUnansweredIndex(currentIndex) {
+    const laterIndex = getFirstUnansweredIndex(currentIndex + 1);
+    if (laterIndex !== -1) return laterIndex;
+
+    for (let index = 0; index < currentIndex; index++) {
+        if (!practiceState.answered[index]) return index;
+    }
+    return -1;
+}
+
+function continuePendingQuestions() {
+    clearPracticeAdvanceTimer();
+    const pendingIndex = getNextUnansweredIndex(practiceState.current);
+    if (pendingIndex === -1) {
+        showResult();
+        return;
+    }
+    practiceState.current = pendingIndex;
+    showQuestion();
+}
+
+function scheduleAdvanceAfterCorrect(answeredIndex) {
+    clearPracticeAdvanceTimer();
+    practiceAdvanceTimer = setTimeout(() => {
+        practiceAdvanceTimer = null;
+        if (!isPracticePage() || practiceState.current !== answeredIndex) return;
+        continuePendingQuestions();
+    }, 1200);
+}
+
 function showQuestion() {
     const total = practiceState.questions.length;
     if (practiceState.current >= total) return showResult();
@@ -487,69 +683,75 @@ function showQuestion() {
     const q = getCurrentQuestion();
     const pct = (practiceState.current / total * 100).toFixed(0);
     const answered = practiceState.answered[practiceState.current];
+    const reinforcementBadge = q._isReinforcement
+        ? `<span class="reinforcement-badge">错题加练</span>`
+        : "";
 
-    let html = `<div class="page practice-quiz-page" data-page="practice"><div class="quiz-area">
+    let html = `<div class="page practice-quiz-page" data-page="practice"><div class="quiz-area" aria-labelledby="question-title">
         <div class="quiz-topbar">
-            <span class="quiz-index">第 ${practiceState.current + 1}/${total} 题</span>
+            <span class="quiz-index">${reinforcementBadge}第 ${practiceState.current + 1}/${total} 题</span>
             <span class="quiz-correct-count">已对 ${practiceState.correct}</span>
         </div>
-        <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>`;
+        <div class="progress" role="progressbar" aria-label="练习进度" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${practiceState.current}"><div class="progress-bar" style="width:${pct}%"></div></div>`;
 
     if (practiceState.mode === "en_to_cn") {
         html += `<div class="question question-card">
             <div class="question-main">
-                <span class="question-word">${q.english}</span>
-                <button class="icon-btn speak-btn" data-action="speak-question" title="发音">🔊</button>
+                <span class="question-word" id="question-title">${q.english}</span>
+                <button type="button" class="icon-btn speak-btn" data-action="speak-question" title="发音" aria-label="播放 ${escapeHtml(q.english)} 的发音">🔊</button>
             </div>
             <div class="question-meta">${q.pronunciation}</div>
         </div>`;
         if (answered) {
-            html += `<div class="choices">${q.choices.map(c => {
+            html += `<div class="choices">${q.choices.map((c, index) => {
                 let cls = "choice-btn";
                 if (c === answered.correct_answer) cls += " correct";
                 else if (c === answered.answer && !answered.is_correct) cls += " wrong";
-                return `<button class="${cls}" disabled>${c}</button>`;
+                return `<button type="button" class="${cls}" disabled>${index + 1}. ${c}</button>`;
             }).join("")}</div>`;
         } else {
-            html += `<div class="choices">${q.choices.map((c, index) => `<button class="choice-btn" data-action="choose-answer" data-choice-index="${index}">${index + 1}. ${c}</button>`).join("")}</div>`;
+            html += `<div class="choices">${q.choices.map((c, index) => `<button type="button" class="choice-btn" data-action="choose-answer" data-choice-index="${index}" aria-keyshortcuts="${index + 1}">${index + 1}. ${c}</button>`).join("")}</div>`;
         }
     } else if (practiceState.mode === "cn_to_en") {
         html += `<div class="question question-card">
-            <div class="question-main">${q.chinese}</div>
+            <div class="question-main" id="question-title">${q.chinese}</div>
             <div class="question-meta">${q.part_of_speech}</div>
         </div>`;
         if (answered) {
             html += renderAnswerReview(answered);
         } else {
             html += `<div class="answer-form">
-                <input class="answer-input" id="answer-input" placeholder="输入英文..." autofocus>
-                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>
+                <label class="sr-only" for="answer-input">输入英文答案</label>
+                <input class="answer-input" id="answer-input" placeholder="输入英文..." autocomplete="off" autofocus>
+                <button type="button" class="submit-btn" id="submit-answer" data-action="submit-answer" aria-keyshortcuts="Enter">提交</button>
             </div>`;
         }
     } else if (practiceState.mode === "spelling") {
         html += `<div class="question question-card">
-            <div class="question-main">${q.chinese}</div>
+            <div class="question-main" id="question-title">${q.chinese}</div>
             <div class="question-meta">${q.pronunciation}</div>
         </div>`;
         if (answered) {
             html += renderAnswerReview(answered);
         } else {
             html += `<div class="answer-form">
-                <input class="answer-input" id="answer-input" placeholder="拼写单词..." autofocus>
-                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>
+                <label class="sr-only" for="answer-input">拼写英文单词</label>
+                <input class="answer-input" id="answer-input" placeholder="拼写单词..." autocomplete="off" autocapitalize="none" spellcheck="false" autofocus>
+                <button type="button" class="submit-btn" id="submit-answer" data-action="submit-answer" aria-keyshortcuts="Enter">提交</button>
             </div>`;
         }
     } else if (practiceState.mode === "code_fill") {
         html += `<div class="question question-card">
-            <div class="question-main">填入关键字: ${q.hint}</div>
+            <div class="question-main" id="question-title">填入关键字: ${q.hint}</div>
             <div class="code-block">${q.code_snippet.replace(q.code_answer, "______")}</div>
         </div>`;
         if (answered) {
             html += renderAnswerReview(answered);
         } else {
             html += `<div class="answer-form">
-                <input class="answer-input" id="answer-input" placeholder="填入代码..." autofocus>
-                <button class="submit-btn" id="submit-answer" data-action="submit-answer">提交</button>
+                <label class="sr-only" for="answer-input">填入代码答案</label>
+                <input class="answer-input" id="answer-input" placeholder="填入代码..." autocomplete="off" autocapitalize="none" spellcheck="false" autofocus>
+                <button type="button" class="submit-btn" id="submit-answer" data-action="submit-answer" aria-keyshortcuts="Enter">提交</button>
             </div>`;
         }
     }
@@ -557,15 +759,16 @@ function showQuestion() {
     if (answered) {
         html += renderAnswerFeedback(q, answered);
     } else {
-        html += `<div id="feedback"></div>`;
+        html += `<div id="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
     }
 
     const canPrev = practiceState.current > 0;
     const isLast = practiceState.current >= total - 1;
     const canNext = answered && !isLast;
+    const allAnswered = getFirstUnansweredIndex() === -1;
     html += `<div class="quiz-actions">
-        ${canPrev ? `<button class="nav-btn" data-action="prev-question">⬅ 上一题</button>` : `<span class="quiz-action-spacer"></span>`}
-        ${canNext ? `<button class="nav-btn quiz-primary-action" data-action="next-question">下一题 ➡</button>` : isLast && answered ? `<button class="nav-btn quiz-primary-action" data-action="show-result">查看结果</button>` : `<span class="quiz-action-spacer"></span>`}
+        ${canPrev ? `<button type="button" class="nav-btn" data-action="prev-question" aria-keyshortcuts="ArrowLeft ArrowUp">⬅ 上一题</button>` : `<span class="quiz-action-spacer"></span>`}
+        ${canNext ? `<button type="button" class="nav-btn quiz-primary-action" data-action="next-question" aria-keyshortcuts="ArrowRight ArrowDown">下一题 ➡</button>` : isLast && answered && allAnswered ? `<button type="button" class="nav-btn quiz-primary-action" data-action="show-result">查看结果</button>` : isLast && answered ? `<button type="button" class="nav-btn quiz-primary-action" data-action="continue-pending">继续未完成题目 ➡</button>` : `<span class="quiz-action-spacer"></span>`}
     </div></div></div>`;
 
     app.innerHTML = html;
@@ -579,79 +782,137 @@ function showQuestion() {
 }
 
 function navigateQuestion(direction) {
+    if (practiceSubmissionPending) return;
+    clearPracticeAdvanceTimer();
     const next = practiceState.current + direction;
     if (next < 0) return;
-    if (next >= practiceState.questions.length) return;
+    if (next >= practiceState.questions.length) {
+        if (direction > 0 && practiceState.answered[practiceState.current]) continuePendingQuestions();
+        return;
+    }
     if (direction > 0 && !practiceState.answered[practiceState.current]) return;
     practiceState.current = next;
     showQuestion();
 }
 
-async function submitAnswer(answer) {
-    const q = getCurrentQuestion();
-    if (!q) return;
-
-    const res = await api("/api/practice/answer", {
-        method: "POST",
-        body: JSON.stringify({
-            session_id: practiceState.sessionId,
-            word_id: q.word_id,
-            mode: practiceState.mode,
-            answer: answer,
-            response_time_ms: 0,
-        }),
+function disableCurrentAnswerControls() {
+    document.querySelectorAll(".choice-btn").forEach((button) => {
+        button.disabled = true;
     });
+    const input = document.getElementById("answer-input");
+    if (input) input.disabled = true;
+    const submitButton = document.getElementById("submit-answer");
+    if (submitButton) submitButton.disabled = true;
+}
+
+function showCorrectAnswerEffect(question, answeredRecord) {
+    const feedback = document.getElementById("feedback");
+    const quizArea = document.querySelector(".quiz-area");
+    if (feedback && quizArea) {
+        feedback.className = "feedback correct";
+        feedback.textContent = question._isReinforcement ? "加练答对，已经巩固!" : "正确!";
+        quizArea.classList.add("correct");
+    }
+
+    const correctCount = document.querySelector(".quiz-correct-count");
+    if (correctCount) correctCount.textContent = `已对 ${practiceState.correct}`;
+
+    document.querySelectorAll(".choice-btn").forEach((button) => {
+        const choice = button.textContent.replace(/^\d+\.\s*/, "");
+        if (choice === answeredRecord.correct_answer) button.classList.add("correct");
+    });
+}
+
+async function submitAnswer(answer) {
+    const submittedIndex = practiceState.current;
+    const q = getCurrentQuestion();
+    if (!q || practiceSubmissionPending || practiceState.answered[submittedIndex]) return;
+
+    clearPracticeAdvanceTimer();
+    practiceSubmissionPending = true;
+    disableCurrentAnswerControls();
+    const submittedSessionId = practiceState.sessionId;
+
+    let res;
+    try {
+        res = await api("/api/practice/answer", {
+            method: "POST",
+            body: JSON.stringify({
+                session_id: submittedSessionId,
+                word_id: q.word_id,
+                mode: practiceState.mode,
+                answer: answer,
+                response_time_ms: 0,
+                previous_choices: Array.isArray(q.choices) ? q.choices : [],
+            }),
+        });
+    } catch (error) {
+        practiceSubmissionPending = false;
+        if (isPracticePage() && practiceState.sessionId === submittedSessionId) {
+            showQuestion();
+            alert("答案提交失败，请重试。");
+        }
+        return;
+    }
+
+    practiceSubmissionPending = false;
+    if (!isPracticePage() || practiceState.sessionId !== submittedSessionId) return;
 
     if (res.is_correct) practiceState.correct++;
 
-    practiceState.answered[practiceState.current] = {
+    let reinforcementNote = "";
+    if (!res.is_correct) {
+        reinforcementNote = queueWrongAnswerForReinforcement(q, res.reinforcement_question) || "";
+    }
+
+    const answeredRecord = {
         answer: answer,
         is_correct: res.is_correct,
         correct_answer: res.correct_answer,
+        reinforcement_note: reinforcementNote,
     };
+    practiceState.answered[submittedIndex] = answeredRecord;
 
-    const fb = document.getElementById("feedback");
-    const quizArea = document.querySelector(".quiz-area");
-    if (fb && quizArea) {
-        if (res.is_correct) {
-            fb.className = "feedback correct";
-            fb.textContent = "正确!";
-            quizArea.classList.add("correct");
-        } else {
-            fb.className = "feedback wrong";
-            fb.textContent = `错误! 正确答案: ${res.correct_answer}`;
-            quizArea.classList.add("wrong");
-        }
+    if (!res.is_correct && !q._isReinforcement && !practiceState.wrongAttempts.has(q.word_id)) {
+        practiceState.wrongAttempts.set(q.word_id, {
+            question: {
+                ...q,
+                choices: Array.isArray(q.choices) ? [...q.choices] : q.choices,
+            },
+            answered: { ...answeredRecord },
+        });
     }
 
-    document.querySelectorAll(".choice-btn").forEach(btn => {
-        btn.disabled = true;
-        if (btn.textContent.replace(/^\d+\.\s*/, "") === res.correct_answer) btn.classList.add("correct");
-        else if (btn.textContent.replace(/^\d+\.\s*/, "") === answer && !res.is_correct) btn.classList.add("wrong");
-    });
-
-    const input = document.getElementById("answer-input");
-    if (input) input.disabled = true;
-    const submitBtn = document.getElementById("submit-answer");
-    if (submitBtn) submitBtn.disabled = true;
+    if (q._isReinforcement) {
+        practiceState.reinforcementResults.set(q.word_id, {
+            is_correct: res.is_correct,
+            answer: answer,
+            correct_answer: res.correct_answer,
+        });
+    }
 
     if (res.is_correct) {
-        setTimeout(() => {
-            if (practiceState.current < practiceState.questions.length - 1) {
-                navigateQuestion(1);
-            } else {
-                showResult();
-            }
-        }, 1200);
+        showCorrectAnswerEffect(q, answeredRecord);
+        scheduleAdvanceAfterCorrect(submittedIndex);
     } else {
         showQuestion();
     }
 }
 
 function showResult() {
+    const unansweredIndex = getFirstUnansweredIndex();
+    if (unansweredIndex !== -1) {
+        practiceState.current = unansweredIndex;
+        showQuestion();
+        return;
+    }
+
+    clearPracticeAdvanceTimer();
     const total = practiceState.questions.length;
     const pct = (practiceState.correct / total * 100).toFixed(0);
     const wrongAnswers = getWrongAnswers();
+    const initialWrongCount = wrongAnswers.length;
+    const reinforcedCount = wrongAnswers.filter((item) => item.reinforcement?.is_correct).length;
 
     let wrongSection = `
         <div class="card practice-wrong-card">
@@ -677,10 +938,11 @@ function showResult() {
                 <div class="card"><div class="num">${total}</div><div class="label">总题数</div></div>
                 <div class="card"><div class="num">${pct}%</div><div class="label">正确率</div></div>
             </div>
+            ${initialWrongCount > 0 ? `<div class="practice-reinforcement-summary">本轮加练 ${initialWrongCount} 个错题，已答对 ${reinforcedCount} 个。</div>` : ""}
             <div class="practice-result-actions">
-                <button class="btn-primary" data-action="restart-quiz">再来一轮</button>
-                ${wrongAnswers.length > 0 ? `<button class="nav-btn practice-wrong-retry" data-action="restart-wrong-quiz">重练错题</button>` : ""}
-                <button class="nav-btn" data-action="return-practice-selection">返回选择</button>
+                <button type="button" class="btn-primary" data-action="restart-quiz">再来一轮</button>
+                ${wrongAnswers.length > 0 ? `<button type="button" class="nav-btn practice-wrong-retry" data-action="restart-wrong-quiz">重练错题</button>` : ""}
+                <button type="button" class="nav-btn" data-action="return-practice-selection">返回选择</button>
             </div>
             ${wrongSection}
         </div>

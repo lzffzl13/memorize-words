@@ -26,6 +26,7 @@ class AnswerRequest(BaseModel):
     mode: str
     answer: str
     response_time_ms: int = 0
+    previous_choices: list[str] = []
 
 
 @router.post("/start")
@@ -140,7 +141,16 @@ def submit_answer(req: AnswerRequest, db: Session = Depends(get_db)):
     db.add(record)
     db.commit()
 
-    return {
+    response = {
         "is_correct": is_correct,
         "correct_answer": word.english if req.mode != "en_to_cn" else word.chinese,
     }
+    if not is_correct:
+        response["reinforcement_question"] = get_quiz(
+            req.mode,
+            db,
+            word,
+            excluded_choices=req.previous_choices,
+        )
+
+    return response

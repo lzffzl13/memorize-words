@@ -1,6 +1,10 @@
 const app = document.getElementById("app");
 const navLinks = document.querySelectorAll(".nav-link");
+const routeAnnouncer = document.getElementById("route-announcer");
 const wordsCache = { data: null, promise: null };
+const pageLabels = { home: "首页", practice: "练习", words: "词库", stats: "统计" };
+
+document.getElementById("skip-to-main")?.addEventListener("click", () => app.focus());
 
 window.invalidateWordsCache = function invalidateWordsCache() {
     wordsCache.data = null;
@@ -201,9 +205,15 @@ window.playWordPronunciation = function playWordPronunciation(text) {
 };
 
 function navigate(page) {
-    navLinks.forEach(l => l.classList.remove("active"));
+    navLinks.forEach((navLink) => {
+        navLink.classList.remove("active");
+        navLink.removeAttribute("aria-current");
+    });
     const link = document.querySelector(`[data-page="${page}"]`);
-    if (link) link.classList.add("active");
+    if (link) {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
+    }
 
     switch (page) {
         case "home": renderHome(); break;
@@ -212,7 +222,27 @@ function navigate(page) {
         case "stats": renderStats(); break;
         default: renderHome();
     }
+
+    if (routeAnnouncer) routeAnnouncer.textContent = `已进入${pageLabels[page] || "首页"}`;
 }
+
+window.trapFocusWithin = function trapFocusWithin(container, event) {
+    if (!container || event.key !== "Tab") return;
+    const focusable = [...container.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )].filter((element) => element.offsetParent !== null);
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+    }
+};
 
 async function api(url, options = {}) {
     const res = await fetch(url, {
@@ -255,6 +285,27 @@ function renderHomeShell() {
                 </div>
             </section>
 
+            <section class="home-today-section" aria-labelledby="home-today-title">
+                <div class="home-today-card">
+                    <div class="home-today-content">
+                        <div class="home-today-eyebrow">
+                            <span>今日任务</span>
+                            <span class="home-today-status" id="home-today-status">正在安排...</span>
+                        </div>
+                        <div class="home-today-main">
+                            <div class="home-today-icon" aria-hidden="true">✓</div>
+                            <div>
+                                <h2 id="home-today-title">准备今天的复习</h2>
+                                <p id="home-today-text">正在根据你的学习进度安排任务。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#/practice" class="btn-primary home-today-action" id="home-today-action" data-action="prepare-daily-practice" data-scope="due" data-count="10">
+                        <span>去完成</span><span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </section>
+
             <section class="home-stats-section">
                 <div class="home-section-title">学习概览</div>
                 <div class="stats-cards home-stats-cards">
@@ -279,18 +330,21 @@ function renderHomeShell() {
                 </div>
             </section>
 
-            <section class="home-quick-entry">
-                <div class="home-quick-card">
-                    <div>
-                        <div class="home-quick-title">继续今天的学习</div>
-                        <div class="home-quick-text">直接进入练习、浏览词库，或者去统计页看看最近的掌握情况。</div>
-                    </div>
-                    <a href="#/stats" class="home-text-link">查看统计 →</a>
-                </div>
-            </section>
         </div>
     `;
 }
+
+app.addEventListener("click", (event) => {
+    const dailyAction = event.target.closest('[data-action="prepare-daily-practice"]');
+    if (!dailyAction) return;
+    if (typeof window.setPracticePreset === "function") {
+        window.setPracticePreset({
+            scope: dailyAction.dataset.scope,
+            count: Number(dailyAction.dataset.count),
+            autoStart: true,
+        });
+    }
+});
 
 // 首页
 async function renderHome() {
@@ -302,6 +356,29 @@ async function renderHome() {
     document.getElementById("home-total-words").textContent = overview.total_words;
     document.getElementById("home-mastered").textContent = overview.mastered;
     document.getElementById("home-learning").textContent = overview.learning;
+
+    const dueCount = Number(overview.review || 0);
+    const fallbackCount = Math.min(10, Math.max(1, Number(overview.new || overview.total_words || 10)));
+    const taskCount = dueCount > 0 ? Math.min(10, dueCount) : fallbackCount;
+    const todayStatus = document.getElementById("home-today-status");
+    const todayTitle = document.getElementById("home-today-title");
+    const todayText = document.getElementById("home-today-text");
+    const todayAction = document.getElementById("home-today-action");
+
+    if (dueCount > 0) {
+        todayStatus.textContent = `${dueCount} 个待复习`;
+        todayTitle.textContent = `复习 ${taskCount} 个到期词`;
+        todayText.textContent = "先完成一组短练习，把今天到期的内容及时巩固。";
+        todayAction.dataset.scope = "due";
+        todayAction.querySelector("span:first-child").textContent = "开始今日复习";
+    } else {
+        todayStatus.textContent = "今日已清空";
+        todayTitle.textContent = `完成 ${taskCount} 题基础练习`;
+        todayText.textContent = "当前没有到期词，可以继续熟悉词库里的内容。";
+        todayAction.dataset.scope = "all";
+        todayAction.querySelector("span:first-child").textContent = "开始今日练习";
+    }
+    todayAction.dataset.count = String(taskCount);
 }
 
 // 初始加载

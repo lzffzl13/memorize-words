@@ -16,13 +16,40 @@ def get_word_context(word: Word):
     }
 
 
-def generate_en_to_cn(db: Session, word: Word, count: int = 4):
+def generate_en_to_cn(
+    db: Session,
+    word: Word,
+    count: int = 4,
+    excluded_choices: list[str] | None = None,
+):
     """英译中：给英文，选中文。返回 {word, choices, answer_index}"""
-    others = db.query(Word).filter(Word.id != word.id).order_by(func.random()).limit(count - 1).all()
-    choices = [w.chinese for w in others]
     answer = word.chinese
-    if answer not in choices:
-        choices.append(answer)
+    excluded = {choice for choice in (excluded_choices or []) if choice and choice != answer}
+    distractor_count = max(0, count - 1)
+
+    def load_distractors(exclude_previous: bool):
+        query = db.query(Word).filter(Word.id != word.id, Word.chinese != answer)
+        if exclude_previous and excluded:
+            query = query.filter(~Word.chinese.in_(excluded))
+        return query.order_by(func.random()).limit(max(distractor_count * 4, distractor_count)).all()
+
+    choices = []
+    for candidate in load_distractors(exclude_previous=True):
+        if candidate.chinese and candidate.chinese not in choices:
+            choices.append(candidate.chinese)
+        if len(choices) >= distractor_count:
+            break
+
+    # 小词库中排除旧选项后可能不足，允许用其他未重复释义补齐。
+    if len(choices) < distractor_count:
+        for candidate in load_distractors(exclude_previous=False):
+            if candidate.chinese and candidate.chinese not in choices:
+                choices.append(candidate.chinese)
+            if len(choices) >= distractor_count:
+                break
+
+    choices = choices[:distractor_count]
+    choices.append(answer)
     random.shuffle(choices)
     return {
         **get_word_context(word),
@@ -62,9 +89,16 @@ def generate_code_fill(db: Session, word: Word):
     }
 
 
-def get_quiz(mode: str, db: Session, word: Word):
+def get_quiz(
+    mode: str,
+    db: Session,
+    word: Word,
+    excluded_choices: list[str] | None = None,
+):
+    if mode == "en_to_cn":
+        return generate_en_to_cn(db, word, excluded_choices=excluded_choices)
+
     dispatch = {
-        "en_to_cn": generate_en_to_cn,
         "cn_to_en": generate_cn_to_en,
         "spelling": generate_spelling,
         "code_fill": generate_code_fill,

@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <nav id="navbar">
-        <a href="#/" class="nav-link active" data-page="home">首页</a>
-        <a href="#/practice" class="nav-link" data-page="practice">练习</a>
-        <a href="#/words" class="nav-link" data-page="words">词库</a>
-        <a href="#/stats" class="nav-link" data-page="stats">统计</a>
+    <button type="button" class="skip-link" id="skip-to-main">跳到主要内容</button>
+    <nav id="navbar" aria-label="主导航">
+        <a href="#/" class="nav-link active" data-page="home" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label">首页</span></a>
+        <a href="#/practice" class="nav-link" data-page="practice"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-label">练习</span></a>
+        <a href="#/words" class="nav-link" data-page="words"><span class="nav-icon" aria-hidden="true">Aa</span><span class="nav-label">词库</span></a>
+        <a href="#/stats" class="nav-link" data-page="stats"><span class="nav-icon" aria-hidden="true">▥</span><span class="nav-label">统计</span></a>
     </nav>
-    <main id="app"></main>
+    <div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <main id="app" tabindex="-1"></main>
     <script src="/static/js/app.js"></script>
     <script src="/static/js/practice.js"></script>
     <script src="/static/js/words.js"></script>
