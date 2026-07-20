@@ -741,9 +741,13 @@ function showQuestion() {
             </div>`;
         }
     } else if (practiceState.mode === "code_fill") {
+        const maskedCode = escapeHtml(q.code_snippet).replace(
+            escapeHtml(q.code_answer),
+            "______"
+        );
         html += `<div class="question question-card">
             <div class="question-main" id="question-title">填入关键字: ${q.hint}</div>
-            <div class="code-block">${q.code_snippet.replace(q.code_answer, "______")}</div>
+            <div class="code-block">${maskedCode}</div>
         </div>`;
         if (answered) {
             html += renderAnswerReview(answered);

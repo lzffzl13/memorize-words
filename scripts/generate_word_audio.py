@@ -15,7 +15,10 @@ except ImportError as exc:
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_FILE = ROOT / "data" / "vocabulary.json"
+DATA_FILES = (
+    ROOT / "data" / "vocabulary.json",
+    ROOT / "data" / "java_vocabulary.json",
+)
 OVERRIDES_FILE = ROOT / "data" / "pronunciation_overrides.json"
 OUT_DIR = ROOT / "static" / "audio" / "words"
 MANIFEST_FILE = ROOT / "static" / "audio" / "manifest.json"
@@ -36,13 +39,16 @@ def slugify(text, used):
 
 
 def load_words():
-    data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
     seen = {}
-    for word in data["words"]:
-        english = word["english"].strip()
-        key = normalize_key(english)
-        if key not in seen:
-            seen[key] = english
+    for data_file in DATA_FILES:
+        if not data_file.exists():
+            continue
+        data = json.loads(data_file.read_text(encoding="utf-8"))
+        for word in data["words"]:
+            english = word["english"].strip()
+            key = normalize_key(english)
+            if key not in seen:
+                seen[key] = english
     return list(seen.values())
 
 

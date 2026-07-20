@@ -6,7 +6,11 @@ from pathlib import Path
 from database import Base, SessionLocal, engine
 from models import Category, DailyStats, PracticeRecord, PracticeSession, UserProgress, Word
 
-DATA_FILE = Path(__file__).resolve().parent / "data" / "vocabulary.json"
+DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_FILES = (
+    DATA_DIR / "vocabulary.json",
+    DATA_DIR / "java_vocabulary.json",
+)
 
 
 def reset_database(db):
@@ -20,8 +24,25 @@ def reset_database(db):
 
 
 def load_seed_data():
-    with DATA_FILE.open("r", encoding="utf-8") as f:
-        return json.load(f)
+    merged = {"categories": [], "words": []}
+    category_names = set()
+
+    for data_file in DATA_FILES:
+        if not data_file.exists():
+            continue
+
+        with data_file.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        for category in data.get("categories", []):
+            if category["name"] in category_names:
+                continue
+            merged["categories"].append(category)
+            category_names.add(category["name"])
+
+        merged["words"].extend(data.get("words", []))
+
+    return merged
 
 
 def seed(reset=False, skip_if_has_words=True):
@@ -91,7 +112,8 @@ def seed(reset=False, skip_if_has_words=True):
 
 
 def initialize_database():
-    seed(reset=False, skip_if_has_words=True)
+    # Keep existing progress intact while syncing newly shipped vocabulary.
+    seed(reset=False, skip_if_has_words=False)
 
 
 if __name__ == "__main__":

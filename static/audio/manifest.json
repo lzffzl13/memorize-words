@@ -2883,5 +2883,455 @@
     "file": "words/batch.mp3",
     "text": "batch",
     "spoken_text": "batch"
+  },
+  "java": {
+    "file": "words/java.mp3",
+    "text": "Java",
+    "spoken_text": "Java"
+  },
+  "jdk": {
+    "file": "words/jdk.mp3",
+    "text": "JDK",
+    "spoken_text": "J D K"
+  },
+  "jre": {
+    "file": "words/jre.mp3",
+    "text": "JRE",
+    "spoken_text": "J R E"
+  },
+  "jvm": {
+    "file": "words/jvm.mp3",
+    "text": "JVM",
+    "spoken_text": "J V M"
+  },
+  "bytecode": {
+    "file": "words/bytecode.mp3",
+    "text": "bytecode",
+    "spoken_text": "bytecode"
+  },
+  "source file": {
+    "file": "words/source-file.mp3",
+    "text": "source file",
+    "spoken_text": "source file"
+  },
+  "compiler": {
+    "file": "words/compiler.mp3",
+    "text": "compiler",
+    "spoken_text": "compiler"
+  },
+  "javac": {
+    "file": "words/javac.mp3",
+    "text": "javac",
+    "spoken_text": "Java C"
+  },
+  "classpath": {
+    "file": "words/classpath.mp3",
+    "text": "classpath",
+    "spoken_text": "classpath"
+  },
+  "jar file": {
+    "file": "words/jar-file.mp3",
+    "text": "JAR file",
+    "spoken_text": "jar file"
+  },
+  "entry point": {
+    "file": "words/entry-point.mp3",
+    "text": "entry point",
+    "spoken_text": "entry point"
+  },
+  "main method": {
+    "file": "words/main-method.mp3",
+    "text": "main method",
+    "spoken_text": "main method"
+  },
+  "primitive type": {
+    "file": "words/primitive-type.mp3",
+    "text": "primitive type",
+    "spoken_text": "primitive type"
+  },
+  "byte": {
+    "file": "words/byte.mp3",
+    "text": "byte",
+    "spoken_text": "byte"
+  },
+  "short": {
+    "file": "words/short.mp3",
+    "text": "short",
+    "spoken_text": "short"
+  },
+  "long": {
+    "file": "words/long.mp3",
+    "text": "long",
+    "spoken_text": "long"
+  },
+  "float": {
+    "file": "words/float.mp3",
+    "text": "float",
+    "spoken_text": "float"
+  },
+  "double": {
+    "file": "words/double.mp3",
+    "text": "double",
+    "spoken_text": "double"
+  },
+  "char": {
+    "file": "words/char.mp3",
+    "text": "char",
+    "spoken_text": "char"
+  },
+  "wrapper class": {
+    "file": "words/wrapper-class.mp3",
+    "text": "wrapper class",
+    "spoken_text": "wrapper class"
+  },
+  "autoboxing": {
+    "file": "words/autoboxing.mp3",
+    "text": "autoboxing",
+    "spoken_text": "autoboxing"
+  },
+  "unboxing": {
+    "file": "words/unboxing.mp3",
+    "text": "unboxing",
+    "spoken_text": "unboxing"
+  },
+  "constructor": {
+    "file": "words/constructor.mp3",
+    "text": "constructor",
+    "spoken_text": "constructor"
+  },
+  "interface": {
+    "file": "words/interface.mp3",
+    "text": "interface",
+    "spoken_text": "interface"
+  },
+  "abstract class": {
+    "file": "words/abstract-class.mp3",
+    "text": "abstract class",
+    "spoken_text": "abstract class"
+  },
+  "encapsulation": {
+    "file": "words/encapsulation.mp3",
+    "text": "encapsulation",
+    "spoken_text": "encapsulation"
+  },
+  "polymorphism": {
+    "file": "words/polymorphism.mp3",
+    "text": "polymorphism",
+    "spoken_text": "polymorphism"
+  },
+  "method overloading": {
+    "file": "words/method-overloading.mp3",
+    "text": "method overloading",
+    "spoken_text": "method overloading"
+  },
+  "method overriding": {
+    "file": "words/method-overriding.mp3",
+    "text": "method overriding",
+    "spoken_text": "method overriding"
+  },
+  "access modifier": {
+    "file": "words/access-modifier.mp3",
+    "text": "access modifier",
+    "spoken_text": "access modifier"
+  },
+  "public": {
+    "file": "words/public.mp3",
+    "text": "public",
+    "spoken_text": "public"
+  },
+  "private": {
+    "file": "words/private.mp3",
+    "text": "private",
+    "spoken_text": "private"
+  },
+  "protected": {
+    "file": "words/protected.mp3",
+    "text": "protected",
+    "spoken_text": "protected"
+  },
+  "package": {
+    "file": "words/package.mp3",
+    "text": "package",
+    "spoken_text": "package"
+  },
+  "extends": {
+    "file": "words/extends.mp3",
+    "text": "extends",
+    "spoken_text": "extends"
+  },
+  "implements": {
+    "file": "words/implements.mp3",
+    "text": "implements",
+    "spoken_text": "implements"
+  },
+  "final keyword": {
+    "file": "words/final-keyword.mp3",
+    "text": "final keyword",
+    "spoken_text": "final keyword"
+  },
+  "this keyword": {
+    "file": "words/this-keyword.mp3",
+    "text": "this keyword",
+    "spoken_text": "this keyword"
+  },
+  "super keyword": {
+    "file": "words/super-keyword.mp3",
+    "text": "super keyword",
+    "spoken_text": "super keyword"
+  },
+  "enum": {
+    "file": "words/enum.mp3",
+    "text": "enum",
+    "spoken_text": "enum"
+  },
+  "annotation": {
+    "file": "words/annotation.mp3",
+    "text": "annotation",
+    "spoken_text": "annotation"
+  },
+  "generic type": {
+    "file": "words/generic-type.mp3",
+    "text": "generic type",
+    "spoken_text": "generic type"
+  },
+  "type parameter": {
+    "file": "words/type-parameter.mp3",
+    "text": "type parameter",
+    "spoken_text": "type parameter"
+  },
+  "diamond operator": {
+    "file": "words/diamond-operator.mp3",
+    "text": "diamond operator",
+    "spoken_text": "diamond operator"
+  },
+  "arraylist": {
+    "file": "words/arraylist.mp3",
+    "text": "ArrayList",
+    "spoken_text": "array list"
+  },
+  "linkedlist": {
+    "file": "words/linkedlist.mp3",
+    "text": "LinkedList",
+    "spoken_text": "linked list"
+  },
+  "hashmap": {
+    "file": "words/hashmap.mp3",
+    "text": "HashMap",
+    "spoken_text": "hash map"
+  },
+  "hashset": {
+    "file": "words/hashset.mp3",
+    "text": "HashSet",
+    "spoken_text": "hash set"
+  },
+  "treemap": {
+    "file": "words/treemap.mp3",
+    "text": "TreeMap",
+    "spoken_text": "tree map"
+  },
+  "treeset": {
+    "file": "words/treeset.mp3",
+    "text": "TreeSet",
+    "spoken_text": "tree set"
+  },
+  "iterator": {
+    "file": "words/iterator.mp3",
+    "text": "Iterator",
+    "spoken_text": "Iterator"
+  },
+  "iterable": {
+    "file": "words/iterable.mp3",
+    "text": "Iterable",
+    "spoken_text": "Iterable"
+  },
+  "comparable": {
+    "file": "words/comparable.mp3",
+    "text": "Comparable",
+    "spoken_text": "Comparable"
+  },
+  "comparator": {
+    "file": "words/comparator.mp3",
+    "text": "Comparator",
+    "spoken_text": "Comparator"
+  },
+  "try-catch": {
+    "file": "words/try-catch.mp3",
+    "text": "try-catch",
+    "spoken_text": "try catch"
+  },
+  "finally": {
+    "file": "words/finally.mp3",
+    "text": "finally",
+    "spoken_text": "finally"
+  },
+  "throw": {
+    "file": "words/throw.mp3",
+    "text": "throw",
+    "spoken_text": "throw"
+  },
+  "throws": {
+    "file": "words/throws.mp3",
+    "text": "throws",
+    "spoken_text": "throws"
+  },
+  "checked exception": {
+    "file": "words/checked-exception.mp3",
+    "text": "checked exception",
+    "spoken_text": "checked exception"
+  },
+  "unchecked exception": {
+    "file": "words/unchecked-exception.mp3",
+    "text": "unchecked exception",
+    "spoken_text": "unchecked exception"
+  },
+  "try-with-resources": {
+    "file": "words/try-with-resources.mp3",
+    "text": "try-with-resources",
+    "spoken_text": "try with resources"
+  },
+  "stringbuilder": {
+    "file": "words/stringbuilder.mp3",
+    "text": "StringBuilder",
+    "spoken_text": "string builder"
+  },
+  "stringbuffer": {
+    "file": "words/stringbuffer.mp3",
+    "text": "StringBuffer",
+    "spoken_text": "string buffer"
+  },
+  "string pool": {
+    "file": "words/string-pool.mp3",
+    "text": "string pool",
+    "spoken_text": "string pool"
+  },
+  "equals method": {
+    "file": "words/equals-method.mp3",
+    "text": "equals method",
+    "spoken_text": "equals method"
+  },
+  "hashcode method": {
+    "file": "words/hashcode-method.mp3",
+    "text": "hashCode method",
+    "spoken_text": "hash code method"
+  },
+  "immutable object": {
+    "file": "words/immutable-object.mp3",
+    "text": "immutable object",
+    "spoken_text": "immutable object"
+  },
+  "lambda expression": {
+    "file": "words/lambda-expression.mp3",
+    "text": "lambda expression",
+    "spoken_text": "lambda expression"
+  },
+  "functional interface": {
+    "file": "words/functional-interface.mp3",
+    "text": "functional interface",
+    "spoken_text": "functional interface"
+  },
+  "method reference": {
+    "file": "words/method-reference.mp3",
+    "text": "method reference",
+    "spoken_text": "method reference"
+  },
+  "stream api": {
+    "file": "words/stream-api.mp3",
+    "text": "Stream API",
+    "spoken_text": "stream A P I"
+  },
+  "optional class": {
+    "file": "words/optional-class.mp3",
+    "text": "Optional class",
+    "spoken_text": "Optional class"
+  },
+  "runnable": {
+    "file": "words/runnable.mp3",
+    "text": "Runnable",
+    "spoken_text": "Runnable"
+  },
+  "callable": {
+    "file": "words/callable.mp3",
+    "text": "Callable",
+    "spoken_text": "Callable"
+  },
+  "synchronized keyword": {
+    "file": "words/synchronized-keyword.mp3",
+    "text": "synchronized keyword",
+    "spoken_text": "synchronized keyword"
+  },
+  "volatile keyword": {
+    "file": "words/volatile-keyword.mp3",
+    "text": "volatile keyword",
+    "spoken_text": "volatile keyword"
+  },
+  "thread pool": {
+    "file": "words/thread-pool.mp3",
+    "text": "thread pool",
+    "spoken_text": "thread pool"
+  },
+  "executorservice": {
+    "file": "words/executorservice.mp3",
+    "text": "ExecutorService",
+    "spoken_text": "executor service"
+  },
+  "completablefuture": {
+    "file": "words/completablefuture.mp3",
+    "text": "CompletableFuture",
+    "spoken_text": "completable future"
+  },
+  "deadlock": {
+    "file": "words/deadlock.mp3",
+    "text": "deadlock",
+    "spoken_text": "deadlock"
+  },
+  "race condition": {
+    "file": "words/race-condition.mp3",
+    "text": "race condition",
+    "spoken_text": "race condition"
+  },
+  "garbage collector": {
+    "file": "words/garbage-collector.mp3",
+    "text": "garbage collector",
+    "spoken_text": "garbage collector"
+  },
+  "class loader": {
+    "file": "words/class-loader.mp3",
+    "text": "class loader",
+    "spoken_text": "class loader"
+  },
+  "jit compiler": {
+    "file": "words/jit-compiler.mp3",
+    "text": "JIT compiler",
+    "spoken_text": "J I T compiler"
+  },
+  "heap memory": {
+    "file": "words/heap-memory.mp3",
+    "text": "heap memory",
+    "spoken_text": "heap memory"
+  },
+  "stack memory": {
+    "file": "words/stack-memory.mp3",
+    "text": "stack memory",
+    "spoken_text": "stack memory"
+  },
+  "maven": {
+    "file": "words/maven.mp3",
+    "text": "Maven",
+    "spoken_text": "Maven"
+  },
+  "gradle": {
+    "file": "words/gradle.mp3",
+    "text": "Gradle",
+    "spoken_text": "Gradle"
+  },
+  "junit": {
+    "file": "words/junit.mp3",
+    "text": "JUnit",
+    "spoken_text": "J unit"
+  },
+  "pom file": {
+    "file": "words/pom-file.mp3",
+    "text": "POM file",
+    "spoken_text": "P O M file"
   }
 }
