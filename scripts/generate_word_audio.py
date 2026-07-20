@@ -15,9 +15,10 @@ except ImportError as exc:
 
 
 ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = ROOT / "data"
 DATA_FILES = (
-    ROOT / "data" / "vocabulary.json",
-    ROOT / "data" / "java_vocabulary.json",
+    DATA_DIR / "vocabulary.json",
+    *sorted(DATA_DIR.glob("*_vocabulary.json")),
 )
 OVERRIDES_FILE = ROOT / "data" / "pronunciation_overrides.json"
 OUT_DIR = ROOT / "static" / "audio" / "words"

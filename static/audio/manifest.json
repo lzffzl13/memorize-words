@@ -3333,5 +3333,830 @@
     "file": "words/pom-file.mp3",
     "text": "POM file",
     "spoken_text": "P O M file"
+  },
+  "java web": {
+    "file": "words/java-web.mp3",
+    "text": "Java Web",
+    "spoken_text": "Java Web"
+  },
+  "jakarta servlet": {
+    "file": "words/jakarta-servlet.mp3",
+    "text": "Jakarta Servlet",
+    "spoken_text": "Jakarta Servlet"
+  },
+  "servlet api": {
+    "file": "words/servlet-api.mp3",
+    "text": "Servlet API",
+    "spoken_text": "Servlet A P I"
+  },
+  "servlet container": {
+    "file": "words/servlet-container.mp3",
+    "text": "servlet container",
+    "spoken_text": "servlet container"
+  },
+  "apache tomcat": {
+    "file": "words/apache-tomcat.mp3",
+    "text": "Apache Tomcat",
+    "spoken_text": "Apache Tomcat"
+  },
+  "httpservlet": {
+    "file": "words/httpservlet.mp3",
+    "text": "HttpServlet",
+    "spoken_text": "H T T P Servlet"
+  },
+  "genericservlet": {
+    "file": "words/genericservlet.mp3",
+    "text": "GenericServlet",
+    "spoken_text": "Generic Servlet"
+  },
+  "servlet lifecycle": {
+    "file": "words/servlet-lifecycle.mp3",
+    "text": "servlet lifecycle",
+    "spoken_text": "servlet lifecycle"
+  },
+  "init method": {
+    "file": "words/init-method.mp3",
+    "text": "init method",
+    "spoken_text": "init method"
+  },
+  "service method": {
+    "file": "words/service-method.mp3",
+    "text": "service method",
+    "spoken_text": "service method"
+  },
+  "destroy method": {
+    "file": "words/destroy-method.mp3",
+    "text": "destroy method",
+    "spoken_text": "destroy method"
+  },
+  "doget": {
+    "file": "words/doget.mp3",
+    "text": "doGet",
+    "spoken_text": "do get"
+  },
+  "dopost": {
+    "file": "words/dopost.mp3",
+    "text": "doPost",
+    "spoken_text": "do post"
+  },
+  "httpservletrequest": {
+    "file": "words/httpservletrequest.mp3",
+    "text": "HttpServletRequest",
+    "spoken_text": "H T T P Servlet Request"
+  },
+  "httpservletresponse": {
+    "file": "words/httpservletresponse.mp3",
+    "text": "HttpServletResponse",
+    "spoken_text": "H T T P Servlet Response"
+  },
+  "request parameter": {
+    "file": "words/request-parameter.mp3",
+    "text": "request parameter",
+    "spoken_text": "request parameter"
+  },
+  "request attribute": {
+    "file": "words/request-attribute.mp3",
+    "text": "request attribute",
+    "spoken_text": "request attribute"
+  },
+  "request scope": {
+    "file": "words/request-scope.mp3",
+    "text": "request scope",
+    "spoken_text": "request scope"
+  },
+  "session scope": {
+    "file": "words/session-scope.mp3",
+    "text": "session scope",
+    "spoken_text": "session scope"
+  },
+  "application scope": {
+    "file": "words/application-scope.mp3",
+    "text": "application scope",
+    "spoken_text": "application scope"
+  },
+  "url mapping": {
+    "file": "words/url-mapping.mp3",
+    "text": "URL mapping",
+    "spoken_text": "U R L mapping"
+  },
+  "@webservlet": {
+    "file": "words/webservlet.mp3",
+    "text": "@WebServlet",
+    "spoken_text": "Web Servlet annotation"
+  },
+  "web.xml": {
+    "file": "words/web-xml.mp3",
+    "text": "web.xml",
+    "spoken_text": "web dot X M L"
+  },
+  "deployment descriptor": {
+    "file": "words/deployment-descriptor.mp3",
+    "text": "deployment descriptor",
+    "spoken_text": "deployment descriptor"
+  },
+  "requestdispatcher": {
+    "file": "words/requestdispatcher.mp3",
+    "text": "RequestDispatcher",
+    "spoken_text": "Request Dispatcher"
+  },
+  "forward request": {
+    "file": "words/forward-request.mp3",
+    "text": "forward request",
+    "spoken_text": "forward request"
+  },
+  "sendredirect": {
+    "file": "words/sendredirect.mp3",
+    "text": "sendRedirect",
+    "spoken_text": "send redirect"
+  },
+  "filter interface": {
+    "file": "words/filter-interface.mp3",
+    "text": "Filter interface",
+    "spoken_text": "Filter interface"
+  },
+  "filter chain": {
+    "file": "words/filter-chain.mp3",
+    "text": "filter chain",
+    "spoken_text": "filter chain"
+  },
+  "@webfilter": {
+    "file": "words/webfilter.mp3",
+    "text": "@WebFilter",
+    "spoken_text": "Web Filter annotation"
+  },
+  "listener interface": {
+    "file": "words/listener-interface.mp3",
+    "text": "Listener interface",
+    "spoken_text": "Listener interface"
+  },
+  "@weblistener": {
+    "file": "words/weblistener.mp3",
+    "text": "@WebListener",
+    "spoken_text": "Web Listener annotation"
+  },
+  "servletcontext": {
+    "file": "words/servletcontext.mp3",
+    "text": "ServletContext",
+    "spoken_text": "Servlet Context"
+  },
+  "servletconfig": {
+    "file": "words/servletconfig.mp3",
+    "text": "ServletConfig",
+    "spoken_text": "Servlet Config"
+  },
+  "httpsession": {
+    "file": "words/httpsession.mp3",
+    "text": "HttpSession",
+    "spoken_text": "H T T P Session"
+  },
+  "jsp": {
+    "file": "words/jsp.mp3",
+    "text": "JSP",
+    "spoken_text": "J S P"
+  },
+  "jakarta expression language": {
+    "file": "words/jakarta-expression-language.mp3",
+    "text": "Jakarta Expression Language",
+    "spoken_text": "Jakarta Expression Language"
+  },
+  "jstl": {
+    "file": "words/jstl.mp3",
+    "text": "JSTL",
+    "spoken_text": "J S T L"
+  },
+  "jsp directive": {
+    "file": "words/jsp-directive.mp3",
+    "text": "JSP directive",
+    "spoken_text": "J S P directive"
+  },
+  "jsp scriptlet": {
+    "file": "words/jsp-scriptlet.mp3",
+    "text": "JSP scriptlet",
+    "spoken_text": "J S P scriptlet"
+  },
+  "mvc pattern": {
+    "file": "words/mvc-pattern.mp3",
+    "text": "MVC pattern",
+    "spoken_text": "M V C pattern"
+  },
+  "war file": {
+    "file": "words/war-file.mp3",
+    "text": "WAR file",
+    "spoken_text": "war file"
+  },
+  "context path": {
+    "file": "words/context-path.mp3",
+    "text": "context path",
+    "spoken_text": "context path"
+  },
+  "mime type": {
+    "file": "words/mime-type.mp3",
+    "text": "MIME type",
+    "spoken_text": "mime type"
+  },
+  "javax.servlet": {
+    "file": "words/javax-servlet.mp3",
+    "text": "javax.servlet",
+    "spoken_text": "Java X dot Servlet"
+  },
+  "spring boot": {
+    "file": "words/spring-boot.mp3",
+    "text": "Spring Boot",
+    "spoken_text": "Spring Boot"
+  },
+  "spring initializr": {
+    "file": "words/spring-initializr.mp3",
+    "text": "Spring Initializr",
+    "spoken_text": "Spring Initializer"
+  },
+  "starter dependency": {
+    "file": "words/starter-dependency.mp3",
+    "text": "starter dependency",
+    "spoken_text": "starter dependency"
+  },
+  "auto-configuration": {
+    "file": "words/auto-configuration.mp3",
+    "text": "auto-configuration",
+    "spoken_text": "auto configuration"
+  },
+  "convention over configuration": {
+    "file": "words/convention-over-configuration.mp3",
+    "text": "convention over configuration",
+    "spoken_text": "convention over configuration"
+  },
+  "embedded server": {
+    "file": "words/embedded-server.mp3",
+    "text": "embedded server",
+    "spoken_text": "embedded server"
+  },
+  "executable jar": {
+    "file": "words/executable-jar.mp3",
+    "text": "executable JAR",
+    "spoken_text": "executable jar"
+  },
+  "fat jar": {
+    "file": "words/fat-jar.mp3",
+    "text": "fat JAR",
+    "spoken_text": "fat jar"
+  },
+  "application.properties": {
+    "file": "words/application-properties.mp3",
+    "text": "application.properties",
+    "spoken_text": "application dot properties"
+  },
+  "application.yml": {
+    "file": "words/application-yml.mp3",
+    "text": "application.yml",
+    "spoken_text": "application dot Y A M L"
+  },
+  "@springbootapplication": {
+    "file": "words/springbootapplication.mp3",
+    "text": "@SpringBootApplication",
+    "spoken_text": "Spring Boot Application annotation"
+  },
+  "@enableautoconfiguration": {
+    "file": "words/enableautoconfiguration.mp3",
+    "text": "@EnableAutoConfiguration",
+    "spoken_text": "Enable Auto Configuration annotation"
+  },
+  "@configuration": {
+    "file": "words/configuration.mp3",
+    "text": "@Configuration",
+    "spoken_text": "Configuration annotation"
+  },
+  "@bean": {
+    "file": "words/bean.mp3",
+    "text": "@Bean",
+    "spoken_text": "Bean annotation"
+  },
+  "@componentscan": {
+    "file": "words/componentscan.mp3",
+    "text": "@ComponentScan",
+    "spoken_text": "Component Scan annotation"
+  },
+  "commandlinerunner": {
+    "file": "words/commandlinerunner.mp3",
+    "text": "CommandLineRunner",
+    "spoken_text": "Command Line Runner"
+  },
+  "applicationrunner": {
+    "file": "words/applicationrunner.mp3",
+    "text": "ApplicationRunner",
+    "spoken_text": "Application Runner"
+  },
+  "externalized configuration": {
+    "file": "words/externalized-configuration.mp3",
+    "text": "externalized configuration",
+    "spoken_text": "externalized configuration"
+  },
+  "configuration property": {
+    "file": "words/configuration-property.mp3",
+    "text": "configuration property",
+    "spoken_text": "configuration property"
+  },
+  "@value": {
+    "file": "words/value-0a0c88aa.mp3",
+    "text": "@Value",
+    "spoken_text": "Value annotation"
+  },
+  "@configurationproperties": {
+    "file": "words/configurationproperties.mp3",
+    "text": "@ConfigurationProperties",
+    "spoken_text": "Configuration Properties annotation"
+  },
+  "profile": {
+    "file": "words/profile.mp3",
+    "text": "profile",
+    "spoken_text": "profile"
+  },
+  "@profile": {
+    "file": "words/profile-0f5735e5.mp3",
+    "text": "@Profile",
+    "spoken_text": "Profile annotation"
+  },
+  "active profile": {
+    "file": "words/active-profile.mp3",
+    "text": "active profile",
+    "spoken_text": "active profile"
+  },
+  "server.port": {
+    "file": "words/server-port.mp3",
+    "text": "server.port",
+    "spoken_text": "server dot port"
+  },
+  "datasource configuration": {
+    "file": "words/datasource-configuration.mp3",
+    "text": "datasource configuration",
+    "spoken_text": "datasource configuration"
+  },
+  "spring-boot-starter-web": {
+    "file": "words/spring-boot-starter-web.mp3",
+    "text": "spring-boot-starter-web",
+    "spoken_text": "Spring Boot starter web"
+  },
+  "spring-boot-starter-test": {
+    "file": "words/spring-boot-starter-test.mp3",
+    "text": "spring-boot-starter-test",
+    "spoken_text": "Spring Boot starter test"
+  },
+  "spring-boot-starter-jdbc": {
+    "file": "words/spring-boot-starter-jdbc.mp3",
+    "text": "spring-boot-starter-jdbc",
+    "spoken_text": "Spring Boot starter J D B C"
+  },
+  "spring-boot-starter-data-jpa": {
+    "file": "words/spring-boot-starter-data-jpa.mp3",
+    "text": "spring-boot-starter-data-jpa",
+    "spoken_text": "Spring Boot starter data J P A"
+  },
+  "dependency management": {
+    "file": "words/dependency-management.mp3",
+    "text": "dependency management",
+    "spoken_text": "dependency management"
+  },
+  "parent pom": {
+    "file": "words/parent-pom.mp3",
+    "text": "parent POM",
+    "spoken_text": "parent POM"
+  },
+  "spring boot maven plugin": {
+    "file": "words/spring-boot-maven-plugin.mp3",
+    "text": "Spring Boot Maven Plugin",
+    "spoken_text": "Spring Boot Maven Plugin"
+  },
+  "spring boot devtools": {
+    "file": "words/spring-boot-devtools.mp3",
+    "text": "Spring Boot DevTools",
+    "spoken_text": "Spring Boot Dev Tools"
+  },
+  "actuator": {
+    "file": "words/actuator.mp3",
+    "text": "Actuator",
+    "spoken_text": "Actuator"
+  },
+  "health endpoint": {
+    "file": "words/health-endpoint.mp3",
+    "text": "health endpoint",
+    "spoken_text": "health endpoint"
+  },
+  "metrics endpoint": {
+    "file": "words/metrics-endpoint.mp3",
+    "text": "metrics endpoint",
+    "spoken_text": "metrics endpoint"
+  },
+  "info endpoint": {
+    "file": "words/info-endpoint.mp3",
+    "text": "info endpoint",
+    "spoken_text": "info endpoint"
+  },
+  "responseentity": {
+    "file": "words/responseentity.mp3",
+    "text": "ResponseEntity",
+    "spoken_text": "Response Entity"
+  },
+  "@controlleradvice": {
+    "file": "words/controlleradvice.mp3",
+    "text": "@ControllerAdvice",
+    "spoken_text": "Controller Advice annotation"
+  },
+  "@exceptionhandler": {
+    "file": "words/exceptionhandler.mp3",
+    "text": "@ExceptionHandler",
+    "spoken_text": "Exception Handler annotation"
+  },
+  "validation starter": {
+    "file": "words/validation-starter.mp3",
+    "text": "validation starter",
+    "spoken_text": "validation starter"
+  },
+  "@valid": {
+    "file": "words/valid.mp3",
+    "text": "@Valid",
+    "spoken_text": "Valid annotation"
+  },
+  "bindingresult": {
+    "file": "words/bindingresult.mp3",
+    "text": "BindingResult",
+    "spoken_text": "Binding Result"
+  },
+  "spring data jpa": {
+    "file": "words/spring-data-jpa.mp3",
+    "text": "Spring Data JPA",
+    "spoken_text": "Spring Data J P A"
+  },
+  "entity class": {
+    "file": "words/entity-class.mp3",
+    "text": "entity class",
+    "spoken_text": "entity class"
+  },
+  "repository interface": {
+    "file": "words/repository-interface.mp3",
+    "text": "repository interface",
+    "spoken_text": "repository interface"
+  },
+  "crudrepository": {
+    "file": "words/crudrepository.mp3",
+    "text": "CrudRepository",
+    "spoken_text": "C R U D Repository"
+  },
+  "jparepository": {
+    "file": "words/jparepository.mp3",
+    "text": "JpaRepository",
+    "spoken_text": "J P A Repository"
+  },
+  "hikaricp": {
+    "file": "words/hikaricp.mp3",
+    "text": "HikariCP",
+    "spoken_text": "Hikari C P"
+  },
+  "flyway": {
+    "file": "words/flyway.mp3",
+    "text": "Flyway",
+    "spoken_text": "Flyway"
+  },
+  "liquibase": {
+    "file": "words/liquibase.mp3",
+    "text": "Liquibase",
+    "spoken_text": "Liquibase"
+  },
+  "@springboottest": {
+    "file": "words/springboottest.mp3",
+    "text": "@SpringBootTest",
+    "spoken_text": "Spring Boot Test annotation"
+  },
+  "@webmvctest": {
+    "file": "words/webmvctest.mp3",
+    "text": "@WebMvcTest",
+    "spoken_text": "Web M V C Test annotation"
+  },
+  "mockmvc": {
+    "file": "words/mockmvc.mp3",
+    "text": "MockMvc",
+    "spoken_text": "Mock M V C"
+  },
+  "test slice": {
+    "file": "words/test-slice.mp3",
+    "text": "test slice",
+    "spoken_text": "test slice"
+  },
+  "conditional bean": {
+    "file": "words/conditional-bean.mp3",
+    "text": "conditional bean",
+    "spoken_text": "conditional bean"
+  },
+  "@conditionalonmissingbean": {
+    "file": "words/conditionalonmissingbean.mp3",
+    "text": "@ConditionalOnMissingBean",
+    "spoken_text": "Conditional On Missing Bean annotation"
+  },
+  "relaxed binding": {
+    "file": "words/relaxed-binding.mp3",
+    "text": "relaxed binding",
+    "spoken_text": "relaxed binding"
+  },
+  "spring boot banner": {
+    "file": "words/spring-boot-banner.mp3",
+    "text": "Spring Boot banner",
+    "spoken_text": "Spring Boot banner"
+  },
+  "ssm": {
+    "file": "words/ssm.mp3",
+    "text": "SSM",
+    "spoken_text": "S S M"
+  },
+  "spring framework": {
+    "file": "words/spring-framework.mp3",
+    "text": "Spring Framework",
+    "spoken_text": "Spring Framework"
+  },
+  "spring ioc": {
+    "file": "words/spring-ioc.mp3",
+    "text": "Spring IoC",
+    "spoken_text": "Spring I O C"
+  },
+  "ioc container": {
+    "file": "words/ioc-container.mp3",
+    "text": "IoC container",
+    "spoken_text": "I O C container"
+  },
+  "inversion of control": {
+    "file": "words/inversion-of-control.mp3",
+    "text": "inversion of control",
+    "spoken_text": "inversion of control"
+  },
+  "constructor injection": {
+    "file": "words/constructor-injection.mp3",
+    "text": "constructor injection",
+    "spoken_text": "constructor injection"
+  },
+  "setter injection": {
+    "file": "words/setter-injection.mp3",
+    "text": "setter injection",
+    "spoken_text": "setter injection"
+  },
+  "applicationcontext": {
+    "file": "words/applicationcontext.mp3",
+    "text": "ApplicationContext",
+    "spoken_text": "Application Context"
+  },
+  "beanfactory": {
+    "file": "words/beanfactory.mp3",
+    "text": "BeanFactory",
+    "spoken_text": "Bean Factory"
+  },
+  "spring bean": {
+    "file": "words/spring-bean.mp3",
+    "text": "Spring bean",
+    "spoken_text": "Spring bean"
+  },
+  "bean scope": {
+    "file": "words/bean-scope.mp3",
+    "text": "bean scope",
+    "spoken_text": "bean scope"
+  },
+  "singleton scope": {
+    "file": "words/singleton-scope.mp3",
+    "text": "singleton scope",
+    "spoken_text": "singleton scope"
+  },
+  "prototype scope": {
+    "file": "words/prototype-scope.mp3",
+    "text": "prototype scope",
+    "spoken_text": "prototype scope"
+  },
+  "component scanning": {
+    "file": "words/component-scanning.mp3",
+    "text": "component scanning",
+    "spoken_text": "component scanning"
+  },
+  "@component": {
+    "file": "words/component-df31f027.mp3",
+    "text": "@Component",
+    "spoken_text": "Component annotation"
+  },
+  "@service": {
+    "file": "words/service.mp3",
+    "text": "@Service",
+    "spoken_text": "Service annotation"
+  },
+  "@repository": {
+    "file": "words/repository-db4274c8.mp3",
+    "text": "@Repository",
+    "spoken_text": "Repository annotation"
+  },
+  "@controller": {
+    "file": "words/controller.mp3",
+    "text": "@Controller",
+    "spoken_text": "Controller annotation"
+  },
+  "@autowired": {
+    "file": "words/autowired.mp3",
+    "text": "@Autowired",
+    "spoken_text": "Auto Wired annotation"
+  },
+  "@qualifier": {
+    "file": "words/qualifier.mp3",
+    "text": "@Qualifier",
+    "spoken_text": "Qualifier annotation"
+  },
+  "@resource": {
+    "file": "words/resource-78ea3abf.mp3",
+    "text": "@Resource",
+    "spoken_text": "Resource annotation"
+  },
+  "aop": {
+    "file": "words/aop.mp3",
+    "text": "AOP",
+    "spoken_text": "A O P"
+  },
+  "aspect": {
+    "file": "words/aspect.mp3",
+    "text": "aspect",
+    "spoken_text": "aspect"
+  },
+  "advice": {
+    "file": "words/advice.mp3",
+    "text": "advice",
+    "spoken_text": "advice"
+  },
+  "pointcut": {
+    "file": "words/pointcut.mp3",
+    "text": "pointcut",
+    "spoken_text": "pointcut"
+  },
+  "join point": {
+    "file": "words/join-point.mp3",
+    "text": "join point",
+    "spoken_text": "join point"
+  },
+  "proxy object": {
+    "file": "words/proxy-object.mp3",
+    "text": "proxy object",
+    "spoken_text": "proxy object"
+  },
+  "transaction management": {
+    "file": "words/transaction-management.mp3",
+    "text": "transaction management",
+    "spoken_text": "transaction management"
+  },
+  "@transactional": {
+    "file": "words/transactional.mp3",
+    "text": "@Transactional",
+    "spoken_text": "Transactional annotation"
+  },
+  "spring mvc": {
+    "file": "words/spring-mvc.mp3",
+    "text": "Spring MVC",
+    "spoken_text": "Spring M V C"
+  },
+  "dispatcherservlet": {
+    "file": "words/dispatcherservlet.mp3",
+    "text": "DispatcherServlet",
+    "spoken_text": "Dispatcher Servlet"
+  },
+  "handlermapping": {
+    "file": "words/handlermapping.mp3",
+    "text": "HandlerMapping",
+    "spoken_text": "Handler Mapping"
+  },
+  "handleradapter": {
+    "file": "words/handleradapter.mp3",
+    "text": "HandlerAdapter",
+    "spoken_text": "Handler Adapter"
+  },
+  "viewresolver": {
+    "file": "words/viewresolver.mp3",
+    "text": "ViewResolver",
+    "spoken_text": "View Resolver"
+  },
+  "modelandview": {
+    "file": "words/modelandview.mp3",
+    "text": "ModelAndView",
+    "spoken_text": "Model And View"
+  },
+  "@requestmapping": {
+    "file": "words/requestmapping.mp3",
+    "text": "@RequestMapping",
+    "spoken_text": "Request Mapping annotation"
+  },
+  "@getmapping": {
+    "file": "words/getmapping.mp3",
+    "text": "@GetMapping",
+    "spoken_text": "Get Mapping annotation"
+  },
+  "@postmapping": {
+    "file": "words/postmapping.mp3",
+    "text": "@PostMapping",
+    "spoken_text": "Post Mapping annotation"
+  },
+  "@requestparam": {
+    "file": "words/requestparam.mp3",
+    "text": "@RequestParam",
+    "spoken_text": "Request Param annotation"
+  },
+  "@pathvariable": {
+    "file": "words/pathvariable.mp3",
+    "text": "@PathVariable",
+    "spoken_text": "Path Variable annotation"
+  },
+  "@requestbody": {
+    "file": "words/requestbody.mp3",
+    "text": "@RequestBody",
+    "spoken_text": "Request Body annotation"
+  },
+  "@responsebody": {
+    "file": "words/responsebody.mp3",
+    "text": "@ResponseBody",
+    "spoken_text": "Response Body annotation"
+  },
+  "@restcontroller": {
+    "file": "words/restcontroller.mp3",
+    "text": "@RestController",
+    "spoken_text": "Rest Controller annotation"
+  },
+  "mybatis": {
+    "file": "words/mybatis.mp3",
+    "text": "MyBatis",
+    "spoken_text": "My Batis"
+  },
+  "sqlsession": {
+    "file": "words/sqlsession.mp3",
+    "text": "SqlSession",
+    "spoken_text": "S Q L Session"
+  },
+  "sqlsessionfactory": {
+    "file": "words/sqlsessionfactory.mp3",
+    "text": "SqlSessionFactory",
+    "spoken_text": "S Q L Session Factory"
+  },
+  "mapper interface": {
+    "file": "words/mapper-interface.mp3",
+    "text": "mapper interface",
+    "spoken_text": "mapper interface"
+  },
+  "mapper xml": {
+    "file": "words/mapper-xml.mp3",
+    "text": "mapper XML",
+    "spoken_text": "mapper X M L"
+  },
+  "resultmap": {
+    "file": "words/resultmap.mp3",
+    "text": "resultMap",
+    "spoken_text": "result map"
+  },
+  "dynamic sql": {
+    "file": "words/dynamic-sql.mp3",
+    "text": "dynamic SQL",
+    "spoken_text": "dynamic S Q L"
+  },
+  "parametertype": {
+    "file": "words/parametertype.mp3",
+    "text": "parameterType",
+    "spoken_text": "parameter type"
+  },
+  "resulttype": {
+    "file": "words/resulttype.mp3",
+    "text": "resultType",
+    "spoken_text": "result type"
+  },
+  "#{}": {
+    "file": "words/b4602b7c11.mp3",
+    "text": "#{}",
+    "spoken_text": "hash braces"
+  },
+  "${}": {
+    "file": "words/c4a5fe9570.mp3",
+    "text": "${}",
+    "spoken_text": "dollar braces"
+  },
+  "@mapper": {
+    "file": "words/mapper.mp3",
+    "text": "@Mapper",
+    "spoken_text": "Mapper annotation"
+  },
+  "@select": {
+    "file": "words/select-869c17e5.mp3",
+    "text": "@Select",
+    "spoken_text": "Select annotation"
+  },
+  "@insert": {
+    "file": "words/insert-85c648d6.mp3",
+    "text": "@Insert",
+    "spoken_text": "Insert annotation"
+  },
+  "@update": {
+    "file": "words/update-6e1a165f.mp3",
+    "text": "@Update",
+    "spoken_text": "Update annotation"
+  },
+  "@delete": {
+    "file": "words/delete-83ff3328.mp3",
+    "text": "@Delete",
+    "spoken_text": "Delete annotation"
+  },
+  "mybatis-spring": {
+    "file": "words/mybatis-spring.mp3",
+    "text": "MyBatis-Spring",
+    "spoken_text": "My Batis Spring"
   }
 }

@@ -9,7 +9,7 @@ from models import Category, DailyStats, PracticeRecord, PracticeSession, UserPr
 DATA_DIR = Path(__file__).resolve().parent / "data"
 DATA_FILES = (
     DATA_DIR / "vocabulary.json",
-    DATA_DIR / "java_vocabulary.json",
+    *sorted(DATA_DIR.glob("*_vocabulary.json")),
 )
 
 
